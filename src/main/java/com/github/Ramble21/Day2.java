@@ -1,7 +1,6 @@
 package com.github.Ramble21;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class Day2 extends DaySolver{
@@ -36,11 +35,35 @@ public class Day2 extends DaySolver{
                 break;
             }
         }
-        System.out.println(Arrays.toString(nums) + " " + isSafeInc + " " + isSafeDec);
         return isSafeInc || isSafeDec;
+    }
+    public boolean isSafeByDampening(int[] nums){
+        for (int i = 0; i < nums.length; i++){
+            if (isSafe(excludeIndex(nums, i))) return true;
+        }
+        return false;
+    }
+    public int[] excludeIndex(int[] nums, int excludeIndex){
+        int[] result = new int[nums.length-1];
+        int resultIndex = 0;
+        for (int i = 0; i < nums.length; i++){
+            if (i != excludeIndex) {
+                result[resultIndex++] = nums[i];
+            }
+        }
+        return result;
     }
 
     public int solvePart2() throws IOException {
-        return 0;
+        int safes = 0;
+        for (String line : input){
+            String[] temp = line.split(" ");
+            int[] nums = new int[temp.length];
+            for (int i = 0; i < temp.length; i++){
+                nums[i] = Integer.parseInt(temp[i]); // there might be a method that does all of this for me but i don't know it
+            }
+            if (isSafe(nums) || isSafeByDampening(nums)) safes++;
+        }
+        return safes;
     }
 }
