@@ -30,3 +30,19 @@ public abstract class DaySolver {
     public abstract int solvePart1() throws IOException;
     public abstract int solvePart2() throws IOException;
 }
+
+/* copy and paste for a new day class because im lazy - replace X with day number
+public class DayX extends DaySolver{
+    private List<String> input;
+    public Day1() throws IOException {
+        input = getInputLines(X);
+    }
+    public int solvePart1() throws IOException {
+        return 0;
+    }
+
+    public int solvePart2() throws IOException {
+        return 0;
+    }
+}
+ */
