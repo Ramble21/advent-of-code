@@ -32,8 +32,14 @@ public abstract class DaySolver {
 }
 
 /* copy and paste for a new day class because im lazy - replace X with day number
+
+package com.github.Ramble21;
+
+import java.io.IOException;
+import java.util.List;
+
 public class DayX extends DaySolver{
-    private List<String> input;
+    private final List<String> input;
     public Day1() throws IOException {
         input = getInputLines(X);
     }
@@ -45,4 +51,5 @@ public class DayX extends DaySolver{
         return 0;
     }
 }
+
  */

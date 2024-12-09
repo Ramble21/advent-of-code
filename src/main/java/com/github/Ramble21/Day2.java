@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.util.List;
 
 public class Day2 extends DaySolver{
-    private List<String> input;
+    private final List<String> input;
     public Day2() throws IOException {
         input = getInputLines(2);
     }
