@@ -9,7 +9,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        System.out.println(new Day6().solvePart1());
-        System.out.println(new Day6().solvePart2());
+        Day6 solution = new Day6();
+        System.out.println(solution.solvePart1());
+        System.out.println(solution.solvePart2());
     }
 }

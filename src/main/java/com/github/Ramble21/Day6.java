@@ -7,16 +7,17 @@ import java.util.List;
 public class Day6 extends DaySolver{
     private final List<String> input;
     private char[][] grid;
+    private final HashSet<String> alreadyDone;
     public Day6() throws IOException {
         input = getInputLines(6);
         inputToGrid();
+        alreadyDone = new HashSet<>();
     }
     public int solvePart1() throws IOException {
         String location = getStartingLoc();
         String previousLocation;
-        int count = 1;
-        int rotation = 0; // 0 = ^, 1 = >, 2 = v, 3 = <
-        HashSet<String> alreadyDone = new HashSet<>();
+        int count = 0;
+        int rotation = 0; // 0 = ^, 1 = >, 2 = v, 3 = <, modulus applied
         while (true){
             previousLocation = location;
             location = getNextLoc(rotation, location);
@@ -31,7 +32,7 @@ public class Day6 extends DaySolver{
             }
 
             char currentChar = grid[Integer.parseInt(locationArr[0])][Integer.parseInt(locationArr[1])];
-            // System.out.println(location +  " " + getRotationSymbol(rotation) + " " + currentChar); -> really good debug line so im not deleting
+            // System.out.println(location +  " " + getRotationSymbol(rotation) + " " + currentChar);
             if (currentChar == '#'){
                 location = previousLocation;
                 rotation++;
@@ -47,7 +48,28 @@ public class Day6 extends DaySolver{
     }
 
     public int solvePart2() throws IOException {
-        return 0;
+        int count = 0;
+        for (String location : alreadyDone) {
+            int r = Integer.parseInt(location.split(",")[0]);
+            int c = Integer.parseInt(location.split(",")[1]);
+            if (grid[r][c] != '.') continue;
+
+            char[][] edited = new char[grid.length][];
+            for (int i = 0; i < grid.length; i++) {
+                edited[i] = grid[i].clone();
+            }
+
+            edited[r][c] = '#';
+            if (checkGrid(edited)){
+                count++;
+//                System.out.println(r + "," + c + " works");
+            }
+//            else{
+//                System.out.println(r + "," + c + " doesn't work");
+//            }
+//            print2DArray(edited);
+        }
+        return count;
     }
 
     public void inputToGrid(){
@@ -93,5 +115,43 @@ public class Day6 extends DaySolver{
             case 3 -> "<";
             default -> "bug";
         };
+    }
+    public boolean checkGrid(char[][] newGrid){
+        String location = getStartingLoc();
+        String previousLocation;
+        int rotation = 0; // 0 = ^, 1 = >, 2 = v, 3 = <, modulus applied
+        int iterations = 0;
+
+        while (iterations < 20000){
+            iterations++;
+            previousLocation = location;
+            location = getNextLoc(rotation, location);
+            String[] locationArr = location.split(",");
+
+            if (Integer.parseInt(locationArr[0]) >= newGrid.length ||
+                    Integer.parseInt(locationArr[0]) < 0 ||
+                    Integer.parseInt(locationArr[1]) >= newGrid[0].length ||
+                    Integer.parseInt(locationArr[1]) < 0
+            ){
+                return false;
+            }
+
+            char currentChar = newGrid[Integer.parseInt(locationArr[0])][Integer.parseInt(locationArr[1])];
+            if (currentChar == '#'){
+                location = previousLocation;
+                rotation++;
+            }
+            if (currentChar == '.') newGrid[Integer.parseInt(locationArr[0])][Integer.parseInt(locationArr[1])] = 'X';
+        }
+        return true;
+
+    }
+    public static void print2DArray(char[][] array) {
+        for (char[] row : array) {
+            for (char value : row) {
+                System.out.print(value + " ");
+            }
+            System.out.println();
+        }
     }
 }
