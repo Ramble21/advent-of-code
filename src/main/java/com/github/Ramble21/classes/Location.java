@@ -1,0 +1,37 @@
+package com.github.Ramble21.classes;
+
+import java.util.Objects;
+
+public class Location {
+    private final int x;
+    private final int y;
+    public Location(int x, int y){
+        this.x = x;
+        this.y = y;
+    }
+    public int getX() {
+        return x;
+    }
+    public int getY() {
+        return y;
+    }
+    public String toString(){
+        return "(" + x + "," + y + ")";
+    }
+
+    public boolean isOnGrid(char[][] grid) {
+        return x < grid.length && y < grid[0].length && x >= 0 && y >= 0;
+    }
+
+    @Override
+    public boolean equals(Object obj){
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
+        Location other = (Location)obj;
+        return x == other.x && y == other.y;
+    }
+    @Override
+    public int hashCode() {
+        return Objects.hash(x, y);
+    }
+}
