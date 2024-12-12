@@ -16,11 +16,11 @@ public class Location {
         return y;
     }
     public String toString(){
-        return "(" + x + "," + y + ")";
+        return "(" + y + "," + x + ")";
     }
 
     public boolean isOnGrid(char[][] grid) {
-        return x < grid.length && y < grid[0].length && x >= 0 && y >= 0;
+        return x < grid[0].length && y < grid.length && x >= 0 && y >= 0;
     }
 
     @Override
