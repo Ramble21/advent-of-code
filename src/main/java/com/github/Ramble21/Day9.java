@@ -1,6 +1,7 @@
 package com.github.Ramble21;
 
 import java.io.IOException;
+import java.sql.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -16,6 +17,9 @@ public class Day9 extends DaySolver{
     public int solvePart1() throws IOException {
         return 0; // it needs to be returned as a long
     }
+    public int solvePart2() throws IOException {
+        return 0; // same
+    }
     public long solvePart1Long(){
         initDiskMap();
         initFileBlocks();
@@ -27,10 +31,19 @@ public class Day9 extends DaySolver{
         }
         return checksum;
     }
-
-    public int solvePart2() throws IOException {
-        return 0;
+    public long solvePart2Long(){
+        initDiskMap();
+        initFileBlocks();
+        greedyCompactFileBlocks();
+        long checksum = 0;
+        for (int i = 0; i < fileBlocks.length; i++){
+            if (fileBlocks[i].equals(".")) continue;
+            checksum += Long.parseLong(fileBlocks[i])*i;
+        }
+        return checksum;
     }
+
+
     public void initDiskMap(){
         ArrayList<Character> diskMapAL = new ArrayList<>();
         for (String s : input){
@@ -71,6 +84,46 @@ public class Day9 extends DaySolver{
             if (newIndex >= i) break;
             fileBlocks[newIndex] = fileBlocks[i];
             fileBlocks[i] = ".";
+        }
+    }
+    public void greedyCompactFileBlocks(){
+        int blockLength = 1;
+        for (int i = fileBlocks.length-1; i >= 0; i -= blockLength){
+            blockLength = 1;
+            if (fileBlocks[i].equals(".")) continue;
+
+            ArrayList<Integer> block = new ArrayList<>();
+            int j = 0;
+            while (i-j >= 0 && fileBlocks[i - j].equals(fileBlocks[i])) {
+                block.add(i-j);
+                j++;
+            }
+
+            blockLength = block.size();
+            ArrayList<Integer> targetBlock = new ArrayList<>();
+            int k = 0;
+            while (true){
+                if (targetBlock.size() == block.size()){
+                    break;
+                }
+                if (k > fileBlocks.length-1 || k > block.get(0)){
+                    targetBlock.clear();
+                    break;
+                }
+                if (!fileBlocks[k].equals(".")){
+                    k++;
+                    targetBlock.clear();
+                    continue;
+                }
+                targetBlock.add(k);
+                k++;
+            }
+
+            if (targetBlock.isEmpty()) continue;
+            for (int l = 0; l < block.size(); l++){
+                fileBlocks[targetBlock.get(l)] = fileBlocks[block.get(l)];
+                fileBlocks[block.get(l)] = ".";
+            }
         }
     }
 }
