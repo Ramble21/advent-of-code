@@ -12,6 +12,6 @@ public class Main {
     public static void main(String[] args) throws IOException {
         Day11 solution = new Day11();
         System.out.println(solution.solvePart1Long());
-        System.out.println(solution.solvePart2());
+        System.out.println(solution.solvePart2Long());
     }
 }

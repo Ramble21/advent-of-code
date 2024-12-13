@@ -7,6 +7,7 @@ import java.util.List;
 
 public class Day11 extends DaySolver{
     private final List<String> input;
+    private final HashMap<Long, Long> frequencyMap = new HashMap<>();
     public Day11() throws IOException {
         input = getInputLines(11);
     }
@@ -15,41 +16,62 @@ public class Day11 extends DaySolver{
     }
     public long solvePart1Long() throws IOException {
         String longAssString = input.get(0);
+        long[] initial = Arrays.stream(longAssString.split(" ")).mapToLong(Long::parseLong).toArray();
+        initializeHashmap(initial);
+        System.out.println(frequencyMap);
         for (int i = 0; i < 25; i++){
-            longAssString = blink(longAssString);
+            blink();
             System.out.println(i+1);
-            System.out.println(longAssString);
         }
         System.out.println();
-        return longAssString.split(" ").length;
+        return amountOfStones();
     }
 
     public int solvePart2() throws IOException {
-        return 0;
+        return 0; // long
     }
+    public long solvePart2Long() {
+        String longAssString = input.get(0);
+        long[] initial = Arrays.stream(longAssString.split(" ")).mapToLong(Long::parseLong).toArray();
+        initializeHashmap(initial);
+        System.out.println(frequencyMap);
+        for (int i = 0; i < 75; i++){
+            System.out.println(i+1);
+            blink();
+        }
+        System.out.println();
+        return amountOfStones();
+    }
+    public void blink(){
+        HashMap<Long, Long> updatedMap = new HashMap<>();
+        for (long key : frequencyMap.keySet()){
+            long newKey;
+            long newKey2 = -1;
+            if (key == 0) newKey = 1;
+            else if (Long.toString(key).length() % 2 == 0){
+                String toS = Long.toString(key);
+                newKey = Long.parseLong(toS.substring(0, toS.length()/2));
+                newKey2 = Long.parseLong(toS.substring(toS.length()/2));
+            }
+            else newKey = key * 2024;
 
-    public String blink(String longAssString){
-        long[] currentOrder = Arrays.stream(longAssString.split(" ")).filter(s -> !s.isEmpty()).mapToLong(Long::parseLong).toArray();
-        HashMap<Integer, Long> newStones = new HashMap<>(); // key = index, value = value
-        int x = 1;
-        //System.out.println(Arrays.toString(currentOrder));
-        for (int i = 0; i < currentOrder.length; i++){
-            if (currentOrder[i] == 0) currentOrder[i] = 1;
-            else if (Long.toString(currentOrder[i]).length() % 2 == 0){
-                String toS = Long.toString(currentOrder[i]);
-                currentOrder[i] = Long.parseLong(toS.substring(0, toS.length()/2));
-                newStones.put(i, Long.parseLong(toS.substring(toS.length()/2)));
-            }
-            else currentOrder[i] *= 2024;
+            updatedMap.put(newKey, (updatedMap.getOrDefault(newKey, 0L) + frequencyMap.get(key)));
+            if (newKey2 != -1) updatedMap.put(newKey2, (updatedMap.getOrDefault(newKey2, 0L) + frequencyMap.get(key)));
         }
-        //System.out.println(Arrays.toString(currentOrder) + " " + newStones);
-        StringBuilder s = new StringBuilder();
-        for (int i = 0; i < currentOrder.length; i++){
-            s.append(currentOrder[i]).append(" ");
-            if (newStones.containsKey(i)){
-                s.append(newStones.get(i)).append(" ");
-            }
+        frequencyMap.clear();
+        frequencyMap.putAll(updatedMap);
+        System.out.println(frequencyMap);
+    }
+    public void initializeHashmap(long[] initial){
+        for (long l : initial) {
+           frequencyMap.put(l, frequencyMap.getOrDefault(l, 0L)+1);
         }
-        return s.toString();
+    }
+    public long amountOfStones(){
+        long count = 0;
+        for (long key : frequencyMap.keySet()){
+            count += frequencyMap.get(key);
+        }
+        return count;
     }
 }
