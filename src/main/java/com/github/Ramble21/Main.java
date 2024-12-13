@@ -10,8 +10,8 @@ import java.util.List;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Day9 solution = new Day9();
-        System.out.println(solution.solvePart1Long());
-        System.out.println(solution.solvePart2Long());
+        DaySolver solution = new Day10();
+        System.out.println(solution.solvePart1());
+        System.out.println(solution.solvePart2());
     }
 }

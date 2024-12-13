@@ -22,6 +22,9 @@ public class Location {
     public boolean isOnGrid(char[][] grid) {
         return x < grid[0].length && y < grid.length && x >= 0 && y >= 0;
     }
+    public boolean isOnIntGrid(int[][] grid){
+        return x < grid[0].length && y < grid.length && x >= 0 && y >= 0;
+    }
 
     @Override
     public boolean equals(Object obj){
