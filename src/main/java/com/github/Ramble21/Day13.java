@@ -25,14 +25,23 @@ public class Day13 extends DaySolver{
     }
     public int solvePart1() throws IOException {
         int count = 0;
-        for (int i = 0; i < prizes.length; i++){
+        for (int i = 0; i < prizes.length; i+=2){
             count += getMinTokens(i);
         }
         return count;
     }
 
     public int solvePart2() throws IOException {
-        return 0;
+        return 0; // 10000000000000 self-explanatory
+    }
+    public long solvePart2Long(){
+        long count = 0;
+        for (int i = 0; i < prizes.length; i++){
+            count += getMinTokensNoCap(i);
+            System.out.println(i);
+        }
+        System.out.println();
+        return count;
     }
     public int getMinTokens(int i){
         ArrayList<Prize> workingPairs = new ArrayList<>();
@@ -57,6 +66,11 @@ public class Day13 extends DaySolver{
         }
         return minTokens;
     }
+    public long getMinTokensNoCap(int i){
+        ArrayList<Prize> workingPairs = new ArrayList<>();
+        long[] aAndB = solveForAandB(i);
+        return aAndB[0]*3 + aAndB[1];
+    }
     public void initializeArrays(){
         buttonsA = new ClawButton[inputWithoutEmpty.size()/3];
         buttonsB = new ClawButton[inputWithoutEmpty.size()/3];
@@ -76,5 +90,43 @@ public class Day13 extends DaySolver{
     public Prize parsePrize(String s){
         int[] nums = Regex.parseFirstTwoIntegers(s);
         return new Prize(nums[0], nums[1]);
+    }
+    public long gcd(long a, long b) {
+        while (b != 0) {
+            long temp = b;
+            b = a % b;
+            a = temp;
+        }
+        return a;
+    }
+    public long[] solveForAandB(int i) {
+        int xCoeff1 = buttonsA[i].getDeltaX();
+        int xCoeff2 = buttonsB[i].getDeltaX();
+        int yCoeff1 = buttonsA[i].getDeltaY();
+        int yCoeff2 = buttonsB[i].getDeltaY();
+        long xGoal = prizes[i].getMassiveX();
+        long yGoal = prizes[i].getMassiveY();
+        System.out.println(xCoeff1 + "a + " + xCoeff2 + ", b = " + xGoal);
+        System.out.println(yCoeff1 + "a + " + yCoeff2 + ", b = " + yGoal);
+
+        long determinant = (long) xCoeff1 * yCoeff2 - (long) xCoeff2 * yCoeff1;
+
+        if (determinant == 0) {
+            System.out.println("no solution");
+            return new long[]{0, 0};
+        }
+
+        long aNumerator = xGoal * yCoeff2 - xCoeff2 * yGoal;
+        long bNumerator = xCoeff1 * yGoal - xGoal * yCoeff1;
+
+        if (aNumerator % determinant != 0 || bNumerator % determinant != 0) {
+            System.out.println("no solution");
+            return new long[]{0, 0};
+        }
+
+        long a = aNumerator / determinant;
+        long b = bNumerator / determinant;
+        System.out.println("a = " + a + ", b = " + b);
+        return new long[]{a, b};
     }
 }
