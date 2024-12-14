@@ -5,6 +5,8 @@ public class BathroomRobot {
 
     private final int initialX;
     private final int initialY;
+    private int currentX;
+    private int currentY;
     private final int xVelocity;
     private final int yVelocity;
     private static char[][] grid = null;
@@ -12,6 +14,8 @@ public class BathroomRobot {
     public BathroomRobot(int x, int y, int xv, int yv){
         this.initialX = x;
         this.initialY = y;
+        this.currentX = initialX;
+        this.currentY = initialY;
         this.xVelocity = xv;
         this.yVelocity = yv;
         if (grid == null){
@@ -33,15 +37,14 @@ public class BathroomRobot {
         grid[y][x] = (char)(num + '1');
     }
     public void unUpdateGrid(int x, int y){
-        System.out.println(grid[y][x]);
         int num = (Integer.parseInt(String.valueOf(grid[y][x])));
         grid[y][x] = (char)(num + '0' - 1);
         if (grid[y][x] == '0') grid[y][x] = '.';
     }
     public Location predictPosition(int seconds){
-        int finalX = initialX;
-        int finalY = initialY;
-        unUpdateGrid(initialX, initialY);
+        int finalX = currentX;
+        int finalY = currentY;
+        unUpdateGrid(currentX, currentY);
         for (int i = 0; i < seconds; i++){
             finalX += xVelocity;
             finalY += yVelocity;
@@ -50,44 +53,46 @@ public class BathroomRobot {
             if (finalY >= grid.length) finalY %= grid.length;
             else if (finalY < 0) finalY += grid.length;
         }
+        currentX = finalX;
+        currentY = finalY;
         updateGrid(finalX, finalY);
         return new Location(finalX, finalY);
     }
     public static char[][] getGrid(){
         return grid;
     }
-    public static int[] countRobotsInQuadrants(){
+    public static long[] countRobotsInQuadrants(){
         int midRow = grid.length/2;
         int midCol = grid[0].length/2;
 
-        int q1 = 0;
+        long q1 = 0;
         for (int r = 0; r < midRow; r++){
             for (int c = 0; c < midCol; c++){
                 if (grid[r][c] == '.') continue;
                 q1 += grid[r][c] - '0';
             }
         }
-        int q2 = 0;
+        long q2 = 0;
         for (int r = midRow+1; r < grid.length; r++){
             for (int c = midCol+1; c < grid[0].length; c++){
                 if (grid[r][c] == '.') continue;
                 q2 += grid[r][c] - '0';
             }
         }
-        int q3 = 0;
+        long q3 = 0;
         for (int r = midRow+1; r < grid.length; r++){
             for (int c = 0; c < midCol; c++){
                 if (grid[r][c] == '.') continue;
                 q3 += grid[r][c] - '0';
             }
         }
-        int q4 = 0;
+        long q4 = 0;
         for (int r = 0; r < midRow; r++){
             for (int c = midCol+1; c < grid[0].length; c++){
                 if (grid[r][c] == '.') continue;
                 q4 += grid[r][c] - '0';
             }
         }
-        return new int[]{q1, q4, q3, q2};
+        return new long[]{q1, q4, q3, q2};
     }
 }

@@ -23,17 +23,40 @@ public class Day14 extends DaySolver{
             robot.predictPosition(100);
         }
         print2DArr(BathroomRobot.getGrid());
-        int[] quadrants = BathroomRobot.countRobotsInQuadrants();
-        System.out.println(Arrays.toString(quadrants));
-        return quadrants[0] * quadrants[1] * quadrants[2] * quadrants[3];
+        return (int)getDangerLevel();
     }
 
     public int solvePart2() throws IOException {
-        return 0;
+        BathroomRobot[] robots = new BathroomRobot[input.size()];
+        for (int i = 0; i < input.size(); i++){
+            int[] data = Regex.parseFirstFourIntegers(input.get(i));
+            BathroomRobot robot = new BathroomRobot(data[0], data[1], data[2], data[3]);
+            robots[i] = robot;
+        }
+        long minDangerLevel = Long.MAX_VALUE;
+        int treeIndex = -1;
+        for (int i = 0; i < 10000; i++){
+            for (BathroomRobot robot : robots){
+                robot.predictPosition(1);
+            }
+
+            if (getDangerLevel() < minDangerLevel){
+                minDangerLevel = getDangerLevel();
+                treeIndex = i+1;
+                System.out.println(i+1 + " (" + getDangerLevel() + ")");
+                print2DArr(BathroomRobot.getGrid());
+                System.out.println();
+            }
+        }
+        return treeIndex;
     }
     public static void print2DArr(char[][] array) {
         for (char[] row : array) {
             System.out.println(row);
         }
+    }
+    public long getDangerLevel(){
+        long[] quadrants = BathroomRobot.countRobotsInQuadrants();
+        return quadrants[0] * quadrants[1] * quadrants[2] * quadrants[3];
     }
 }
