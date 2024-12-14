@@ -16,4 +16,15 @@ public class Regex {
         }
         return result;
     }
+    public static int[] parseFirstFourIntegers(String input) {
+        Pattern pattern = Pattern.compile("-?\\d+");
+        Matcher matcher = pattern.matcher(input);
+        int[] result = new int[4];
+        int count = 0;
+        while (matcher.find() && count < 4) {
+            result[count] = Integer.parseInt(matcher.group());
+            count++;
+        }
+        return result;
+    }
 }
