@@ -4,7 +4,6 @@ import com.github.Ramble21.classes.Location;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -18,7 +17,6 @@ public class Day12 extends DaySolver{
         inputToGrid();
     }
     public int solvePart1() throws IOException {
-        print2DArr(grid);
         int count = 0;
         for (int r = 0; r < grid.length; r++){
             for (int c = 0; c < grid[0].length; c++){
@@ -40,7 +38,25 @@ public class Day12 extends DaySolver{
     }
 
     public int solvePart2() throws IOException {
-        return 0;
+        allRegions.clear();
+        int count = 0;
+        for (int r = 0; r < grid.length; r++){
+            for (int c = 0; c < grid[0].length; c++){
+                Location loc = new Location(c, r);
+                if (allRegions.contains(loc)) continue;
+
+                getRegion(loc, grid[r][c]);
+                allRegions.addAll(currentRegion);
+                System.out.println("\nCurrent region: " + currentRegion + " of type " + grid[r][c]);
+
+                int area = currentRegion.size();
+                int perimeter = getDiscountPerimeter();
+                count += area * perimeter;
+                System.out.println(area + " * " + perimeter + " = " + area*perimeter);
+                currentRegion.clear();
+            }
+        }
+        return count;
     }
     public void getRegion(Location loc, char target){
         Location[] possiblePaths = possiblePaths(loc.getY(), loc.getX());
@@ -64,6 +80,51 @@ public class Day12 extends DaySolver{
         }
         return count;
     }
+    public int getDiscountPerimeter(){
+        int noCorners = 0;
+        for (Location loc : currentRegion){
+            noCorners += countCorners(loc);
+        }
+        System.out.println(noCorners + " corners");
+        return noCorners;
+    }
+    private int countCorners(Location loc) {
+        int corners = 0;
+        Location upper = new Location(loc.getX(), loc.getY() - 1);
+        Location lower = new Location(loc.getX(), loc.getY() + 1);
+        Location right = new Location(loc.getX() + 1, loc.getY());
+        Location left = new Location(loc.getX() - 1, loc.getY());
+        Location topLeft = new Location(loc.getX() - 1, loc.getY() - 1);
+        Location topRight = new Location(loc.getX() + 1, loc.getY() - 1);
+        Location bottomLeft = new Location(loc.getX() - 1, loc.getY() + 1);
+        Location bottomRight = new Location(loc.getX() + 1, loc.getY() + 1);
+        if (!currentRegion.contains(upper) && !currentRegion.contains(left)) {
+            corners++;
+        }
+        if (!currentRegion.contains(upper) && !currentRegion.contains(right)) {
+            corners++;
+        }
+        if (!currentRegion.contains(lower) && !currentRegion.contains(left)) {
+            corners++;
+        }
+        if (!currentRegion.contains(lower) && !currentRegion.contains(right)) {
+            corners++;
+        }
+        if (!currentRegion.contains(topLeft) && currentRegion.contains(left) && currentRegion.contains(upper)) {
+            corners++;
+        }
+        if (!currentRegion.contains(topRight) && currentRegion.contains(right) && currentRegion.contains(upper)) {
+            corners++;
+        }
+        if (!currentRegion.contains(bottomLeft) && currentRegion.contains(left) && currentRegion.contains(lower)) {
+            corners++;
+        }
+        if (!currentRegion.contains(bottomRight) && currentRegion.contains(right) && currentRegion.contains(lower)) {
+            corners++;
+        }
+        return corners;
+    }
+
     public void inputToGrid(){
         char[][] g = new char[input.size()][input.get(0).length()];
         for (int r = 0; r < g.length; r++){
