@@ -120,4 +120,32 @@ public class Day15 extends DaySolver{
             System.out.println(row);
         }
     }
+    public void widenGrid(){
+        char[][] widenedGrid = new char[grid.length][grid[0].length*2];
+        for (int r = 0; r < grid.length; r++){
+            int widenedC = 0;
+            for (int c = 0; c < grid[0].length && widenedC < widenedGrid[0].length; c++){
+                //System.out.println(grid[r][c]);
+                if (grid[r][c] == '.'){
+                    widenedGrid[r][widenedC] = '.';
+                    widenedGrid[r][widenedC+1] = '.';
+                }
+                else if (grid[r][c] == '@') {
+                    widenedGrid[r][widenedC] = '@';
+                    widenedGrid[r][widenedC+1] = '.';
+                }
+                else if (grid[r][c] == 'O') {
+                    widenedGrid[r][widenedC] = '[';
+                    widenedGrid[r][widenedC+1] = ']';
+                }
+                else if (grid[r][c] == '#') {
+                    widenedGrid[r][widenedC] = '#';
+                    widenedGrid[r][widenedC+1] = '#';
+                }
+                //System.out.println(widenedGrid[r][widenedC] + "" + widenedGrid[r][widenedC+1]);
+                widenedC += 2;
+            }
+        }
+        grid = widenedGrid;
+    }
 }
