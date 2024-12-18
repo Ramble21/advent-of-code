@@ -1,8 +1,11 @@
 package com.github.Ramble21;
 
+import com.github.Ramble21.classes.Direction;
 import com.github.Ramble21.classes.Location;
+import com.github.Ramble21.classes.WideBox;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Day15 extends DaySolver{
@@ -12,9 +15,9 @@ public class Day15 extends DaySolver{
 
     public Day15() throws IOException {
         input = getInputLines(15);
-        splitInput();
     }
     public int solvePart1() throws IOException {
+        splitInput();
         for (int i = 0; i < movements.length(); i++){
             Location currentLoc = null;
             for (int r = 0; r < grid.length; r++){
@@ -39,12 +42,84 @@ public class Day15 extends DaySolver{
                 }
             }
         }
-        System.out.println(movements);
         return sum;
     }
 
     public int solvePart2() throws IOException {
-        return 0;
+        splitInput();
+        widenGrid();
+        //print2DArr(grid);
+       //System.out.println();
+        for (int i = 0; i < movements.length(); i++){
+            Location currentLoc = null;
+            for (int r = 0; r < grid.length; r++){
+                for (int c = 0; c < grid[0].length; c++){
+                    if (grid[r][c] == '@'){
+                        currentLoc = new Location(c, r);
+                        break;
+                    }
+                }
+            }
+            for (int r = 0; r < grid.length; r++){
+                for (int c = 1; c < grid[0].length-1; c++){
+                    if (grid[r][c] == '[' && grid[r][c+1] != ']') {
+                        System.out.println("big bug 1");
+                        return 0;
+                    }
+                    else if (grid[r][c] == ']' && grid[r][c-1] != '['){
+                        System.out.println("big bug 2");
+                        return 0;
+                    }
+                }
+            }
+            assert currentLoc != null;
+            moveRobotBigGrid(movements.charAt(i), currentLoc);
+            //System.out.println(movements.charAt(i));
+            //System.out.println(i+1);
+            //print2DArr(grid);
+            //System.out.println();
+        }
+        ArrayList<WideBox> boxes = new ArrayList<>();
+        int sum = 0;
+        for (int r = 0; r < grid.length; r++){
+            for (int c = 0; c < grid[0].length-1; c++){
+                if (grid[r][c] == '[' && grid[r][c+1] == ']'){
+                    boxes.add(new WideBox(grid, new Location(c, r), new Location(c+1, r)));
+                }
+            }
+        }
+
+        for (WideBox box : boxes){
+            sum += (100 * box.getY() + box.getIndex1().getX());
+        }
+        return sum;
+    }
+    public void moveRobotBigGrid(char direction, Location currentLoc){
+        Direction dir = Direction.charToDir(direction);
+        assert dir != null;
+        int currentX = currentLoc.getX();
+        int currentY = currentLoc.getY();
+        int targetX = currentX + dir.getDeltaX();
+        int targetY = currentY + dir.getDeltaY();
+        Location targetLoc = new Location(targetX, targetY);
+        if (grid[targetY][targetX] == '.'){
+            grid[targetY][targetX] = '@';
+            grid[currentY][currentX] = '.';
+        }
+        else if (grid[targetY][targetX] == '#'){
+            return;
+        }
+        else{
+            WideBox box = WideBox.grabBox(grid, targetLoc);
+            assert box != null;
+            WideBox.resetBoxesPushed();
+            if (box.tryToMove(dir, grid)){
+                if (grid[targetY][targetX] == '.'){
+                    grid[targetY][targetX] = '@';
+                    grid[currentY][currentX] = '.';
+                }
+            }
+        }
     }
     public void moveRobot(char direction, Location currentLoc){
         if (direction != '^' && direction != 'v' && direction != '<' && direction != '>') return;
