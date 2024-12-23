@@ -27,6 +27,12 @@ public abstract class DaySolver {
         )).lines().collect(Collectors.joining("\n"));
     }
 
+    public static void print2DArr(char[][] array) {
+        for (char[] row : array) {
+            System.out.println(row);
+        }
+    }
+
     public abstract int solvePart1() throws IOException;
     public abstract int solvePart2() throws IOException;
 }

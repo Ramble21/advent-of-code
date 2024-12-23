@@ -190,11 +190,6 @@ public class Day15 extends DaySolver{
         }
         movements = s.toString();
     }
-    public static void print2DArr(char[][] array) {
-        for (char[] row : array) {
-            System.out.println(row);
-        }
-    }
     public void widenGrid(){
         char[][] widenedGrid = new char[grid.length][grid[0].length*2];
         for (int r = 0; r < grid.length; r++){

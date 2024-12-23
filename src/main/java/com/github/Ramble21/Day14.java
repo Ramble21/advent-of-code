@@ -50,11 +50,6 @@ public class Day14 extends DaySolver{
         }
         return treeIndex;
     }
-    public static void print2DArr(char[][] array) {
-        for (char[] row : array) {
-            System.out.println(row);
-        }
-    }
     public long getDangerLevel(){
         long[] quadrants = BathroomRobot.countRobotsInQuadrants();
         return quadrants[0] * quadrants[1] * quadrants[2] * quadrants[3];

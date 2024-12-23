@@ -146,12 +146,4 @@ public class Day6 extends DaySolver{
         return true;
 
     }
-    public static void print2DArray(char[][] array) {
-        for (char[] row : array) {
-            for (char value : row) {
-                System.out.print(value + " ");
-            }
-            System.out.println();
-        }
-    }
 }

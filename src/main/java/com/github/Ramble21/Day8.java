@@ -133,9 +133,4 @@ public class Day8 extends DaySolver{
         }
         grid = g;
     }
-    public static void print2DArr(char[][] array) {
-        for (char[] row : array) {
-            System.out.println(row);
-        }
-    }
 }
