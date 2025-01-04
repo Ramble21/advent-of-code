@@ -1,21 +1,28 @@
 package com.github.Ramble21.classes;
+import com.github.Ramble21.DaySolver;
+
 import java.util.*;
 
 public class Maze {
 
-    private char[][] grid;
+    private final char[][] grid;
     private Location currentLoc;
-    private Direction currentDir;
-    private boolean hasReachedEnd = false;
+    private final Direction currentDir;
+    private MazeNode finalNode;
+    private int totalLocationsInBestPaths;
 
-    private HashSet<Location> visited = new HashSet<>();
-    private PriorityQueue<MazeNode> queue = new PriorityQueue<>();
+    private final HashSet<MazeNode> visited = new HashSet<>();
+    private final PriorityQueue<MazeNode> queue = new PriorityQueue<>();
+
+    private final HashSet<MazeNode> checkedOnce = new HashSet<>();
+
 
     private int totalPoints;
     public int getTotalPoints() {
+        System.out.println(visited);
+        DaySolver.print2DArr(grid);
         return totalPoints;
     }
-
     public Maze(char[][] grid){
         this.grid = grid;
         currentDir = Direction.UP;
@@ -28,18 +35,13 @@ public class Maze {
             }
         }
 
-        origin = new MazeNode(currentLoc, null, getNodeDirections(currentLoc));
+        MazeNode origin = new MazeNode(currentLoc, null, getNodeDirections(currentLoc), Direction.RIGHT);
         queue.add(origin);
     }
-    public boolean hasReachedEnd() {
-        return hasReachedEnd;
+    public boolean hasFinishedAllNodes() {
+        return queue.isEmpty();
     }
-    public Location getCurrentLoc() {
-        return currentLoc;
-    }
-    public char[][] getGrid() {
-        return grid;
-    }
+
     public Direction[] getNodeDirections(Location l){
         ArrayList<Direction> dirs = new ArrayList<>();
         if (canTurnClockwise(l, currentDir)) dirs.add(currentDir.getClockwise());
@@ -51,72 +53,64 @@ public class Maze {
         }
         return dirs.toArray(new Direction[0]);
     }
-
-    private final MazeNode origin;
-    private final HashSet<Location> forwards = new HashSet<>();
-
+    public int getTotalLocationsInBestPaths() {
+        return totalLocationsInBestPaths;
+    }
     public void executeAlgorithm(){
         MazeNode node = queue.poll();
         assert node != null;
+        HashSet<Location> locs = new HashSet<>();
+        for (MazeNode m : visited){
+            locs.add(m.getLoc());
+        }
+        if (locs.contains(node.getLoc())) return;
 
-        visited.add(currentLoc);
         grid[currentLoc.getY()][currentLoc.getX()] = 'x';
-        Location oldLoc = currentLoc;
-
         currentLoc = node.getLoc();
         grid[currentLoc.getY()][currentLoc.getX()] = '@';
+        checkNeighbors(node);
+        visited.add(node);
+    }
 
+    public void checkNeighbors(MazeNode node){
         for (MazeNode neighbor : getNeighbors(node)){
-
-            if (neighbor == null) continue;
-
             int tentativeDistance = node.getDistance() + getEdgeWeight(node, neighbor);
 
-            if (turnedToArrive(node, neighbor)) tentativeDistance += 1000;
+            if (node.getDirectionUponArriving() != neighbor.getDirectionUponArriving()){
+                tentativeDistance += 1000;
+            }
 
             if (tentativeDistance < neighbor.getDistance()){
                 neighbor.setDistance(tentativeDistance);
-                neighbor.setPreviousNode(node);
-                //System.out.println(neighbor.getLoc() + " ~ " + tentativeDistance);
-                neighbor.setPathsCount(node.getPathsCount());
-                queue.add(neighbor);
-            }
-            else if (tentativeDistance == neighbor.getDistance()){
-                neighbor.setPathsCount(neighbor.getPathsCount() + node.getPathsCount());
+                if (!queue.contains(neighbor)) queue.add(neighbor);
+                if (grid[neighbor.getLoc().getY()][neighbor.getLoc().getX()] == 'E') {
+                    System.out.println("End found! (" + neighbor + ")");
+                    finalNode = neighbor;
+                    totalPoints = neighbor.getDistance();
+                }
             }
 
-            if (grid[neighbor.getLoc().getY()][neighbor.getLoc().getX()] == 'E') {
-                hasReachedEnd = true;
-                System.out.println("\nAlgorithm finished");
-                MazeNode current = neighbor;
-                while (!current.isOrigin()){
-                    System.out.println(current + " " + current.getDistance());
-                    current = current.getPreviousNode();
-                }
-                totalPoints = neighbor.getDistance();
-                return;
-            }
+            checkedOnce.add(neighbor);
         }
     }
-    public boolean turnedToArrive(MazeNode original, MazeNode neighbor){
-        Direction currentDir = getDirection(original);
-        Direction newDir = getDirection(neighbor);
-        //System.out.println("Old: " + currentDir + " New: " + newDir + " at " + original.getLoc() + "->" + neighbor.getLoc() + " = " + Boolean.toString(newDir != currentDir));
-        return newDir != currentDir;
-    }
-    public Direction getDirection(MazeNode original){
-        if (original.getPreviousNode() == null) return Direction.RIGHT;
-        Location loc1 = original.getLoc();
-        Location loc2 = original.getPreviousNode().getLoc();
-        if (loc1.getX() == loc2.getX()){
-            if (loc1.getY() > loc2.getY()) return Direction.DOWN;
-            return Direction.UP;
+
+    public ArrayList<Location> getAllLocationsBetween(Location start, Location end) {
+        ArrayList<Location> locations = new ArrayList<>();
+        int x1 = start.getX();
+        int y1 = start.getY();
+        int x2 = end.getX();
+        int y2 = end.getY();
+        int dx = Integer.compare(x2, x1);
+        int dy = Integer.compare(y2, y1);
+        int currentX = x1;
+        int currentY = y1;
+        while (currentX != x2 || currentY != y2) {
+            currentX += dx;
+            currentY += dy;
+            locations.add(new Location(currentX, currentY));
         }
-        else if (loc1.getY() == loc2.getY()){
-            if (loc1.getX() > loc2.getX()) return Direction.RIGHT;
-            return Direction.LEFT;
-        }
-        else throw new RuntimeException("Nodes " + original + " and " + original.getPreviousNode() + " cannot be compared!");
+        locations.add(start);
+        return locations;
     }
     public int getEdgeWeight(MazeNode node1, MazeNode node2){
         Location loc1 = node1.getLoc();
@@ -129,29 +123,39 @@ public class Maze {
         }
         else throw new RuntimeException("Nodes " + node1 + " and " + node2 + " cannot be compared!");
     }
-    public MazeNode[] getNeighbors(MazeNode current){
-        MazeNode[] output = new MazeNode[current.getDirections().length];
-        for (int i = 0; i < output.length; i++){
+    public Direction getDirectionToGo(Location original, Location neighbor) throws RuntimeException{
+        int dx = neighbor.getX() - original.getX();
+        int dy = neighbor.getY() - original.getY();
+        if (dx > 0) return Direction.RIGHT;
+        if (dx < 0) return Direction.LEFT;
+        if (dy > 0) return Direction.DOWN;
+        if (dy < 0) return Direction.UP;
+        throw new RuntimeException("Nodes " + original + " and " + neighbor + " cannot be compared!");
+    }
+    public ArrayList<MazeNode> getNeighbors(MazeNode current) {
+        ArrayList<MazeNode> output = new ArrayList<>();
+        System.out.println(Arrays.toString(current.getDirections()));
+        for (Direction direction : current.getDirections()) {
             Location loc = current.getLoc();
-            while (true){
-                Location newLoc = loc.getDirectionalLoc(current.getDirections()[i]);
-                if (canTurn(newLoc)){
-                    output[i] = new MazeNode(newLoc, current, getNodeDirections(newLoc));
+            while (true) {
+                Location newLoc = loc.getDirectionalLoc(direction);
+                System.out.println(newLoc);
+                Direction dir = getDirectionToGo(loc, newLoc);
+                if (grid[newLoc.getY()][newLoc.getX()] == 'E'){
+                    output.add(new MazeNode(newLoc, current, getNodeDirections(newLoc), dir));
                     break;
                 }
-                else if (grid[newLoc.getY()][newLoc.getX()] == 'E'){
-                    output[i] = new MazeNode(newLoc, current, getNodeDirections(newLoc));
+                else if (grid[newLoc.getY()][newLoc.getX()] == '#' || isDeadEnd(newLoc, direction)){
                     break;
                 }
-                else if (isDeadEnd(newLoc, current.getDirections()[i])){
-                    output[i] = null;
+                else if (canTurn(newLoc)) {
+                    output.add(new MazeNode(newLoc, current, getNodeDirections(newLoc), dir));
                     break;
                 }
-                else {
-                    loc = newLoc;
-                }
+                loc = newLoc;
             }
         }
+        System.out.println("Neighbors of " + current + ": " + output);
         return output;
     }
     public boolean canMoveForward(Location currentLoc, Direction currentDir){
@@ -178,7 +182,138 @@ public class Maze {
         for (Direction d : Direction.getDirectionSet()){
             Location left = loc.getDirectionalLoc(d);
             Location up = loc.getDirectionalLoc(d.getClockwise());
-            if (grid[up.getY()][up.getX()] == '.' && grid[left.getY()][left.getX()] == '.') return true;
+            if ((grid[up.getY()][up.getX()] == '.' || grid[up.getY()][up.getX()] == '@')
+                    && (grid[left.getY()][left.getX()] == '.' || grid[left.getY()][left.getX()] == '@')) return true;
+        }
+        return false;
+    }
+    public void findAllPaths(){
+        HashSet<Location> allLocs = new HashSet<>();
+        backtrack(finalNode, null, allLocs);
+        totalLocationsInBestPaths = allLocs.size();
+        removeX();
+        DaySolver.print2DArr(grid);
+    }
+    public void removeX(){
+        for (int r = 0; r < grid.length; r++){
+            for (int c = 0; c < grid[0].length; c++){
+                if (grid[r][c] == 'x') grid[r][c] = '.';
+            }
+        }
+    }
+    public void backtrack(MazeNode current, MazeNode child, HashSet<Location> set){
+
+        ArrayList<MazeNode> parents = current.getSafeParentNodes(visited);
+        System.out.println("Backtracking point " + current + " with parents " + parents);
+
+        if (!current.isOrigin()){
+
+            ArrayList<MazeNode> neighbors = getNewNeighbors(current);
+            neighbors.removeIf(neighbor -> {
+                ArrayList<Location> parentLocs = new ArrayList<>();
+                for (MazeNode m : parents){
+                    parentLocs.add(m.getLoc());
+                }
+                if (parentLocs.contains(neighbor.getLoc())) {
+                    return true;
+                }
+                else {
+
+                    ArrayList<MazeNode> neighborParents = neighbor.getSafeParentNodes(visited);
+                    ArrayList<Location> neighborParentLocs = new ArrayList<>();
+                    for (MazeNode m : neighborParents) {
+                        neighborParentLocs.add(m.getLoc());
+                    }
+                    return (neighborParentLocs.contains(current.getLoc()) || neighbor.getLoc().equals(finalNode.getLoc()));
+                }
+            });
+
+            for (MazeNode neighbor : neighbors){
+                if (checkIfExtraParent(child, current, neighbor)){
+                    parents.add(neighbor);
+                }
+            }
+
+            for (MazeNode parent : parents){
+
+                ArrayList<Location> list = getAllLocationsBetween(current.getLoc(), parent.getLoc());
+                set.addAll(list);
+                for (Location l : list){
+                    grid[l.getY()][l.getX()] = 'O';
+                }
+                backtrack(parent, current, set);
+            }
+        }
+    }
+    public boolean checkIfExtraParent(MazeNode C, MazeNode B, MazeNode A){
+        int num = Math.abs(getEdgeWeight(A, B));
+
+
+        Direction RED = getDirectionToGo(A.getLoc(), B.getLoc());
+        Direction BLUE = A.getDirectionUponArriving();
+        Direction ORANGE = B.getDirectionUponArriving();
+        Direction GREEN = (C != null) ? getDirectionToGo(B.getLoc(), C.getLoc()) : null;
+
+        System.out.println("\n" + B + " debug");
+        System.out.println("Original score difference: " + num);
+        System.out.println("Nodes: " + C + ", " + B + ", " + A);
+        System.out.println("Red: " + RED);
+        System.out.println("Blue: " + BLUE);
+        System.out.println("Orange: " + ORANGE);
+        System.out.println("Green: " + GREEN);
+
+
+        if (BLUE != RED) num += 1000;
+        if (GREEN != null && ORANGE != GREEN && RED == GREEN) num -= 1000;
+
+        System.out.println();
+        System.out.println("A's score: " + A.getDistance());
+        System.out.println("Adjusted score difference: " + (A.getDistance() + num));
+        System.out.println("B's score: " + B.getDistance());
+        System.out.println("Returning " + (A.getDistance() + num == B.getDistance()));
+        System.out.println();
+
+        return A.getDistance() + num == B.getDistance();
+    }
+    public ArrayList<MazeNode> getNewNeighbors(MazeNode current){
+        ArrayList<MazeNode> output = new ArrayList<>();
+        for (MazeNode node : visited){
+            if (canAccess(node, current) && noIntermediateNode(node, current)) output.add(node);
+        }
+        System.out.println("New neighbors of " + current + ": " + output);
+        return output;
+    }
+    public boolean canAccess(MazeNode one, MazeNode two){
+        if ((!(one.getLoc().getX() == two.getLoc().getX() || one.getLoc().getY() == two.getLoc().getY())) || (one.getLoc().equals(two.getLoc()))) return false;
+        Location loc = one.getLoc();
+        Direction dir = getDirectionToGo(two.getLoc(), one.getLoc());
+        dir = dir.getFlipped();
+        while (!loc.equals(two.getLoc())){
+            loc = loc.getDirectionalLoc(dir);
+            if (grid[loc.getY()][loc.getX()] == '#'){
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean noIntermediateNode(MazeNode one, MazeNode two){
+        Location loc = one.getLoc();
+        Direction dir = getDirectionToGo(two.getLoc(), one.getLoc());
+        dir = dir.getFlipped();
+        while (!loc.equals(two.getLoc())){
+            loc = loc.getDirectionalLoc(dir);
+            if (canTurnNew(loc) && !loc.equals(two.getLoc()) && !loc.equals(one.getLoc())){
+                return false;
+            }
+        }
+        return true;
+    }
+    public boolean canTurnNew(Location loc){
+        for (Direction d : Direction.getDirectionSet()){
+            Location left = loc.getDirectionalLoc(d);
+            Location up = loc.getDirectionalLoc(d.getClockwise());
+            if (((grid[up.getY()][up.getX()] == '.' || grid[up.getY()][up.getX()] == 'x' || grid[up.getY()][up.getX()] == 'O'))
+                    && (grid[left.getY()][left.getX()] == '.' || grid[left.getY()][left.getX()] == 'x' || grid[left.getY()][left.getX()] == 'O')) return true;
         }
         return false;
     }

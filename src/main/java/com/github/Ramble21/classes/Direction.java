@@ -43,7 +43,6 @@ public enum Direction {
             case LEFT -> Direction.DOWN;
             case DOWN -> Direction.RIGHT;
             case RIGHT -> Direction.UP;
-            default -> null;
         };
     }
     public Direction getClockwise(){
@@ -52,7 +51,14 @@ public enum Direction {
             case RIGHT -> Direction.DOWN;
             case DOWN -> Direction.LEFT;
             case LEFT -> Direction.UP;
-            default -> null;
+        };
+    }
+    public Direction getFlipped(){
+        return switch (this) {
+            case UP -> Direction.DOWN;
+            case RIGHT -> Direction.LEFT;
+            case DOWN -> Direction.UP;
+            case LEFT -> Direction.RIGHT;
         };
     }
 

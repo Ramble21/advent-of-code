@@ -1,45 +1,47 @@
 package com.github.Ramble21.classes;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 
 public class MazeNode implements Comparable<MazeNode> {
     private final Location loc;
-    private MazeNode previousNode;
+    private ArrayList<MazeNode> parentNodes = new ArrayList<>();
     private final Direction[] directions;
     private int distance;
-    private int pathsCount;
     private final boolean isOrigin;
 
+
+    private boolean sussyCase;
+    public boolean isSussyCase() {
+        return sussyCase;
+    }
+    public void setSussyCase(boolean sussyCase) {
+        this.sussyCase = sussyCase;
+    }
+
+    private final Direction directionUponArriving;
     private static final HashMap<Location, Integer> knownDistances = new HashMap<>();
-    private static final HashMap<Location, Integer> knownPathCounts = new HashMap<>();
-    public static HashMap<Location, Integer> getKnownDistances(){
-        return knownDistances;
-    }
-    public static HashMap<Location, Integer> getKnownPathCounts(){
-        return knownPathCounts;
-    }
-    public MazeNode(Location loc, MazeNode previousNode, Direction[] directions){
+
+    public MazeNode(Location loc, MazeNode parentNode, Direction[] directions, Direction directionUponArriving){
         this.loc = loc;
-        this.previousNode = previousNode;
+        if (!(parentNode == null)) this.parentNodes.add(parentNode);
         this.directions = directions;
-        isOrigin = previousNode == null;
+        this.directionUponArriving = directionUponArriving;
+        isOrigin = parentNode == null;
 
         if (knownDistances.containsKey(this.loc)){
             this.distance = knownDistances.get(this.loc);
-            this.pathsCount = knownPathCounts.get(this.loc);
         }
         else{
             this.distance = Integer.MAX_VALUE;
-            this.pathsCount = 0;
             knownDistances.put(this.loc, Integer.MAX_VALUE);
-            knownPathCounts.put(this.loc, 0);
         }
         if (isOrigin){
             this.distance = 0;
-            this.pathsCount = 1;
             knownDistances.put(this.loc, 0);
-            knownPathCounts.put(this.loc, 1);
         }
     }
     public Direction[] getDirections() {
@@ -48,41 +50,51 @@ public class MazeNode implements Comparable<MazeNode> {
     public Location getLoc() {
         return loc;
     }
-    public boolean isOrigin() {
-        return isOrigin;
-    }
-    public MazeNode getPreviousNode() {
-        return previousNode;
+    public ArrayList<MazeNode> getSafeParentNodes(HashSet<MazeNode> visited){
+        ArrayList<MazeNode> safes = new ArrayList<>();
+        for (MazeNode m : parentNodes){
+            for (MazeNode v : visited){
+                if (m.getLoc().equals(v.getLoc())){
+                    safes.add(v);
+                }
+            }
+        }
+        return safes;
     }
     public String toString() {
-        return loc + "@" + Arrays.toString(directions) + "&" + distance;
+        return loc + "-" + directionUponArriving + "&" + distance;
     }
     public void setDistance(int distance) {
         this.distance = distance;
         knownDistances.put(this.loc, distance);
     }
-    public int getPathsCount() {
-        return pathsCount;
-    }
-    public void setPathsCount(int x) {
-        this.pathsCount += x;
-        knownPathCounts.put(this.loc, pathsCount);
-    }
     public int getDistance() {
         return distance;
     }
-    public void setPreviousNode(MazeNode previousNode){
-        this.previousNode = previousNode;
+    public Direction getDirectionUponArriving() {
+        return directionUponArriving;
     }
+
+    public void addParentNode(MazeNode parentNode){
+        parentNodes.add(parentNode);
+    }
+    public void clearParentNodes(){
+        parentNodes.clear();
+    }
+
     @Override
     public boolean equals(Object obj){
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
         MazeNode other = (MazeNode) obj;
-        return loc == other.loc && previousNode.getLoc() == other.previousNode.getLoc();
+        return loc == other.loc && directionUponArriving == other.directionUponArriving;
     }
     @Override
     public int compareTo(MazeNode other) {
         return Integer.compare(this.distance, other.distance);
+    }
+
+    public boolean isOrigin() { // this DOES have usages ignore intellij
+        return isOrigin;
     }
 }

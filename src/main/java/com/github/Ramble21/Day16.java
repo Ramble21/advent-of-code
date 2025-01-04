@@ -7,25 +7,20 @@ import java.util.List;
 
 public class Day16 extends DaySolver{
     private final List<String> input;
+    private Maze maze;
     private char[][] grid;
     public Day16() throws IOException {
         input = getInputLines(16);
         inputToGrid();
+        initializeMaze();
     }
     public int solvePart1() throws IOException {
-        Maze maze = new Maze(grid);
-        print2DArr(grid);
-        int count = 0;
-        while (!maze.hasReachedEnd()){
-            maze.executeAlgorithm();
-            print2DArr(grid);
-            count++;
-        }
         return maze.getTotalPoints();
     }
 
     public int solvePart2() throws IOException {
-        return 0;
+        maze.findAllPaths();
+        return maze.getTotalLocationsInBestPaths();
     }
 
     public void inputToGrid(){
@@ -34,6 +29,12 @@ public class Day16 extends DaySolver{
             for (int c = 0; c < input.get(0).length(); c++){
                 grid[r][c] = input.get(r).charAt(c);
             }
+        }
+    }
+    public void initializeMaze(){
+        maze = new Maze(grid);
+        while (!maze.hasFinishedAllNodes()){
+            maze.executeAlgorithm();
         }
     }
 }
