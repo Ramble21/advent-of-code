@@ -1,10 +1,9 @@
 package com.github.Ramble21;
 
-import com.github.Ramble21.classes.BathroomRobot;
-import com.github.Ramble21.classes.Regex;
+import com.github.Ramble21.classes.day15down.BathroomRobot;
+import com.github.Ramble21.classes.general.Regex;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class Day14 extends DaySolver{
@@ -12,7 +11,7 @@ public class Day14 extends DaySolver{
     public Day14() throws IOException {
         input = getInputLines(14);
     }
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         BathroomRobot[] robots = new BathroomRobot[input.size()];
         for (int i = 0; i < input.size(); i++){
             int[] data = Regex.parseFirstFourIntegers(input.get(i));
@@ -26,7 +25,7 @@ public class Day14 extends DaySolver{
         return (int)getDangerLevel();
     }
 
-    public int solvePart2() throws IOException {
+    public long solvePart2() throws IOException {
         BathroomRobot[] robots = new BathroomRobot[input.size()];
         for (int i = 0; i < input.size(); i++){
             int[] data = Regex.parseFirstFourIntegers(input.get(i));

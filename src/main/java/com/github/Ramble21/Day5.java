@@ -14,7 +14,7 @@ public class Day5 extends DaySolver{
         input = getInputLines(5);
         splitInput();
     }
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         int totalMiddles = 0;
         for (String update : updates){
             boolean works = true;
@@ -36,7 +36,7 @@ public class Day5 extends DaySolver{
         return totalMiddles;
     }
 
-    public int solvePart2() throws IOException {
+    public long solvePart2() throws IOException {
         int totalMiddles = 0;
         for (String update : updates){
 

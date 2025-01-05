@@ -13,7 +13,7 @@ public class Day6 extends DaySolver{
         inputToGrid();
         alreadyDone = new HashSet<>();
     }
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         String location = getStartingLoc();
         String previousLocation;
         int count = 0;
@@ -47,7 +47,7 @@ public class Day6 extends DaySolver{
         return count;
     }
 
-    public int solvePart2() throws IOException {
+    public long solvePart2() throws IOException {
         int count = 0;
         for (String location : alreadyDone) {
             int r = Integer.parseInt(location.split(",")[0]);

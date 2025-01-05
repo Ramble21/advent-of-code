@@ -1,6 +1,6 @@
 package com.github.Ramble21;
 
-import com.github.Ramble21.classes.Location;
+import com.github.Ramble21.classes.general.Location;
 
 import java.io.IOException;
 import java.util.*;
@@ -12,7 +12,7 @@ public class Day8 extends DaySolver{
         input = getInputLines(8);
         inputToGrid();
     }
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         HashMap<Location, Character> map = new HashMap<>();
         HashSet<Location> set = new HashSet<>();
         HashSet<HashSet<Location>> done = new HashSet<>();
@@ -46,7 +46,7 @@ public class Day8 extends DaySolver{
         return set.size();
     }
 
-    public int solvePart2() throws IOException {
+    public long solvePart2() throws IOException {
         HashMap<Location, Character> map = new HashMap<>();
         HashSet<Location> set = new HashSet<>();
         HashSet<HashSet<Location>> done = new HashSet<>();

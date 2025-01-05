@@ -1,4 +1,4 @@
-package com.github.Ramble21.classes;
+package com.github.Ramble21.classes.day15down;
 
 public class Prize {
     private final int x;

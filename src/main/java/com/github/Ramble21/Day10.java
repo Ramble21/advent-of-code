@@ -1,6 +1,6 @@
 package com.github.Ramble21;
 
-import com.github.Ramble21.classes.Location;
+import com.github.Ramble21.classes.general.Location;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ public class Day10 extends DaySolver{
         input = getInputLines(10);
         inputToGrid();
     }
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         print2DArr(grid);
         int count = 0;
         for (int r = 0; r < grid.length; r++){
@@ -32,7 +32,7 @@ public class Day10 extends DaySolver{
         return count;
     }
 
-    public int solvePart2() throws IOException {
+    public long solvePart2() throws IOException {
         print2DArr(grid);
         int count = 0;
         for (int r = 0; r < grid.length; r++){

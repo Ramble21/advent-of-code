@@ -8,7 +8,7 @@ public class Day3 extends DaySolver{
     public Day3() throws IOException {
         input = getInputLines(3);
     }
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         int sum = 0;
         StringBuilder wallOfText = new StringBuilder();
         for (String line : input){
@@ -48,7 +48,7 @@ public class Day3 extends DaySolver{
         }
     }
 
-    public int solvePart2() throws IOException {
+    public long solvePart2() throws IOException {
         int sum = 0;
         boolean isDisabled = false;
         StringBuilder wallOfText = new StringBuilder();

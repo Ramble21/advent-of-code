@@ -8,7 +8,7 @@ public class Day1 extends DaySolver {
 
     public Day1() throws IOException {}
 
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         List<String> inputLines = getInputLines(1);
         int[] array1 = new int[inputLines.size()];
         int[] array2 = new int[inputLines.size()];
@@ -27,7 +27,7 @@ public class Day1 extends DaySolver {
         return total;
     }
 
-    public int solvePart2() throws IOException {
+    public long solvePart2() throws IOException {
         List<String> inputLines = getInputLines(1);
         int[] array1 = new int[inputLines.size()];
         int[] array2 = new int[inputLines.size()];

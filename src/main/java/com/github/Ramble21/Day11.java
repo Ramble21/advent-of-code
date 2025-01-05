@@ -11,10 +11,7 @@ public class Day11 extends DaySolver{
     public Day11() throws IOException {
         input = getInputLines(11);
     }
-    public int solvePart1() throws IOException {
-        return 0; // long
-    }
-    public long solvePart1Long() throws IOException {
+    public long solvePart1() throws IOException {
         String longAssString = input.get(0);
         long[] initial = Arrays.stream(longAssString.split(" ")).mapToLong(Long::parseLong).toArray();
         initializeHashmap(initial);
@@ -26,11 +23,7 @@ public class Day11 extends DaySolver{
         System.out.println();
         return amountOfStones();
     }
-
-    public int solvePart2() throws IOException {
-        return 0; // long
-    }
-    public long solvePart2Long() {
+    public long solvePart2() {
         String longAssString = input.get(0);
         long[] initial = Arrays.stream(longAssString.split(" ")).mapToLong(Long::parseLong).toArray();
         initializeHashmap(initial);

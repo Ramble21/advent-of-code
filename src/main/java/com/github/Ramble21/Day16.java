@@ -1,6 +1,6 @@
 package com.github.Ramble21;
 
-import com.github.Ramble21.classes.Maze;
+import com.github.Ramble21.classes.day16.Maze;
 
 import java.io.IOException;
 import java.util.List;
@@ -14,11 +14,11 @@ public class Day16 extends DaySolver{
         inputToGrid();
         initializeMaze();
     }
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         return maze.getTotalPoints();
     }
 
-    public int solvePart2() throws IOException {
+    public long solvePart2() throws IOException {
         maze.findAllPaths();
         return maze.getTotalLocationsInBestPaths();
     }

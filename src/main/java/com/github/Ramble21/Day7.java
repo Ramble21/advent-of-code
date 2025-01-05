@@ -9,14 +9,8 @@ public class Day7 extends DaySolver{
     public Day7() throws IOException {
         input = getInputLines(7);
     }
-    public int solvePart1() throws IOException {
-        return 0; // the values are very large so i need to use a long and `solvePart1Long()` instead
-    }
-    public int solvePart2() throws IOException {
-        return 0; // same here
-    }
 
-    public long solvePart1Long() throws IOException {
+    public long solvePart1() throws IOException {
         long count = 0;
         for (String s : input){
             String skibidi = s.substring(s.indexOf(":") + 2);
@@ -27,11 +21,10 @@ public class Day7 extends DaySolver{
         System.out.println();
         return count;
     }
-    public long solvePart2Long() throws IOException {
+    public long solvePart2() throws IOException {
         // WARNING: I WAS LAZY AND SOLVED THIS USING BRUTE FORCE, IT WILL TAKE FOREVER
         long count = 0;
-        for (int i = 0; i < input.size(); i++){
-            String s = input.get(i);
+        for (String s : input) {
             String skibidi = s.substring(s.indexOf(":") + 2);
             long[] nums = Arrays.stream(skibidi.split(" ")).mapToLong(Long::parseLong).toArray();
             long total = Long.parseLong(s.substring(0, s.indexOf(":")));

@@ -1,13 +1,11 @@
 package com.github.Ramble21;
 
-import com.github.Ramble21.classes.ClawButton;
-import com.github.Ramble21.classes.Prize;
-import com.github.Ramble21.classes.Regex;
+import com.github.Ramble21.classes.day15down.ClawButton;
+import com.github.Ramble21.classes.day15down.Prize;
+import com.github.Ramble21.classes.general.Regex;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
 
 public class Day13 extends DaySolver{
@@ -23,18 +21,14 @@ public class Day13 extends DaySolver{
         inputWithoutEmpty.removeIf(s -> s.isEmpty() || s.isBlank());
         initializeArrays();
     }
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         int count = 0;
         for (int i = 0; i < prizes.length; i+=2){
             count += getMinTokens(i);
         }
         return count;
     }
-
-    public int solvePart2() throws IOException {
-        return 0; // 10000000000000 self-explanatory
-    }
-    public long solvePart2Long(){
+    public long solvePart2(){
         long count = 0;
         for (int i = 0; i < prizes.length; i++){
             count += getMinTokensNoCap(i);

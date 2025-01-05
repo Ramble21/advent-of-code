@@ -14,13 +14,8 @@ public class Day9 extends DaySolver{
     public Day9() throws IOException {
         input = getInputLines(9);
     }
-    public int solvePart1() throws IOException {
-        return 0; // it needs to be returned as a long
-    }
-    public int solvePart2() throws IOException {
-        return 0; // same
-    }
-    public long solvePart1Long(){
+
+    public long solvePart1(){
         initDiskMap();
         initFileBlocks();
         compactFileBlocks();
@@ -31,7 +26,7 @@ public class Day9 extends DaySolver{
         }
         return checksum;
     }
-    public long solvePart2Long(){
+    public long solvePart2(){
         initDiskMap();
         initFileBlocks();
         greedyCompactFileBlocks();

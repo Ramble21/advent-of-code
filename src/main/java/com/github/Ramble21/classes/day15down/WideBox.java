@@ -1,9 +1,9 @@
-package com.github.Ramble21.classes;
+package com.github.Ramble21.classes.day15down;
 
-import com.github.Ramble21.Day15;
+import com.github.Ramble21.classes.general.Direction;
+import com.github.Ramble21.classes.general.Location;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 public class WideBox {
 

@@ -1,4 +1,4 @@
-package com.github.Ramble21.classes;
+package com.github.Ramble21.classes.general;
 
 public enum Direction {
     LEFT(-1, 0, '^'),

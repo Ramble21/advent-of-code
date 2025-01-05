@@ -8,7 +8,7 @@ public class Day2 extends DaySolver{
     public Day2() throws IOException {
         input = getInputLines(2);
     }
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         int safes = 0;
         for (String line : input){
             String[] temp = line.split(" ");
@@ -54,7 +54,7 @@ public class Day2 extends DaySolver{
         return result;
     }
 
-    public int solvePart2() throws IOException {
+    public long solvePart2() throws IOException {
         int safes = 0;
         for (String line : input){
             String[] temp = line.split(" ");

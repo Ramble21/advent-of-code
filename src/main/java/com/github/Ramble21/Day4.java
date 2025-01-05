@@ -10,7 +10,7 @@ public class Day4 extends DaySolver{
         input = getInputLines(4);
         initializeWordSearchArr();
     }
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         int count = 0;
         for (int r = 0; r < wordSearch.length; r++){
             for (int c = 0; c < wordSearch[0].length; c++){
@@ -39,7 +39,7 @@ public class Day4 extends DaySolver{
         return count;
     }
 
-    public int solvePart2() throws IOException {
+    public long solvePart2() throws IOException {
         int count = 0;
         for (int r = 0; r < wordSearch.length-2; r++){
             for (int c = 0; c < wordSearch[0].length-2; c++){

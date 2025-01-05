@@ -1,8 +1,8 @@
 package com.github.Ramble21;
 
-import com.github.Ramble21.classes.Direction;
-import com.github.Ramble21.classes.Location;
-import com.github.Ramble21.classes.WideBox;
+import com.github.Ramble21.classes.general.Direction;
+import com.github.Ramble21.classes.general.Location;
+import com.github.Ramble21.classes.day15down.WideBox;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -16,7 +16,7 @@ public class Day15 extends DaySolver{
     public Day15() throws IOException {
         input = getInputLines(15);
     }
-    public int solvePart1() throws IOException {
+    public long solvePart1() throws IOException {
         splitInput();
         for (int i = 0; i < movements.length(); i++){
             Location currentLoc = null;
@@ -45,7 +45,7 @@ public class Day15 extends DaySolver{
         return sum;
     }
 
-    public int solvePart2() throws IOException {
+    public long solvePart2() throws IOException {
         splitInput();
         widenGrid();
         //print2DArr(grid);

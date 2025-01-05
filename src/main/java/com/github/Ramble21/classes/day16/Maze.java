@@ -1,5 +1,7 @@
-package com.github.Ramble21.classes;
+package com.github.Ramble21.classes.day16;
 import com.github.Ramble21.DaySolver;
+import com.github.Ramble21.classes.general.Direction;
+import com.github.Ramble21.classes.general.Location;
 
 import java.util.*;
 

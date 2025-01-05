@@ -1,5 +1,6 @@
-package com.github.Ramble21.classes;
+package com.github.Ramble21.classes.general;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +25,19 @@ public class Regex {
         while (matcher.find() && count < 4) {
             result[count] = Integer.parseInt(matcher.group());
             count++;
+        }
+        return result;
+    }
+    public static int[] parseAllIntegers(String input){
+        Pattern pattern = Pattern.compile("-?\\d+");
+        Matcher matcher = pattern.matcher(input);
+        ArrayList<Integer> tempList = new ArrayList<>();
+        while (matcher.find()) {
+            tempList.add(Integer.parseInt(matcher.group()));
+        }
+        int[] result = new int[tempList.size()];
+        for (int i = 0; i < tempList.size(); i++) {
+            result[i] = tempList.get(i);
         }
         return result;
     }

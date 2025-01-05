@@ -1,4 +1,6 @@
-package com.github.Ramble21.classes;
+package com.github.Ramble21.classes.day15down;
+
+import com.github.Ramble21.classes.general.Location;
 
 public class BathroomRobot {
 

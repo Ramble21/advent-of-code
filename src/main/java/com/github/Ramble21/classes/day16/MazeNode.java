@@ -1,8 +1,9 @@
-package com.github.Ramble21.classes;
+package com.github.Ramble21.classes.day16;
 
-import java.lang.reflect.Array;
+import com.github.Ramble21.classes.general.Direction;
+import com.github.Ramble21.classes.general.Location;
+
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 

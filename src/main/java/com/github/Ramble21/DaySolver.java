@@ -33,8 +33,8 @@ public abstract class DaySolver {
         }
     }
 
-    public abstract int solvePart1() throws IOException;
-    public abstract int solvePart2() throws IOException;
+    public abstract long solvePart1() throws IOException;
+    public abstract long solvePart2() throws IOException;
 }
 
 /* copy and paste for a new day class because im lazy - replace X with day number
