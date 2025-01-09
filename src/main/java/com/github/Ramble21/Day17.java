@@ -25,7 +25,7 @@ public class Day17 extends DaySolver{
         return 0; // String needed
     }
     public String solvePart1S() {
-        InstructionReader reader = new InstructionReader(instructions, parsedInput[0], parsedInput[1], parsedInput[2], true);
+        InstructionReader reader = new InstructionReader(instructions, parsedInput[0], parsedInput[1], parsedInput[2], false);
         reader.read();
         ArrayList<Integer> output = reader.getOutput();
         StringBuilder s = new StringBuilder();
@@ -37,14 +37,9 @@ public class Day17 extends DaySolver{
     }
 
     public long solvePart2() throws IOException {
-        System.out.println("\n" + Arrays.toString(instructions));
         HashSet<Long> solutions = new HashSet<>();
-
         int[] test = instructions;
-
         solveRecursive(test.length-2, 3, test, solutions);
-        System.out.println("\n" + Arrays.toString(test));
-        System.out.println("Solutions: " + solutions);
 
         long min = Long.MAX_VALUE;
         for (Long l : solutions){
@@ -52,15 +47,12 @@ public class Day17 extends DaySolver{
             if (l < min) min = l;
         }
 
-        if (min == Long.MAX_VALUE) throw new RuntimeException("No solution / buggy code");
         return min;
     }
 
     public void solveRecursive(int index, long A, int[] output, HashSet<Long> solutions){
         if (index < 0){
             solutions.add(A);
-            System.out.println("Solution added! (A = " + A + ")");
-            System.out.println(solutions.size() + " items long");
             return;
         }
         int E_mod = output[index];
@@ -68,28 +60,19 @@ public class Day17 extends DaySolver{
 
         boolean foundOne = false;
         for (long B = 0; B < 8; B++){
-
             long newA = (A * 8) + (B ^ 3);
             long C = (newA / (1L << B));
             long D = B ^ C;
             long E = D ^ 3;
-
             if (E % 8 != E_mod) continue;
-
             long computedB = ((newA % 8) ^ 3);
             long computedC = newA / (1L << B);
 
-            System.out.println("Testing possible solution with newA value " + newA);
-            System.out.println(computedB + " " + computedC + " >> " + B + " " + C);
-
             if (B == computedB && C == computedC){
                 foundOne = true;
-                System.out.println("B=" + B + ", C=" + C);
-                System.out.println("Found newA " + newA + " for index " + index);
                 solveRecursive(index-1, newA, output, solutions);
             }
         }
-        if (!foundOne) System.out.println("Dead end");
     }
 
     public int[] parseInput(){
@@ -101,15 +84,8 @@ public class Day17 extends DaySolver{
     }
 
     public void testNum(long A){
-        InstructionReader reader = new InstructionReader(instructions, A, parsedInput[1], parsedInput[2], true);
+        InstructionReader reader = new InstructionReader(instructions, A, parsedInput[1], parsedInput[2], false);
         reader.read();
-    }
-    public long octalToDecimal(String octal) {
-        try {
-            return Long.parseLong(octal, 8);
-        } catch (NumberFormatException e) {
-            throw new IllegalArgumentException("Invalid octal number: " + octal);
-        }
     }
     public static String decimalToOctal(long decimal) {
         return Long.toOctalString(decimal);
