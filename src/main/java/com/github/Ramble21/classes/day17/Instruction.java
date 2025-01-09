@@ -40,7 +40,8 @@ public class Instruction {
         reader.setB(reader.getB() ^ reader.getC());
     }
     public void out(){
-        reader.output(comboOperand % 8);
+        //System.out.println("Outputting " + (int) comboOperand % 8);
+        reader.output((int) comboOperand % 8);
     }
     public void bdv(){
         reader.setB(reader.getA() / (long) Math.pow(2, comboOperand));
