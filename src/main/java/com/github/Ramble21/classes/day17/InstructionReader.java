@@ -105,7 +105,6 @@ public class InstructionReader {
     }
 
     public void setB(long b) {
-        //System.out.println("B: " + b);
         B = b;
     }
 
@@ -114,7 +113,6 @@ public class InstructionReader {
     }
 
     public void setC(long c) {
-        //System.out.println("C: " + c);
         C = c;
     }
 
@@ -149,7 +147,6 @@ public class InstructionReader {
     }
 
     public void setInstructionPointer(int instructionPointer) {
-        //System.out.println("\nA: " + A);
         this.instructionPointer = instructionPointer;
         isJumped = true;
     }

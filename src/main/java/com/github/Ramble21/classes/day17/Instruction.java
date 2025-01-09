@@ -2,14 +2,12 @@ package com.github.Ramble21.classes.day17;
 
 public class Instruction {
 
-    private final int instructionIndex;
     private final int opcode;
     private final int literalOperand;
     private final long comboOperand;
     private final InstructionReader reader;
 
     public Instruction(int instructionIndex, InstructionReader reader){
-        this.instructionIndex = instructionIndex;
         this.reader = reader;
         this.opcode = reader.getInstruction(instructionIndex);
         this.literalOperand = reader.getInstruction(instructionIndex + 1);
@@ -40,7 +38,6 @@ public class Instruction {
         reader.setB(reader.getB() ^ reader.getC());
     }
     public void out(){
-        //System.out.println("Outputting " + (int) comboOperand % 8);
         reader.output((int) comboOperand % 8);
     }
     public void bdv(){

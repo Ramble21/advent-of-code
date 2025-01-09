@@ -5,7 +5,6 @@ import com.github.Ramble21.classes.general.Regex;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 
@@ -14,7 +13,6 @@ public class Day17 extends DaySolver{
     private final List<String> input;
     private final int[] instructions;
     private final int[] parsedInput;
-
 
     public Day17() throws IOException {
         input = getInputLines(17);
@@ -40,13 +38,11 @@ public class Day17 extends DaySolver{
         HashSet<Long> solutions = new HashSet<>();
         int[] test = instructions;
         solveRecursive(test.length-2, 3, test, solutions);
-
         long min = Long.MAX_VALUE;
         for (Long l : solutions){
             testNum(l);
             if (l < min) min = l;
         }
-
         return min;
     }
 
@@ -56,9 +52,6 @@ public class Day17 extends DaySolver{
             return;
         }
         int E_mod = output[index];
-
-
-        boolean foundOne = false;
         for (long B = 0; B < 8; B++){
             long newA = (A * 8) + (B ^ 3);
             long C = (newA / (1L << B));
@@ -67,9 +60,7 @@ public class Day17 extends DaySolver{
             if (E % 8 != E_mod) continue;
             long computedB = ((newA % 8) ^ 3);
             long computedC = newA / (1L << B);
-
             if (B == computedB && C == computedC){
-                foundOne = true;
                 solveRecursive(index-1, newA, output, solutions);
             }
         }
