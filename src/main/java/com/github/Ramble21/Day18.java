@@ -8,18 +8,34 @@ public class Day18 extends DaySolver{
     private final List<String> input;
     private final ArrayList<Location> coords;
     private final char[][] grid;
+    private final int gridSize = 71;
+
     public Day18() throws IOException {
         input = getInputLines(18);
         coords = inputToCoords();
-        grid = createGrid(71);
+        grid = createGrid(gridSize);
     }
     public long solvePart1() throws IOException {
-        addLocations(1024);
-        return bfs(new Location(0, 0), new Location(70, 70));
+        addLocations(12);
+        return bfs(new Location(0, 0), new Location(gridSize-1, gridSize-1));
     }
 
     public long solvePart2() throws IOException {
-        return 0;
+        return 0; // need string
+    }
+
+    public String solvePart2S() {
+        String goal = null;
+        for (int i = 0; i < coords.size(); i++){
+            try{
+                addLocations(i);
+                bfs(new Location(0, 0), new Location(gridSize-1, gridSize-1));
+            } catch (RuntimeException e) {
+                goal = coords.get(i-1).getX() + "," + coords.get(i-1).getY();
+                break;
+            }
+        }
+        return goal;
     }
 
     public ArrayList<Location> inputToCoords(){
@@ -40,15 +56,22 @@ public class Day18 extends DaySolver{
         return x;
     }
     public void addLocations(int count){
+        for (int r = 0; r < grid.length; r++){
+            for (int c = 0; c < grid[0].length; c++){
+                grid[r][c] = '.';
+            }
+        }
         for (int i = 0; i < count; i++){
             grid[coords.get(i).getY()][coords.get(i).getX()] = '#';
         }
     }
 
-    private final HashSet<Location> visited = new HashSet<>();
-    private final HashMap<Location, Integer> distances = new HashMap<>();
+    private HashSet<Location> visited = new HashSet<>();
+    private HashMap<Location, Integer> distances = new HashMap<>();
 
-    public int bfs(Location start, Location end){
+    public int bfs(Location start, Location end) throws RuntimeException{
+        visited = new HashSet<>();
+        distances = new HashMap<>();
         Queue<Location> queue = new LinkedList<>();
         queue.add(start);
         visited.add(start);
