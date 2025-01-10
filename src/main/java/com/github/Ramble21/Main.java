@@ -4,8 +4,8 @@ import java.io.IOException;
 
 public class Main {
     public static void main(String[] args) throws IOException {
-        Day17 solution = new Day17();
-        System.out.println(solution.solvePart1S());
+        DaySolver solution = new Day18();
+        System.out.println(solution.solvePart1());
         System.out.println(solution.solvePart2());
     }
 }
