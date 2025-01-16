@@ -18,22 +18,44 @@ public class Day19 extends DaySolver{
         }
         patterns = input.get(0).split(", ");
         designs = designs();
-    }
 
-    private final HashMap<String, String> originalDesigns = new HashMap<>();
+    }
     private final HashMap<String, ArrayList<String>> map = new HashMap<>();
     private final HashSet<String> goodDesigns = new HashSet<>();
     private final HashMap<String, Boolean> memoization = new HashMap<>();
+    private static final HashMap<String, Long> memoizationPart2 = new HashMap<>();
 
     public long solvePart1() throws IOException {
         for (String design : designs) {
             map.put(design, new ArrayList<>());
-            originalDesigns.put(design, design);
             keepTrying(design, design);
         }
         return goodDesigns.size();
     }
-
+    public long solvePart2() throws IOException {
+        long x = 0;
+        for (String design : designs) {
+            map.put(design, new ArrayList<>());
+            x += keepTryingPart2(design);
+        }
+        return x;
+    }
+    public long keepTryingPart2(String remainingDesign){
+        if (remainingDesign.isEmpty()){
+            return 1;
+        }
+        if (memoizationPart2.containsKey(remainingDesign)) {
+            return memoizationPart2.get(remainingDesign);
+        }
+        long result = 0;
+        for (String pattern : patterns){
+            if (remainingDesign.startsWith(pattern)){
+                result += keepTryingPart2(getRemainingDesign(remainingDesign, pattern));
+            }
+        }
+        memoizationPart2.put(remainingDesign, result);
+        return result;
+    }
     public boolean keepTrying(String originalDesign, String remainingDesign){
         if (remainingDesign.isBlank() || remainingDesign.isEmpty()){
             goodDesigns.add(originalDesign);
@@ -58,10 +80,6 @@ public class Day19 extends DaySolver{
             }
         }
         return result;
-    }
-
-    public long solvePart2() throws IOException {
-        return 0;
     }
 
     public String[] designs(){
