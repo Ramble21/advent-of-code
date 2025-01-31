@@ -18,6 +18,9 @@ public class Location {
     public String toString(){
         return "(" + y + "," + x + ")";
     }
+    public static int getTaxicabDistance(Location first, Location second){
+        return Math.abs(first.x-second.x) + Math.abs(first.y-second.y);
+    }
 
     public boolean isOnGrid(char[][] grid) {
         return x < grid[0].length && y < grid.length && x >= 0 && y >= 0;

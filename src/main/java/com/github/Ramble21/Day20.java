@@ -8,11 +8,13 @@ import com.github.Ramble21.classes.general.*;
 public class Day20 extends DaySolver{
     private final List<String> input;
     private char[][] grid;
+    private char[][] ogGrid;
+    private final Location end;
+    private final Location start;
+
     public Day20() throws IOException {
         input = getInputLines(20);
         inputToGrid();
-    }
-    public long solvePart1() throws IOException {
         Location start = null;
         Location end = null;
         for (int r = 0; r < grid.length; r++){
@@ -21,62 +23,73 @@ public class Day20 extends DaySolver{
                 else if (grid[r][c] == 'E') end = new Location(c, r);
             }
         }
-        int normal = bfs(start, end, grid);
+        this.end = end;
+        this.start = start;
         inputToGrid();
-        print2DArr(grid);
-
-        int count = 0;
+        ogGrid = new char[grid.length][grid[0].length];
         for (int r = 0; r < grid.length; r++){
-            for (int c = 0; c < grid[0].length; c++){
-                Location One = new Location(c, r);
-                if (!qualifies(One)) continue;
-                for (Location Two : getNeighbors(One, true)){
-                    if (grid[Two.getY()][Two.getX()] == '#') continue;
-                    inputToGrid();
-                    grid[One.getY()][One.getX()] = '1';
-                    grid[Two.getY()][Two.getX()] = '2';
-                    int x = bfs(start, end, grid);
-                    if (normal - x >= 100){
-                        count++;
-                    }
-                }
-                System.out.println(r + " " + c);
-            }
+            System.arraycopy(grid[r], 0, ogGrid[r], 0, grid[0].length);
         }
-        return count;
+    }
+    public long solvePart1() throws IOException {
+        inputToGrid();
+        return bfsWithCheats(start, end, grid, 100, false);
     }
     public long solvePart2() throws IOException {
-        return 0;
+        inputToGrid();
+        return bfsWithCheats(start, end, grid, 100, true);
     }
-    public boolean qualifies(Location loc){
-        if (grid[loc.getY()][loc.getX()] != '#') return false;
-        for (Location neighbor : getNeighbors(loc, true)){
-            if (grid[neighbor.getY()][neighbor.getX()] == 'x' || grid[neighbor.getY()][neighbor.getX()] == '.') return true;
-        }
-        return false;
-    }
-    public int bfs(Location start, Location end, char[][] grid) throws RuntimeException{
+    public int bfsWithCheats(Location start, Location end, char[][] grid, int minTimeSaved, boolean part2){
         HashSet<Location> visited = new HashSet<>();
-        HashMap<Location, Integer> distances = new HashMap<>();
         Queue<Location> queue = new LinkedList<>();
         queue.add(start);
         visited.add(start);
-        distances.put(start, 0);
+        BreadthFirstSearch control = new BreadthFirstSearch(start, end, grid);
+        HashMap<Route, Integer> cheats = new HashMap<>();
+
         while (!queue.isEmpty()){
             Location current = queue.poll();
             if (grid[current.getY()][current.getX()] == '.') grid[current.getY()][current.getX()] = 'x';
             if (current.equals(end)){
-                return distances.get(current);
+                return cheats.size();
             }
-            for (Location neighbor : getNeighbors(current, false)){
-                if (!visited.contains(neighbor)){
+            for (Location neighbor : getNeighbors(current, true)){
+                if (!visited.contains(neighbor) && grid[neighbor.getY()][neighbor.getX()] != '#'){
                     visited.add(neighbor);
-                    distances.put(neighbor, distances.get(current) + 1);
                     queue.add(neighbor);
+                }
+            }
+            HashSet<Location> potentialEndpoints = new HashSet<>();
+            HashMap<Location, Integer> originalDistances = control.getDistances();
+            if (part2){
+                for (int r = 0; r < grid.length; r++){
+                    for (int c = 0; c < grid[0].length; c++){
+                        Location test = new Location(c, r);
+                        if (isWithinTwenty(test, current, grid) && grid[r][c] != '#'){
+                            potentialEndpoints.add(test);
+                        }
+                    }
+                }
+            }
+            else{
+                potentialEndpoints.add(new Location(current.getX(), current.getY() + 2));
+                potentialEndpoints.add(new Location(current.getX(), current.getY() - 2));
+                potentialEndpoints.add(new Location(current.getX() + 2, current.getY()));
+                potentialEndpoints.add(new Location(current.getX() - 2, current.getY()));
+                potentialEndpoints.removeIf(loc -> !loc.isOnGrid(grid) || grid[loc.getY()][loc.getX()] == '#');
+            }
+            for (Location endpoint : potentialEndpoints){
+                int timeSaved = originalDistances.get(endpoint) - originalDistances.get(current) - Location.getTaxicabDistance(current, endpoint);
+                if (timeSaved >= minTimeSaved){
+                    cheats.put(new Route(current, endpoint), timeSaved);
                 }
             }
         }
         throw new RuntimeException("No solution");
+    }
+    public boolean isWithinTwenty(Location idk, Location center, char[][] grid){
+        if (!idk.isOnGrid(grid)) return false;
+        return Location.getTaxicabDistance(idk, center) <= 20;
     }
     public ArrayList<Location> getNeighbors(Location l, boolean all){
         ArrayList<Location> output = new ArrayList<>();
@@ -95,10 +108,35 @@ public class Day20 extends DaySolver{
                 i--;
             }
         }
-        if (!all && grid[l.getY()][l.getX()] == '1'){
-            output.removeIf(a -> grid[a.getY()][a.getX()] != '2');
+        if (!all && canParseInt(grid[l.getY()][l.getX()])){
+            output.removeIf(a -> {
+                if (isFinalInt(l)){
+                   return grid[a.getY()][a.getX()] != 'x' && grid[a.getY()][a.getX()] != '.' && grid[a.getY()][a.getX()] != 'E';
+                } else {
+                    return charToInt(grid[a.getY()][a.getX()]) - 1 != charToInt(grid[l.getY()][l.getX()]);
+                }
+            });
         }
         return output;
+    }
+    public boolean canParseInt(char c){
+        try {
+            Integer.parseInt(Character.toString(c));
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+    public char charToInt(char c){
+        if (!canParseInt(c)) return c;
+        return (Integer.toString(Integer.parseInt(Character.toString(c)))).charAt(0);
+    }
+    public boolean isFinalInt(Location l){
+        int curr = charToInt(grid[l.getY()][l.getX()]);
+        for (Location neighbor : getNeighbors(l, true)){
+            if (charToInt(grid[neighbor.getY()][neighbor.getX()]) - 1 == curr) return false;
+        }
+        return true;
     }
     public void inputToGrid(){
         grid = new char[input.size()][input.get(0).length()];
@@ -108,5 +146,4 @@ public class Day20 extends DaySolver{
             }
         }
     }
-
 }
