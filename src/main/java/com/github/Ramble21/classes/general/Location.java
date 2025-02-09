@@ -1,5 +1,8 @@
 package com.github.Ramble21.classes.general;
 
+import com.github.Ramble21.DaySolver;
+
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Location {
@@ -45,6 +48,27 @@ public class Location {
         else if (dir == Direction.DOWN) return getLowerLoc();
         else if (dir == Direction.LEFT) return getLeftLoc();
         else return getRightLoc();
+    }
+    public static ArrayList<Location> getNeighbors(Location l, char[][] grid){
+        ArrayList<Location> output = new ArrayList<>();
+        output.add(new Location(l.getX(), l.getY() + 1));
+        output.add(new Location(l.getX(), l.getY() - 1));
+        output.add(new Location(l.getX() + 1, l.getY()));
+        output.add(new Location(l.getX() - 1, l.getY()));
+        for (int i = 0; i < output.size(); i++){
+            int x = output.get(i).getX();
+            int y = output.get(i).getY();
+            if (y >= grid.length || x < 0 || x >= grid[0].length || y < 0){
+                output.remove(i);
+                i--;
+                continue;
+            }
+            if ((grid[y][x] == '#' || grid[y][x] == 'x')){
+                output.remove(i);
+                i--;
+            }
+        }
+        return output;
     }
 
     @Override

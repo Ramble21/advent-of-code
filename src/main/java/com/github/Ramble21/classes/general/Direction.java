@@ -1,10 +1,10 @@
 package com.github.Ramble21.classes.general;
 
 public enum Direction {
-    LEFT(-1, 0, '^'),
-    RIGHT(1, 0, 'v'),
-    UP(0, -1, '<'),
-    DOWN(0, 1, '>');
+    LEFT(-1, 0, '<'),
+    RIGHT(1, 0, '>'),
+    UP(0, -1, '^'),
+    DOWN(0, 1, 'v');
 
     private final int deltaX;
     private final int deltaY;
@@ -61,5 +61,13 @@ public enum Direction {
             case LEFT -> Direction.RIGHT;
         };
     }
-
+    public static Direction getDirectionToGo(Location from, Location to){
+        int dx = to.getX() - from.getX();
+        int dy = to.getY() - from.getY();
+        if (dx > 0) return Direction.RIGHT;
+        if (dx < 0) return Direction.LEFT;
+        if (dy > 0) return Direction.DOWN;
+        if (dy < 0) return Direction.UP;
+        throw new RuntimeException("Locs " + from + " and " + to + " cannot be compared!");
+    }
 }

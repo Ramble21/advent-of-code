@@ -56,7 +56,7 @@ public class BreadthFirstSearch {
                 this.distances = distances;
                 return;
             }
-            for (Location neighbor : getNeighbors(current)){
+            for (Location neighbor : Location.getNeighbors(current, grid)){
                 if (!visited.contains(neighbor)){
                     visited.add(neighbor);
                     previousLocs.put(neighbor, current);
@@ -67,24 +67,4 @@ public class BreadthFirstSearch {
         }
         throw new RuntimeException("No solution");
     }
-    private ArrayList<Location> getNeighbors(Location l){
-        ArrayList<Location> output = new ArrayList<>();
-        output.add(new Location(l.getX(), l.getY() + 1));
-        output.add(new Location(l.getX(), l.getY() - 1));
-        output.add(new Location(l.getX() + 1, l.getY()));
-        output.add(new Location(l.getX() - 1, l.getY()));
-        for (int i = 0; i < output.size(); i++){
-            if (output.get(i).getX() >= grid.length || output.get(i).getX() < 0 || output.get(i).getY() >= grid[0].length || output.get(i).getY() < 0){
-                output.remove(i);
-                i--;
-                continue;
-            }
-            if ((grid[output.get(i).getY()][output.get(i).getX()] == '#' || grid[output.get(i).getY()][output.get(i).getX()] == 'x')){
-                output.remove(i);
-                i--;
-            }
-        }
-        return output;
-    }
-
 }
