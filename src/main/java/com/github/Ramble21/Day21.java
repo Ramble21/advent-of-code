@@ -13,30 +13,25 @@ public class Day21 extends DaySolver{
         input = getInputLines(21);
     }
     public long solvePart1() throws IOException {
-        int complexities = 0;
+        long complexities = 0;
         for (String code : input){
-            System.out.println(code);
-
-            HashSet<String> robotOne = Keypad.robot(code, false);
-
-            HashSet<String> robotTwo = new HashSet<>();
-            for (String s : robotOne){
-                robotTwo.addAll(Keypad.robot(s, true));
-            }
-
-            HashSet<String> robotThree = new HashSet<>();
-            for (String s : robotTwo){
-                robotThree.addAll(Keypad.robot(s, true));
-            }
-
-            int minLength = robotThree.stream().mapToInt(String::length).min().orElse(0);
-            robotThree.removeIf(s -> s.length() > minLength);
-            complexities += minLength * Integer.parseInt(code.substring(0, 3));
+            complexities += getComplexity(code, 2);
         }
         return complexities;
     }
-
     public long solvePart2() throws IOException {
         return 0;
+    }
+    public long getComplexity(String code, int numDirectionalRobots){
+        HashSet<String> previousRobot = Keypad.robot(code, false);
+        for (int i = 0; i < numDirectionalRobots; i++){
+            HashSet<String> newDirectionalRobot = new HashSet<>();
+            for (String s : previousRobot){
+                newDirectionalRobot.addAll(Keypad.robot(s, true));
+            }
+            previousRobot = newDirectionalRobot;
+        }
+        long minLength = previousRobot.stream().mapToInt(String::length).min().orElse(0);
+        return minLength * Long.parseLong(code.substring(0, 3));
     }
 }

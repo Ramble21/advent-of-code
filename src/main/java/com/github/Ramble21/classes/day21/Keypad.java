@@ -2,6 +2,7 @@ package com.github.Ramble21.classes.day21;
 
 import com.github.Ramble21.classes.general.*;
 import java.util.HashSet;
+import java.util.Set;
 
 public class Keypad {
     private static final char[][] numericKeypad = {
@@ -54,43 +55,38 @@ public class Keypad {
         A.addAll(result);
     }
     private static HashSet<String> findRoutes(Location start, Location end, boolean isDirectional) {
-        HashSet<String> routes = new HashSet<>();
         if (start.equals(end)) {
+            HashSet<String> routes = new HashSet<>();
             routes.add("A");
             return routes;
         }
-        int dx = end.getX() - start.getX();
-        int dy = end.getY() - start.getY();
-        StringBuilder moves = new StringBuilder();
-        moves.append((dx > 0 ? ">" : "<").repeat(Math.max(0, Math.abs(dx))));
-        moves.append((dy > 0 ? "v" : "^").repeat(Math.max(0, Math.abs(dy))));
-        permute(moves.toString().toCharArray(), 0, moves.length() - 1, routes, start, isDirectional);
+        String moves = (
+                (end.getX() - start.getX() > 0 ? ">" : "<").repeat(Math.max(0, Math.abs(end.getX() - start.getX()))) +
+                (end.getY() - start.getY() > 0 ? "v" : "^").repeat(Math.max(0, Math.abs(end.getY() - start.getY())))
+        );
+        HashSet<String> routes = permute(moves, start, isDirectional);
         return new HashSet<>(routes.stream().map(route -> route + "A").toList());
     }
-    private static void permute(char[] arr, int left, int right, HashSet<String> routes, Location start, boolean isDirectional) {
-        if (left == right) {
-            String route = new String(arr);
-            if (isValidRoute(route, start, isDirectional)) {
-                routes.add(route);
-            }
-        }
-        else {
-            HashSet<Character> used = new HashSet<>();
-            for (int i = left; i <= right; i++) {
-                if (used.contains(arr[i])) {
-                    continue;
-                }
-                used.add(arr[i]);
-                swap(arr, left, i);
-                permute(arr, left + 1, right, routes, start, isDirectional);
-                swap(arr, left, i);
-            }
-        }
+    private static HashSet<String> permute(String moves, Location start, boolean isDirectional){
+        String ONE = getLR(moves) + getUD(moves);
+        String TWO = getUD(moves) + getLR(moves);
+        HashSet<String> result = ONE.equals(TWO) ? new HashSet<>(Set.of(ONE)) : new HashSet<>(Set.of(ONE, TWO));
+        result.removeIf(s -> !isValidRoute(s, start, isDirectional));
+        return result;
     }
-    private static void swap(char[] arr, int i, int j) {
-        char temp = arr[i];
-        arr[i] = arr[j];
-        arr[j] = temp;
+    private static String getLR(String full){
+        StringBuilder LR = new StringBuilder();
+        for (char c : full.toCharArray()){
+            if (c == '<' || c == '>') LR.append(c);
+        }
+        return LR.toString();
+    }
+    private static String getUD(String full){
+        StringBuilder UD = new StringBuilder();
+        for (char c : full.toCharArray()){
+            if (c == 'v' || c == '^') UD.append(c);
+        }
+        return UD.toString();
     }
     private static boolean isValidRoute(String route, Location start, boolean isDirectional) {
         char[][] keypad = isDirectional ? directionalKeypad : numericKeypad;
