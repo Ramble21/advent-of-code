@@ -1,8 +1,7 @@
 package com.github.Ramble21.classes.day21;
 
 import com.github.Ramble21.classes.general.*;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Keypad {
     private static final char[][] numericKeypad = {
@@ -24,7 +23,52 @@ public class Keypad {
                 }
             }
         }
-        throw new IllegalArgumentException("Character not found in keypad: " + ch);
+        throw new IllegalArgumentException(isDirectional ? "Character not found in directional keypad: " + ch : "Character not found in numerical keypad: " + ch);
+    }
+
+    public static final HashMap<Pair, Long> gelMemo = new HashMap<>();
+    public static long getEncodedLength(String full, int remainingIterations){
+        Pair pair = new Pair(full, remainingIterations);
+        if (gelMemo.containsKey(pair)) return gelMemo.get(pair);
+        if (remainingIterations == 0){
+            gelMemo.put(pair, (long) full.length());
+            return full.length();
+        }
+        String[] parts = splitCode(full);
+        long total = 0;
+        for (String part : parts){
+            String encoded = encode(part, true);
+            total += getEncodedLength(encoded, remainingIterations-1);
+        }
+        gelMemo.put(pair, total);
+        return total;
+    }
+
+    private static final HashMap<String, String> encodeMemo = new HashMap<>();
+    public static String encode(String s, boolean isDirectional){
+        if (encodeMemo.containsKey(s)) return encodeMemo.get(s);
+        HashSet<String> candidates = robot(s, isDirectional);
+        if (candidates.size() == 1) for (String c : candidates) return c;
+        int min = Integer.MAX_VALUE;
+        String best = "";
+        for (String candi1 : candidates){
+            HashSet<String> candidates2 = robot(candi1, true);
+            for (String candi2 : candidates2){
+                HashSet<String> candidates3 = robot(candi2, true);
+                for (String finalCandi : candidates3){
+                    if (finalCandi.length() < min){
+                        min = finalCandi.length();
+                        best = candi1;
+                    }
+                }
+            }
+        }
+        encodeMemo.put(s, best);
+        return best;
+    }
+
+    private static String[] splitCode(String s){
+        return s.split("(?<=A)");
     }
 
     public static HashSet<String> robot(String s, boolean isDirectional){
