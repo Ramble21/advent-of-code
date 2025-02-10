@@ -34,18 +34,16 @@ public abstract class DaySolver {
         long start = System.currentTimeMillis();
         long result = solvePart1();
         long end = System.currentTimeMillis();
-        System.out.println("Day " + Regex.parseFirstInteger(this.getClass().getName()) +
-                " part 1: " +
-                (end - start) + " ms");
+        System.out.println("Day " + Regex.parseFirstInteger(this.getClass().getSimpleName()) +
+                " part 1: " + (end - start) + " ms");
         return result;
     }
     public long solvePart2Timed() throws IOException {
         long start = System.currentTimeMillis();
         long result = solvePart2();
         long end = System.currentTimeMillis();
-        System.out.println("Day " + Regex.parseFirstInteger(this.getClass().getName()) +
-                " part 2: " +
-                (end - start) + " ms");
+        System.out.println("Day " + Regex.parseFirstInteger(this.getClass().getSimpleName()) +
+                " part 2: " + (end - start) + " ms");
         return result;
     }
 }
