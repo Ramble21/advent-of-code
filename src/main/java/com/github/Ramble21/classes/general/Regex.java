@@ -41,4 +41,15 @@ public class Regex {
         }
         return result;
     }
+    public static int parseFirstInteger(String input){
+        Pattern pattern = Pattern.compile("-?\\d+");
+        Matcher matcher = pattern.matcher(input);
+        int[] result = new int[1];
+        int count = 0;
+        while (matcher.find() && count < 1) {
+            result[count] = Integer.parseInt(matcher.group());
+            count++;
+        }
+        return result[0];
+    }
 }
