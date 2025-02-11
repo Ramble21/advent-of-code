@@ -6,6 +6,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -26,6 +27,7 @@ public abstract class DaySolver {
             System.out.println(row);
         }
     }
+
 
     public abstract long solvePart1() throws IOException;
     public abstract long solvePart2() throws IOException;
