@@ -1,6 +1,4 @@
-package com.github.Ramble21.classes.day21;
-
-import com.github.Ramble21.classes.general.Location;
+package com.github.Ramble21.classes.days;
 
 import java.util.Objects;
 

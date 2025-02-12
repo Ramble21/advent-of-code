@@ -1,4 +1,4 @@
-package com.github.Ramble21.classes.day15down;
+package com.github.Ramble21.classes.days;
 
 public class ClawButton {
     private final int deltaX;

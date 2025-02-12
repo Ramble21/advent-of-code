@@ -1,4 +1,4 @@
-package com.github.Ramble21.classes.day21;
+package com.github.Ramble21.classes.days;
 
 import com.github.Ramble21.classes.general.*;
 import java.util.*;

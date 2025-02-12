@@ -1,4 +1,4 @@
-package com.github.Ramble21.classes.day16;
+package com.github.Ramble21.classes.days;
 import com.github.Ramble21.DaySolver;
 import com.github.Ramble21.classes.general.Direction;
 import com.github.Ramble21.classes.general.Location;

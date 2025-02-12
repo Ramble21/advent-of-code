@@ -1,6 +1,6 @@
 package com.github.Ramble21;
 
-import com.github.Ramble21.classes.day16.Maze;
+import com.github.Ramble21.classes.days.Maze;
 
 import java.io.IOException;
 import java.util.List;

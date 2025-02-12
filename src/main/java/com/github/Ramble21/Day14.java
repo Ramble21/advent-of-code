@@ -1,6 +1,6 @@
 package com.github.Ramble21;
 
-import com.github.Ramble21.classes.day15down.BathroomRobot;
+import com.github.Ramble21.classes.days.BathroomRobot;
 import com.github.Ramble21.classes.general.Regex;
 
 import java.io.IOException;

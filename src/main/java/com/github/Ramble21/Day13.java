@@ -1,7 +1,7 @@
 package com.github.Ramble21;
 
-import com.github.Ramble21.classes.day15down.ClawButton;
-import com.github.Ramble21.classes.day15down.Prize;
+import com.github.Ramble21.classes.days.ClawButton;
+import com.github.Ramble21.classes.days.Prize;
 import com.github.Ramble21.classes.general.Regex;
 
 import java.io.IOException;

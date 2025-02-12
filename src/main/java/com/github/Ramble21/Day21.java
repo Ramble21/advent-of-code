@@ -3,7 +3,7 @@ package com.github.Ramble21;
 import java.io.IOException;
 import java.util.List;
 
-import com.github.Ramble21.classes.day21.Keypad;
+import com.github.Ramble21.classes.days.Keypad;
 
 public class Day21 extends DaySolver{
     private final List<String> input;

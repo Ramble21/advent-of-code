@@ -2,7 +2,7 @@ package com.github.Ramble21;
 
 import com.github.Ramble21.classes.general.Direction;
 import com.github.Ramble21.classes.general.Location;
-import com.github.Ramble21.classes.day15down.WideBox;
+import com.github.Ramble21.classes.days.WideBox;
 
 import java.io.IOException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.github.Ramble21.classes.day17;
+package com.github.Ramble21.classes.days;
 
 import com.github.Ramble21.Day17;
 
