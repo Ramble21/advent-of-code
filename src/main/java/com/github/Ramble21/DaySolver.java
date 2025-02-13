@@ -5,8 +5,6 @@ import com.github.Ramble21.classes.general.Regex;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.lang.reflect.Method;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
@@ -32,21 +30,29 @@ public abstract class DaySolver {
     public abstract long solvePart1() throws IOException;
     public abstract long solvePart2() throws IOException;
 
-    public long solvePart1Timed() throws IOException {
+    public String solvePart1String() throws IOException {
+        return timePart1();
+    }
+    public String solvePart2String() throws IOException {
+        return timePart2();
+    }
+    public String timePart1() throws IOException {
         long start = System.currentTimeMillis();
         long result = solvePart1();
         long end = System.currentTimeMillis();
-        System.out.println("Day " + Regex.parseFirstInteger(this.getClass().getSimpleName()) +
-                " part 1: " + (end - start) + " ms");
-        return result;
+        System.out.println("Day " + parseDayNumber() + " part 1: " + (end - start) + " ms");
+        return String.valueOf(result);
     }
-    public long solvePart2Timed() throws IOException {
+    public String timePart2() throws IOException {
         long start = System.currentTimeMillis();
         long result = solvePart2();
         long end = System.currentTimeMillis();
-        System.out.println("Day " + Regex.parseFirstInteger(this.getClass().getSimpleName()) +
-                " part 2: " + (end - start) + " ms");
-        return result;
+        System.out.println("Day " + parseDayNumber() + " part 2: " + (end - start) + " ms");
+        return String.valueOf(result);
+    }
+    private int parseDayNumber() {
+        String className = this.getClass().getSimpleName();
+        return Integer.parseInt(className.replaceAll("[^0-9]", ""));
     }
 }
 
