@@ -4,7 +4,7 @@ public class Gate {
 
     private final String inputOne;
     private final String inputTwo;
-    private final String output;
+    private String output;
     private final String operation;
     private final String toString;
 
@@ -37,6 +37,9 @@ public class Gate {
     }
     public String getOutput() {
         return output;
+    }
+    public void setOutput(String output) {
+        this.output = output;
     }
     public String toString() {
         return toString;
