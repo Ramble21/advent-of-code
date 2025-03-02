@@ -35,14 +35,12 @@ public class Day8 extends DaySolver{
                     done.add(lox);
 
                     Location[] potentialAntinodes = getAntinodes(antenna1, antenna2);
-                    //System.out.println("Potential antinodes: " + Arrays.toString(potentialAntinodes) + " for locations " + antenna1 + " and " + antenna2);
                     for (Location potential : potentialAntinodes){
                         if (potential != null) set.add(potential);
                     }
                 }
             }
         }
-        //System.out.println(set);
         return set.size();
     }
 
@@ -69,7 +67,6 @@ public class Day8 extends DaySolver{
                     done.add(lox);
 
                     Location[] potentialAntinodes = getUpdatedAntinodes(antenna1, antenna2);
-                    //System.out.println("Potential antinodes: " + Arrays.toString(potentialAntinodes) + " for locations " + antenna1 + " and " + antenna2);
                     for (Location potential : potentialAntinodes){
                         if (potential != null){
                             set.add(potential);
@@ -77,14 +74,11 @@ public class Day8 extends DaySolver{
                             else if (grid[potential.getY()][potential.getX()] != '#') grid[potential.getY()][potential.getX()] = '%';
                         }
                     }
-                    //System.out.println(set.size());
                 }
             }
         }
         ArrayList<Location> x = new ArrayList<>(set);
         x.sort(Comparator.comparing(Location::getY));
-        //System.out.println(x);
-        //print2DArr(grid);
         return set.size();
     }
 

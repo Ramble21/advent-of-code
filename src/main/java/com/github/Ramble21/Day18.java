@@ -9,6 +9,7 @@ public class Day18 extends DaySolver{
     private final ArrayList<Location> coords;
     private final char[][] grid;
     private final int gridSize = 71;
+    private String part2;
 
     public Day18() throws IOException {
         input = getInputLines(18);
@@ -21,10 +22,6 @@ public class Day18 extends DaySolver{
     }
 
     public long solvePart2() throws IOException {
-        return 0; // need string
-    }
-
-    public String solvePart2S() {
         String goal = null;
         for (int i = 0; i < coords.size(); i++){
             try{
@@ -35,7 +32,12 @@ public class Day18 extends DaySolver{
                 break;
             }
         }
-        return goal;
+        part2 = goal;
+        return 0; // need string
+    }
+    public String solvePart2String() throws IOException {
+        timePart2();
+        return part2;
     }
 
     public ArrayList<Location> inputToCoords(){

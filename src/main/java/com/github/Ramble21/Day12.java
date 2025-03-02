@@ -25,12 +25,10 @@ public class Day12 extends DaySolver{
 
                 getRegion(loc, grid[r][c]);
                 allRegions.addAll(currentRegion);
-                System.out.println("\nCurrent region: " + currentRegion + " of type " + grid[r][c]);
 
                 int area = currentRegion.size();
                 int perimeter = getPerimeter();
                 count += area * perimeter;
-                System.out.println(area + " * " + perimeter + " = " + area*perimeter);
                 currentRegion.clear();
             }
         }
@@ -47,12 +45,9 @@ public class Day12 extends DaySolver{
 
                 getRegion(loc, grid[r][c]);
                 allRegions.addAll(currentRegion);
-                System.out.println("\nCurrent region: " + currentRegion + " of type " + grid[r][c]);
-
                 int area = currentRegion.size();
                 int perimeter = getDiscountPerimeter();
                 count += area * perimeter;
-                System.out.println(area + " * " + perimeter + " = " + area*perimeter);
                 currentRegion.clear();
             }
         }
@@ -60,8 +55,6 @@ public class Day12 extends DaySolver{
     }
     public void getRegion(Location loc, char target){
         Location[] possiblePaths = possiblePaths(loc.getY(), loc.getX());
-        //System.out.println("\n"+loc+ " " + grid[loc.getY()][loc.getX()]);
-        //System.out.print(Arrays.toString(possiblePaths) + " ");
         if (grid[loc.getY()][loc.getX()] == target) currentRegion.add(loc);
         if (possiblePaths == null) return;
         for (Location path : possiblePaths){
@@ -85,7 +78,6 @@ public class Day12 extends DaySolver{
         for (Location loc : currentRegion){
             noCorners += countCorners(loc);
         }
-        System.out.println(noCorners + " corners");
         return noCorners;
     }
     private int countCorners(Location loc) {

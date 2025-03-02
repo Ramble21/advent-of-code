@@ -13,6 +13,7 @@ public class Day17 extends DaySolver{
     private final List<String> input;
     private final int[] instructions;
     private final int[] parsedInput;
+    private String part1;
 
     public Day17() throws IOException {
         input = getInputLines(17);
@@ -20,9 +21,6 @@ public class Day17 extends DaySolver{
         parsedInput = parseInput();
     }
     public long solvePart1(){
-        return 0; // String needed
-    }
-    public String solvePart1S() {
         InstructionReader reader = new InstructionReader(instructions, parsedInput[0], parsedInput[1], parsedInput[2], false);
         reader.read();
         ArrayList<Integer> output = reader.getOutput();
@@ -31,7 +29,12 @@ public class Day17 extends DaySolver{
         for (int i = 1; i < output.size(); i++){
             s.append(",").append(output.get(i));
         }
-        return s.toString();
+        part1 = s.toString();
+        return 0; // String needed
+    }
+    public String solvePart1String() throws IOException {
+        timePart1();
+        return part1;
     }
 
     public long solvePart2() throws IOException {

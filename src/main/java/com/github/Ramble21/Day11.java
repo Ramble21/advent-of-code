@@ -15,24 +15,18 @@ public class Day11 extends DaySolver{
         String longAssString = input.get(0);
         long[] initial = Arrays.stream(longAssString.split(" ")).mapToLong(Long::parseLong).toArray();
         initializeHashmap(initial);
-        System.out.println(frequencyMap);
         for (int i = 0; i < 25; i++){
             blink();
-            System.out.println(i+1);
         }
-        System.out.println();
         return amountOfStones();
     }
     public long solvePart2() {
         String longAssString = input.get(0);
         long[] initial = Arrays.stream(longAssString.split(" ")).mapToLong(Long::parseLong).toArray();
         initializeHashmap(initial);
-        System.out.println(frequencyMap);
         for (int i = 0; i < 75; i++){
-            System.out.println(i+1);
             blink();
         }
-        System.out.println();
         return amountOfStones();
     }
     public void blink(){
@@ -53,7 +47,6 @@ public class Day11 extends DaySolver{
         }
         frequencyMap.clear();
         frequencyMap.putAll(updatedMap);
-        System.out.println(frequencyMap);
     }
     public void initializeHashmap(long[] initial){
         for (long l : initial) {

@@ -21,8 +21,6 @@ public class Maze {
 
     private int totalPoints;
     public int getTotalPoints() {
-        System.out.println(visited);
-        DaySolver.print2DArr(grid);
         return totalPoints;
     }
     public Maze(char[][] grid){
@@ -86,7 +84,6 @@ public class Maze {
                 neighbor.setDistance(tentativeDistance);
                 if (!queue.contains(neighbor)) queue.add(neighbor);
                 if (grid[neighbor.getLoc().getY()][neighbor.getLoc().getX()] == 'E') {
-                    System.out.println("End found! (" + neighbor + ")");
                     finalNode = neighbor;
                     totalPoints = neighbor.getDistance();
                 }
@@ -136,12 +133,10 @@ public class Maze {
     }
     public ArrayList<MazeNode> getNeighbors(MazeNode current) {
         ArrayList<MazeNode> output = new ArrayList<>();
-        System.out.println(Arrays.toString(current.getDirections()));
         for (Direction direction : current.getDirections()) {
             Location loc = current.getLoc();
             while (true) {
                 Location newLoc = loc.getDirectionalLoc(direction);
-                System.out.println(newLoc);
                 Direction dir = getDirectionToGo(loc, newLoc);
                 if (grid[newLoc.getY()][newLoc.getX()] == 'E'){
                     output.add(new MazeNode(newLoc, current, getNodeDirections(newLoc), dir));
@@ -157,7 +152,6 @@ public class Maze {
                 loc = newLoc;
             }
         }
-        System.out.println("Neighbors of " + current + ": " + output);
         return output;
     }
     public boolean canMoveForward(Location currentLoc, Direction currentDir){
@@ -194,7 +188,6 @@ public class Maze {
         backtrack(finalNode, null, allLocs);
         totalLocationsInBestPaths = allLocs.size();
         removeX();
-        DaySolver.print2DArr(grid);
     }
     public void removeX(){
         for (int r = 0; r < grid.length; r++){
@@ -206,7 +199,6 @@ public class Maze {
     public void backtrack(MazeNode current, MazeNode child, HashSet<Location> set){
 
         ArrayList<MazeNode> parents = current.getSafeParentNodes(visited);
-        System.out.println("Backtracking point " + current + " with parents " + parents);
 
         if (!current.isOrigin()){
 
@@ -256,24 +248,8 @@ public class Maze {
         Direction ORANGE = B.getDirectionUponArriving();
         Direction GREEN = (C != null) ? getDirectionToGo(B.getLoc(), C.getLoc()) : null;
 
-        System.out.println("\n" + B + " debug");
-        System.out.println("Original score difference: " + num);
-        System.out.println("Nodes: " + C + ", " + B + ", " + A);
-        System.out.println("Red: " + RED);
-        System.out.println("Blue: " + BLUE);
-        System.out.println("Orange: " + ORANGE);
-        System.out.println("Green: " + GREEN);
-
-
         if (BLUE != RED) num += 1000;
         if (GREEN != null && ORANGE != GREEN && RED == GREEN) num -= 1000;
-
-        System.out.println();
-        System.out.println("A's score: " + A.getDistance());
-        System.out.println("Adjusted score difference: " + (A.getDistance() + num));
-        System.out.println("B's score: " + B.getDistance());
-        System.out.println("Returning " + (A.getDistance() + num == B.getDistance()));
-        System.out.println();
 
         return A.getDistance() + num == B.getDistance();
     }
@@ -282,7 +258,6 @@ public class Maze {
         for (MazeNode node : visited){
             if (canAccess(node, current) && noIntermediateNode(node, current)) output.add(node);
         }
-        System.out.println("New neighbors of " + current + ": " + output);
         return output;
     }
     public boolean canAccess(MazeNode one, MazeNode two){

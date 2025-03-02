@@ -64,7 +64,6 @@ public class InstructionReader {
             if (!isJumped) instructionPointer += 2;
             isJumped = false;
         }
-        if (print) System.out.println(initialA + " -> " + output + " with " + previousAs);
         return (hasTarget && isMatch());
     }
     public boolean isMatch(){

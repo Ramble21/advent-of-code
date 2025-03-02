@@ -18,7 +18,6 @@ public class Day7 extends DaySolver{
             long total = Long.parseLong(s.substring(0, s.indexOf(":")));
             count += calibrationResult(nums, total);
         }
-        System.out.println();
         return count;
     }
     public long solvePart2() throws IOException {
@@ -30,7 +29,6 @@ public class Day7 extends DaySolver{
             long total = Long.parseLong(s.substring(0, s.indexOf(":")));
             count += calibrationResultWithConcatenation(nums, total);
         }
-        System.out.println();
         return count;
     }
 
@@ -49,16 +47,10 @@ public class Day7 extends DaySolver{
             }
 
             if (total == goal) {
-                System.out.print("\n" + total + " " + goal);
-
-                System.out.print(" (" + nums[0]);
                 for (int i = 1; i < nums.length; i++){
                     String symbol = "+";
                     if (isMultiplication[i-1]) symbol = "*";
-                    System.out.print(" " + symbol + " " + nums[i]);
                 }
-                System.out.print(")");
-                System.out.print(" ✓");
                 return total;
             }
 
@@ -87,20 +79,7 @@ public class Day7 extends DaySolver{
                 else if (i == 0) total += nums[i];
             }
 
-            if (true) {
-                System.out.print("\n" + total + " " + goal);
-                System.out.print(" (" + nums[0]);
-                for (int i = 1; i < nums.length; i++){
-                    String symbol = "+";
-                    if (sign[i-1] == 1) symbol = "*";
-                    else if (sign[i-1] == 2) symbol = "||";
-                    System.out.print(" " + symbol + " " + nums[i]);
-                }
-                System.out.print(")");
-            }
-
             if (total == goal) {
-                System.out.print(" ✓");
                 return total;
             }
 
@@ -111,7 +90,6 @@ public class Day7 extends DaySolver{
                     break;
                 }
             }
-            System.out.print("\n" + Arrays.toString(sign) + " " + comboNo);
             comboNo++;
         }
         return 0;

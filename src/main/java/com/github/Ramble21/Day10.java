@@ -16,16 +16,13 @@ public class Day10 extends DaySolver{
         inputToGrid();
     }
     public long solvePart1() throws IOException {
-        print2DArr(grid);
         int count = 0;
         for (int r = 0; r < grid.length; r++){
             for (int c = 0; c < grid[0].length; c++){
                 if (grid[r][c] != 0) continue;
                 Location pathStart = new Location(c,r);
-                System.out.println("\n" + pathStart);
                 HashSet<Location> completedPaths = new HashSet<>();
                 dfsPath(pathStart, completedPaths);
-                System.out.println("Trailhead: " + completedPaths);
                 count += completedPaths.size();
             }
         }
@@ -33,16 +30,13 @@ public class Day10 extends DaySolver{
     }
 
     public long solvePart2() throws IOException {
-        print2DArr(grid);
         int count = 0;
         for (int r = 0; r < grid.length; r++){
             for (int c = 0; c < grid[0].length; c++){
                 if (grid[r][c] != 0) continue;
                 Location pathStart = new Location(c,r);
-                System.out.println("\n" + pathStart);
                 ArrayList<Location> completedPaths = new ArrayList<>();
                 dfsPathTwo(pathStart, completedPaths);
-                System.out.println("Trailhead: " + completedPaths);
                 count += completedPaths.size();
             }
         }
@@ -98,10 +92,5 @@ public class Day10 extends DaySolver{
             fin[i] = list.get(i);
         }
         return fin;
-    }
-    public static void print2DArr(int[][] array) {
-        for (int[] row : array) {
-            System.out.println(Arrays.toString(row));
-        }
     }
 }

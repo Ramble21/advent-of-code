@@ -21,7 +21,6 @@ public class Day14 extends DaySolver{
         for (BathroomRobot robot : robots){
             robot.predictPosition(100);
         }
-        print2DArr(BathroomRobot.getGrid());
         return (int)getDangerLevel();
     }
 
@@ -42,9 +41,6 @@ public class Day14 extends DaySolver{
             if (getDangerLevel() < minDangerLevel){
                 minDangerLevel = getDangerLevel();
                 treeIndex = i+1;
-                System.out.println(i+1 + " (" + getDangerLevel() + ")");
-                print2DArr(BathroomRobot.getGrid());
-                System.out.println();
             }
         }
         return treeIndex;

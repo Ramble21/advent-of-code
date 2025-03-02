@@ -1,9 +1,7 @@
 package com.github.Ramble21;
 
 import java.io.IOException;
-import java.sql.Array;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Day9 extends DaySolver{

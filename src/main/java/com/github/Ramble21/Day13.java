@@ -32,9 +32,7 @@ public class Day13 extends DaySolver{
         long count = 0;
         for (int i = 0; i < prizes.length; i++){
             count += getMinTokensNoCap(i);
-            System.out.println(i);
         }
-        System.out.println();
         return count;
     }
     public int getMinTokens(int i){
@@ -100,13 +98,10 @@ public class Day13 extends DaySolver{
         int yCoeff2 = buttonsB[i].getDeltaY();
         long xGoal = prizes[i].getMassiveX();
         long yGoal = prizes[i].getMassiveY();
-        System.out.println(xCoeff1 + "a + " + xCoeff2 + ", b = " + xGoal);
-        System.out.println(yCoeff1 + "a + " + yCoeff2 + ", b = " + yGoal);
 
         long determinant = (long) xCoeff1 * yCoeff2 - (long) xCoeff2 * yCoeff1;
 
         if (determinant == 0) {
-            System.out.println("no solution");
             return new long[]{0, 0};
         }
 
@@ -114,13 +109,11 @@ public class Day13 extends DaySolver{
         long bNumerator = xCoeff1 * yGoal - xGoal * yCoeff1;
 
         if (aNumerator % determinant != 0 || bNumerator % determinant != 0) {
-            System.out.println("no solution");
             return new long[]{0, 0};
         }
 
         long a = aNumerator / determinant;
         long b = bNumerator / determinant;
-        System.out.println("a = " + a + ", b = " + b);
         return new long[]{a, b};
     }
 }

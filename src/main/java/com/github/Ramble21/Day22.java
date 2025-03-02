@@ -29,12 +29,10 @@ public class Day22 extends DaySolver{
     public long solvePart2() throws IOException {
         initPC();
         long maxBananas = 0;
-        for (int i = 0; i < possibleCombos.length; i++){
-            if (i % 1000 == 0) System.out.println(i/1000 + "/130");
-            long temp = getMaxBananas(possibleCombos[i]);
-            if (temp > maxBananas){
+        for (int[] possibleCombo : possibleCombos) {
+            long temp = getMaxBananas(possibleCombo);
+            if (temp > maxBananas) {
                 maxBananas = temp;
-                System.out.println(Arrays.toString(possibleCombos[i]) + ": " + temp);
             }
         }
         return maxBananas;

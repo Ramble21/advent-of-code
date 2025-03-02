@@ -5,10 +5,20 @@ import com.github.Ramble21.classes.general.Regex;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
 public abstract class DaySolver {
+
+    private long partOneMS;
+    private long partTwoMS;
+    public long getPartOneMS() {
+        return partOneMS;
+    }
+    public long getPartTwoMS() {
+        return partTwoMS;
+    }
 
     public static String getInputFilePath(int dayNumber) {
         return "inputs/day" + dayNumber + ".txt";
@@ -25,6 +35,12 @@ public abstract class DaySolver {
             System.out.println(row);
         }
     }
+    public static void print2DIntArr(int[][] array) {
+        for (int[] row : array) {
+            System.out.println(Arrays.toString(row));
+        }
+    }
+
 
 
     public abstract long solvePart1() throws IOException;
@@ -41,12 +57,14 @@ public abstract class DaySolver {
         long result = solvePart1();
         long end = System.currentTimeMillis();
         System.out.println("Day " + parseDayNumber() + " part 1: " + (end - start) + " ms");
+        partOneMS = end - start;
         return String.valueOf(result);
     }
     public String timePart2() throws IOException {
         long start = System.currentTimeMillis();
         long result = solvePart2();
         long end = System.currentTimeMillis();
+        partTwoMS = end - start;
         System.out.println("Day " + parseDayNumber() + " part 2: " + (end - start) + " ms");
         return String.valueOf(result);
     }

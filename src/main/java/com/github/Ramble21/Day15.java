@@ -30,9 +30,6 @@ public class Day15 extends DaySolver{
             }
             assert currentLoc != null;
             moveRobot(movements.charAt(i), currentLoc);
-            //System.out.println(movements.charAt(i));
-            //print2DArr(grid);
-            //System.out.println();
         }
         int sum = 0;
         for (int r = 0; r < grid.length; r++){
@@ -48,8 +45,6 @@ public class Day15 extends DaySolver{
     public long solvePart2() throws IOException {
         splitInput();
         widenGrid();
-        //print2DArr(grid);
-       //System.out.println();
         for (int i = 0; i < movements.length(); i++){
             Location currentLoc = null;
             for (int r = 0; r < grid.length; r++){
@@ -60,24 +55,17 @@ public class Day15 extends DaySolver{
                     }
                 }
             }
-            for (int r = 0; r < grid.length; r++){
-                for (int c = 1; c < grid[0].length-1; c++){
-                    if (grid[r][c] == '[' && grid[r][c+1] != ']') {
-                        System.out.println("big bug 1");
+            for (char[] chars : grid) {
+                for (int c = 1; c < grid[0].length - 1; c++) {
+                    if (chars[c] == '[' && chars[c + 1] != ']') {
                         return 0;
-                    }
-                    else if (grid[r][c] == ']' && grid[r][c-1] != '['){
-                        System.out.println("big bug 2");
+                    } else if (chars[c] == ']' && chars[c - 1] != '[') {
                         return 0;
                     }
                 }
             }
             assert currentLoc != null;
             moveRobotBigGrid(movements.charAt(i), currentLoc);
-            //System.out.println(movements.charAt(i));
-            //System.out.println(i+1);
-            //print2DArr(grid);
-            //System.out.println();
         }
         ArrayList<WideBox> boxes = new ArrayList<>();
         int sum = 0;
@@ -195,7 +183,6 @@ public class Day15 extends DaySolver{
         for (int r = 0; r < grid.length; r++){
             int widenedC = 0;
             for (int c = 0; c < grid[0].length && widenedC < widenedGrid[0].length; c++){
-                //System.out.println(grid[r][c]);
                 if (grid[r][c] == '.'){
                     widenedGrid[r][widenedC] = '.';
                     widenedGrid[r][widenedC+1] = '.';
@@ -212,7 +199,6 @@ public class Day15 extends DaySolver{
                     widenedGrid[r][widenedC] = '#';
                     widenedGrid[r][widenedC+1] = '#';
                 }
-                //System.out.println(widenedGrid[r][widenedC] + "" + widenedGrid[r][widenedC+1]);
                 widenedC += 2;
             }
         }
