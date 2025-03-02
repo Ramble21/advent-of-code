@@ -7,7 +7,6 @@ public class BreadthFirstSearch {
     private final Location end;
     private final char[][] grid;
     private int result;
-    private Route route;
     private HashMap<Location, Integer> distances;
 
     public BreadthFirstSearch(Location start, Location end, char[][] grid){
@@ -22,9 +21,6 @@ public class BreadthFirstSearch {
     }
     public int getResult(){
         return result;
-    }
-    public Route getRoute(){
-        return route;
     }
     public HashMap<Location, Integer> getDistances(){
         return distances;
@@ -44,15 +40,7 @@ public class BreadthFirstSearch {
             Location current = queue.poll();
             if (grid[current.getY()][current.getX()] == '.') grid[current.getY()][current.getX()] = 'x';
             if (current.equals(end)){
-                ArrayList<Location> r = new ArrayList<>();
-                r.add(end);
-                Location backtrack = end;
-                while (!previousLocs.get(backtrack).equals(backtrack)){
-                    backtrack = previousLocs.get(backtrack);
-                    r.add(0, backtrack);
-                }
                 result = distances.get(current);
-                route = new Route(r);
                 this.distances = distances;
                 return;
             }

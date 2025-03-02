@@ -1,122 +1,39 @@
 package com.github.Ramble21;
 
+import com.github.Ramble21.classes.days.FileBlock;
+
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Day9 extends DaySolver{
     private final List<String> input;
-    private char[] diskMap;
-    private String[] fileBlocks;
 
     public Day9() throws IOException {
         input = getInputLines(9);
+        FileBlock.initializeIndexIds(getTotalIDs());
+        int currentID = 0;
+        boolean isEmptySpace = false;
+        for (char c : input.get(0).toCharArray()){
+            if (isEmptySpace) FileBlock.addEmptyFile(c - '0');
+            else new FileBlock(c - '0', currentID++);
+            isEmptySpace = !isEmptySpace;
+        }
     }
 
     public long solvePart1(){
-        initDiskMap();
-        initFileBlocks();
-        compactFileBlocks();
-        long checksum = 0;
-        for (int i = 0; i < fileBlocks.length; i++){
-            if (fileBlocks[i].equals(".")) break;
-            checksum += Long.parseLong(fileBlocks[i])*i;
-        }
-        return checksum;
+        return FileBlock.getChecksum(FileBlock.getCompactedFileBlocks());
     }
     public long solvePart2(){
-        initDiskMap();
-        initFileBlocks();
-        greedyCompactFileBlocks();
-        long checksum = 0;
-        for (int i = 0; i < fileBlocks.length; i++){
-            if (fileBlocks[i].equals(".")) continue;
-            checksum += Long.parseLong(fileBlocks[i])*i;
-        }
-        return checksum;
+        return FileBlock.getChecksum(FileBlock.getGreedyCompactedFileBlocks());
     }
 
-
-    public void initDiskMap(){
-        ArrayList<Character> diskMapAL = new ArrayList<>();
-        for (String s : input){
-            for (int i = 0; i < s.length(); i++){
-                diskMapAL.add(s.charAt(i));
-            }
+    public int getTotalIDs(){
+        int total = 0;
+        for (char c : input.get(0).toCharArray()){
+            total += (c - '0');
         }
-        diskMap = new char[diskMapAL.size()];
-        for (int i = 0; i < diskMapAL.size(); i++) {
-            diskMap[i] = diskMapAL.get(i);
-        }
+        return total;
     }
-    public void initFileBlocks(){
-        ArrayList<String> fbAsAL = new ArrayList<>();
-        for (int i = 0; i < diskMap.length; i++){
-            if (i % 2 == 0){
-                for (int j = 0; j < Integer.parseInt(Character.toString(diskMap[i])); j++) {
-                    fbAsAL.add(Integer.toString(i/2));
-                }
-            }
-            else{
-                for (int j = 0; j < Integer.parseInt(Character.toString(diskMap[i])); j++) {
-                    fbAsAL.add(".");
-                }
-            }
-        }
-        fileBlocks = new String[fbAsAL.size()];
-        for (int i = 0; i < fbAsAL.size(); i++){
-            fileBlocks[i] = fbAsAL.get(i);
-        }
-    }
-    public void compactFileBlocks(){
-        for (int i = fileBlocks.length-1; i >= 0; i--){
-            int newIndex = 0;
-            while (!fileBlocks[newIndex].equals(".")) {
-                newIndex++;
-            }
-            if (newIndex >= i) break;
-            fileBlocks[newIndex] = fileBlocks[i];
-            fileBlocks[i] = ".";
-        }
-    }
-    public void greedyCompactFileBlocks(){
-        int blockLength = 1;
-        for (int i = fileBlocks.length-1; i >= 0; i -= blockLength){
-            blockLength = 1;
-            if (fileBlocks[i].equals(".")) continue;
 
-            ArrayList<Integer> block = new ArrayList<>();
-            int j = 0;
-            while (i-j >= 0 && fileBlocks[i - j].equals(fileBlocks[i])) {
-                block.add(i-j);
-                j++;
-            }
-
-            blockLength = block.size();
-            ArrayList<Integer> targetBlock = new ArrayList<>();
-            int k = 0;
-            while (true){
-                if (targetBlock.size() == block.size()){
-                    break;
-                }
-                if (k > fileBlocks.length-1 || k > block.get(0)){
-                    targetBlock.clear();
-                    break;
-                }
-                if (!fileBlocks[k].equals(".")){
-                    k++;
-                    targetBlock.clear();
-                    continue;
-                }
-                targetBlock.add(k);
-                k++;
-            }
-
-            if (targetBlock.isEmpty()) continue;
-            for (int l = 0; l < block.size(); l++){
-                fileBlocks[targetBlock.get(l)] = fileBlocks[block.get(l)];
-                fileBlocks[block.get(l)] = ".";
-            }
-        }
-    }
 }

@@ -24,7 +24,7 @@ public class Day18 extends DaySolver{
     public long solvePart2() throws IOException {
         String goal = null;
         for (int i = 0; i < coords.size(); i++){
-            try{
+            try {
                 addLocations(i);
                 bfs(new Location(0, 0), new Location(gridSize-1, gridSize-1));
             } catch (RuntimeException e) {
