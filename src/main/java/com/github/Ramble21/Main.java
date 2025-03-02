@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        testSpecificDay(9);
+        testEveryDay();
     }
     public static void testEveryDay() throws IOException {
         DaySolver[] solvers = IntStream.rangeClosed(1, 25)

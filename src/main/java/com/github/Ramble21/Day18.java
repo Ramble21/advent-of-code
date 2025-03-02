@@ -18,18 +18,26 @@ public class Day18 extends DaySolver{
     }
     public long solvePart1() throws IOException {
         addLocations(12);
-        return bfs(new Location(0, 0), new Location(gridSize-1, gridSize-1));
+        return new BreadthFirstSearch(new Location(0, 0), new Location(gridSize-1, gridSize-1), grid).getResult();
     }
 
     public long solvePart2() throws IOException {
         String goal = null;
-        for (int i = 0; i < coords.size(); i++){
-            try {
-                addLocations(i);
-                bfs(new Location(0, 0), new Location(gridSize-1, gridSize-1));
-            } catch (RuntimeException e) {
-                goal = coords.get(i-1).getX() + "," + coords.get(i-1).getY();
+        int left = 1024;
+        int right = coords.size();
+        while (left <= right){
+            int mid = left + (right - left) / 2;
+            addLocations(mid);
+            BreadthFirstSearch search = new BreadthFirstSearch(new Location(0, 0), new Location(gridSize-1, gridSize-1), grid);
+            if (isFirstBadSearch(search, mid)){
+                goal = coords.get(mid - 1).getX() + "," + coords.get(mid - 1).getY();
                 break;
+            }
+            else if (search.isNoSolution()){
+                right = mid - 1;
+            }
+            else {
+                left = mid + 1;
             }
         }
         part2 = goal;
@@ -39,7 +47,11 @@ public class Day18 extends DaySolver{
         timePart2();
         return part2;
     }
-
+    public boolean isFirstBadSearch(BreadthFirstSearch b, int i){
+        addLocations(i - 1);
+        BreadthFirstSearch before = new BreadthFirstSearch(new Location(0, 0), new Location(gridSize-1, gridSize-1), grid);
+        return !before.isNoSolution() && b.isNoSolution();
+    }
     public ArrayList<Location> inputToCoords(){
         ArrayList<Location> gyatt = new ArrayList<>();
         for (String s : input){
@@ -66,52 +78,5 @@ public class Day18 extends DaySolver{
         for (int i = 0; i < count; i++){
             grid[coords.get(i).getY()][coords.get(i).getX()] = '#';
         }
-    }
-
-    private HashSet<Location> visited = new HashSet<>();
-    private HashMap<Location, Integer> distances = new HashMap<>();
-
-    public int bfs(Location start, Location end) throws RuntimeException{
-        visited = new HashSet<>();
-        distances = new HashMap<>();
-        Queue<Location> queue = new LinkedList<>();
-        queue.add(start);
-        visited.add(start);
-        distances.put(start, 0);
-        while (!queue.isEmpty()){
-            Location current = queue.poll();
-            grid[current.getY()][current.getX()] = 'x';
-            if (current.equals(end)){
-                return distances.get(current);
-            }
-            for (Location neighbor : getNeighbors(current)){
-                if (!visited.contains(neighbor)){
-                    visited.add(neighbor);
-                    distances.put(neighbor, distances.get(current) + 1);
-                    queue.add(neighbor);
-                }
-            }
-        }
-        throw new RuntimeException("No solution");
-    }
-
-    public ArrayList<Location> getNeighbors(Location l){
-        ArrayList<Location> output = new ArrayList<>();
-        output.add(new Location(l.getX(), l.getY() + 1));
-        output.add(new Location(l.getX(), l.getY() - 1));
-        output.add(new Location(l.getX() + 1, l.getY()));
-        output.add(new Location(l.getX() - 1, l.getY()));
-        for (int i = 0; i < output.size(); i++){
-            if (output.get(i).getX() >= grid.length || output.get(i).getX() < 0 || output.get(i).getY() >= grid[0].length || output.get(i).getY() < 0){
-                output.remove(i);
-                i--;
-                continue;
-            }
-            if (grid[output.get(i).getY()][output.get(i).getX()] == '#' || grid[output.get(i).getY()][output.get(i).getX()] == 'x'){
-                output.remove(i);
-                i--;
-            }
-        }
-        return output;
     }
 }

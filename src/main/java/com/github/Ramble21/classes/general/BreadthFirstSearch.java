@@ -8,6 +8,7 @@ public class BreadthFirstSearch {
     private final char[][] grid;
     private int result;
     private HashMap<Location, Integer> distances;
+    private boolean noSolution;
 
     public BreadthFirstSearch(Location start, Location end, char[][] grid){
         this.start = start;
@@ -25,16 +26,17 @@ public class BreadthFirstSearch {
     public HashMap<Location, Integer> getDistances(){
         return distances;
     }
+    public boolean isNoSolution(){
+        return noSolution;
+    }
 
-    public void run() throws RuntimeException{
+    public void run() throws RuntimeException {
         HashSet<Location> visited = new HashSet<>();
-        HashMap<Location, Location> previousLocs = new HashMap<>();
         HashMap<Location, Integer> distances = new HashMap<>();
         Queue<Location> queue = new LinkedList<>();
         queue.add(start);
         visited.add(start);
         distances.put(start, 0);
-        previousLocs.put(start, start);
 
         while (!queue.isEmpty()){
             Location current = queue.poll();
@@ -42,17 +44,17 @@ public class BreadthFirstSearch {
             if (current.equals(end)){
                 result = distances.get(current);
                 this.distances = distances;
+                noSolution = false;
                 return;
             }
             for (Location neighbor : Location.getNeighbors(current, grid)){
                 if (!visited.contains(neighbor)){
                     visited.add(neighbor);
-                    previousLocs.put(neighbor, current);
                     distances.put(neighbor, distances.get(current) + 1);
                     queue.add(neighbor);
                 }
             }
         }
-        throw new RuntimeException("No solution");
+        noSolution = true;
     }
 }
