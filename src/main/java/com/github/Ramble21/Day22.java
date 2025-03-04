@@ -1,20 +1,20 @@
 package com.github.Ramble21;
 
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
+
 import com.github.Ramble21.classes.general.*;
 
 public class Day22 extends DaySolver{
     private final List<String> input;
-    private final long[][] secretNums;
     private final int[][] changes;
     private final int[][] bananas;
+
+    private final HashMap<String, Long> numBananasFromDeltas = new HashMap<>();
 
     public Day22() throws IOException {
         input = getInputLines(22);
         changes = new int[input.size()][2000];
-        secretNums = new long[input.size()][2000];
         bananas = new int[input.size()][2000];
     }
     public long solvePart1() throws IOException {
@@ -27,23 +27,26 @@ public class Day22 extends DaySolver{
         return sum;
     }
     public long solvePart2() throws IOException {
-        initPC();
         long maxBananas = 0;
-        for (int[] possibleCombo : possibleCombos) {
-            long temp = getMaxBananas(possibleCombo);
-            if (temp > maxBananas) {
-                maxBananas = temp;
+        for (int buyerNo = 0; buyerNo < changes.length; buyerNo++) {
+            HashSet<String> seen = new HashSet<>();
+            int[] buyer = changes[buyerNo];
+            for (int i = 0; i < buyer.length - 3; i++){
+                int[] possibleCombo = new int[]{buyer[i], buyer[i+1], buyer[i+2], buyer[i+3]};
+                String mapKey = possibleCombo[0] + "," + possibleCombo[1] + "," + possibleCombo[2] + "," + possibleCombo[3];
+                if (seen.contains(mapKey)) continue;
+                seen.add(mapKey);
+                long current = numBananasFromDeltas.getOrDefault(mapKey, 0L);
+                long numBananasGotten = getBananas(bananas[buyerNo], possibleCombo, buyer);
+                numBananasFromDeltas.put(mapKey, numBananasGotten + current);
             }
+        }
+        for (long l : numBananasFromDeltas.values()){
+            if (l > maxBananas) maxBananas = l;
         }
         return maxBananas;
     }
-    private long getMaxBananas(int[] combo){
-        long total = 0;
-        for (int i = 0; i < changes.length; i++){
-            total += getBananas(bananas[i], combo, changes[i]);
-        }
-        return total;
-    }
+
     private long getBananas(int[] bananas, int[] combo, int[] buyer){
         for (int i = 0; i < buyer.length-3; i++){
             if (buyer[i] == combo[0] && buyer[i+1] == combo[1] && buyer[i+2] == combo[2] && buyer[i+3] == combo[3]){
@@ -57,7 +60,6 @@ public class Day22 extends DaySolver{
         long current = initial;
         for (int i = 0; i < 2000; i++){
             current = nextSecretNo(current);
-            secretNums[index][i] = current;
             bananas[index][i] = (int) (current % 10);
             changes[index][i] = i == 0 ? bananas[index][i] - Integer.parseInt(input.get(index)) % 10 : bananas[index][i] - bananas[index][i-1];
         }
@@ -72,21 +74,5 @@ public class Day22 extends DaySolver{
         next ^= next * 2048;
         next %= 16777216;
         return next;
-    }
-    private static int[][] possibleCombos;
-    private void initPC(){
-        int min = -9, max = 9;
-        int[][] result = new int[(int) Math.pow(max - min + 1, 4)][4];
-        int index = 0;
-        for (int a = min; a <= max; a++) {
-            for (int b = min; b <= max; b++) {
-                for (int c = min; c <= max; c++) {
-                    for (int d = min; d <= max; d++) {
-                        result[index++] = new int[]{a, b, c, d};
-                    }
-                }
-            }
-        }
-        possibleCombos = result;
     }
 }
