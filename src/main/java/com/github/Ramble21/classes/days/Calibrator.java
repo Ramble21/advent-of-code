@@ -35,9 +35,12 @@ public class Calibrator {
         }
         return 0;
     }
-    private static ArrayList<char[]> generateCombos(char[] arr, int size){
+    private ArrayList<char[]> generateCombos(char[] arr, int size){
         ArrayList<char[]> result = new ArrayList<>();
         generateCombinationsRecur(arr, new ArrayList<>(), size, result);
+        if (arr.length == 3 && nums[nums.length - 1] % 10 != goalNum % 10){
+            result.removeIf(c -> c[c.length - 1] == '|');
+        }
         return result;
     }
     private static void generateCombinationsRecur(char[] arr, ArrayList<Character> temp, int size, ArrayList<char[]> result) {

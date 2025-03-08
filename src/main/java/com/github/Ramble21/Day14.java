@@ -21,7 +21,7 @@ public class Day14 extends DaySolver{
         for (BathroomRobot robot : robots){
             robot.predictPosition(100);
         }
-        return (int)getDangerLevel();
+        return (int) getDangerLevel();
     }
 
     public long solvePart2() throws IOException {
