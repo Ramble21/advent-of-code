@@ -22,7 +22,7 @@ public class Day13 extends DaySolver{
     }
     public long solvePart1() throws IOException {
         int count = 0;
-        for (int i = 0; i < prizes.length; i+=2){
+        for (int i = 0; i < prizes.length; i++){
             count += getMinTokens(i);
         }
         return count;
