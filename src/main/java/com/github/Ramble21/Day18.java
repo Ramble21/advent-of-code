@@ -17,7 +17,7 @@ public class Day18 extends DaySolver{
         grid = createGrid(gridSize);
     }
     public long solvePart1() throws IOException {
-        addLocations(12);
+        addLocations(1024);
         return new BreadthFirstSearch(new Location(0, 0), new Location(gridSize-1, gridSize-1), grid).getResult();
     }
 

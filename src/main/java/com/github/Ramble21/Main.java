@@ -5,7 +5,7 @@ import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        testEveryDay();
+        testSpecificDay(18);
     }
     public static void testEveryDay() throws IOException {
         long startTime = System.currentTimeMillis();
