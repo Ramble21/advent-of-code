@@ -38,7 +38,7 @@ public class Day25 extends DaySolver{
         return combos;
     }
     public long solvePart2() throws IOException {
-        return 0;
+        return 42;
     }
     private boolean keyFits(int[] key, int[] lock){
         for (int i = 0; i < key.length; i++){

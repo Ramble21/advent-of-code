@@ -5,9 +5,10 @@ import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        testSpecificDay(22);
+        testEveryDay();
     }
     public static void testEveryDay() throws IOException {
+        long startTime = System.currentTimeMillis();
         DaySolver[] solvers = IntStream.rangeClosed(1, 25)
                 .mapToObj(i -> {
                     try {
@@ -18,7 +19,8 @@ public class Main {
                     }
                 })
                 .toArray(DaySolver[]::new);
-        long totalMs = 0;
+        long totalMs = (System.currentTimeMillis() - startTime);
+        System.out.println("DaySolver initializations: " + totalMs + " ms");
         for (DaySolver solver : solvers){
             System.out.println(solver.solvePart1String());
             System.out.println(solver.solvePart2String());
