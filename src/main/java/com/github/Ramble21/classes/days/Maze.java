@@ -1,5 +1,4 @@
 package com.github.Ramble21.classes.days;
-import com.github.Ramble21.DaySolver;
 import com.github.Ramble21.classes.general.Direction;
 import com.github.Ramble21.classes.general.Location;
 
@@ -15,9 +14,6 @@ public class Maze {
 
     private final HashSet<MazeNode> visited = new HashSet<>();
     private final PriorityQueue<MazeNode> queue = new PriorityQueue<>();
-
-    private final HashSet<MazeNode> checkedOnce = new HashSet<>();
-
 
     private int totalPoints;
     public int getTotalPoints() {
@@ -88,8 +84,6 @@ public class Maze {
                     totalPoints = neighbor.getDistance();
                 }
             }
-
-            checkedOnce.add(neighbor);
         }
     }
 

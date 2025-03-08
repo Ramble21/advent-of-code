@@ -15,9 +15,7 @@ public class ClawButton {
     public int getDeltaY() {
         return deltaY;
     }
-    public char getName() {
-        return name;
-    }
+
     public String toString(){
         return "claw" + name + ": x=" + deltaX + ", y=" + deltaY;
     }

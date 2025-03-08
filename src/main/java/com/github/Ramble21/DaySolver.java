@@ -1,7 +1,5 @@
 package com.github.Ramble21;
 
-import com.github.Ramble21.classes.general.Regex;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

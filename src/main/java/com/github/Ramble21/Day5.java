@@ -7,8 +7,8 @@ import java.util.List;
 
 public class Day5 extends DaySolver {
     private final List<String> input;
-    private List<String> orderingRules = new ArrayList<>();
-    private List<String> updates = new ArrayList<>();
+    private final List<String> orderingRules = new ArrayList<>();
+    private final List<String> updates = new ArrayList<>();
 
     public Day5() throws IOException {
         input = getInputLines(5);

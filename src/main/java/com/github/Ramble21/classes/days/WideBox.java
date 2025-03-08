@@ -6,18 +6,12 @@ import com.github.Ramble21.classes.general.Location;
 import java.util.ArrayList;
 
 public class WideBox {
-
-    // for day 15
-
     private final Location index1;
     private final Location index2;
     private static final ArrayList<WideBox> boxesPushed = new ArrayList<>();
 
     public Location getIndex1() {
         return index1;
-    }
-    public Location getIndex2() {
-        return index2;
     }
     public int getY(){
         return index1.getY();

@@ -14,9 +14,6 @@ public class FileBlock {
             indexIDs[currentIndex++] = ID;
         }
     }
-    public static int[] getIndexIDs(){
-        return indexIDs;
-    }
     public static void initializeIndexIds(int size){
         indexIDs = new int[size];
     }
@@ -51,7 +48,6 @@ public class FileBlock {
                 int blankSpace = getFirstBlankSpaceOfSize(greedyCompacted, fileLen);
                 if (blankSpace == -1 || blankSpace > i) {
                     i -= fileLen - 1;
-                    continue;
                 }
                 else {
                     for (int j = 0; j < fileLen; j++){

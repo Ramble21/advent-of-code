@@ -14,7 +14,7 @@ public class Day2 extends DaySolver{
             String[] temp = line.split(" ");
             int[] nums = new int[temp.length];
             for (int i = 0; i < temp.length; i++){
-                nums[i] = Integer.parseInt(temp[i]); // there might be a method that does all of this for me but i don't know it
+                nums[i] = Integer.parseInt(temp[i]); // there might be a method that does all of this for me, but I don't know it
             }
             if (isSafe(nums)) safes++;
         }
@@ -60,7 +60,7 @@ public class Day2 extends DaySolver{
             String[] temp = line.split(" ");
             int[] nums = new int[temp.length];
             for (int i = 0; i < temp.length; i++){
-                nums[i] = Integer.parseInt(temp[i]); // there might be a method that does all of this for me but i don't know it
+                nums[i] = Integer.parseInt(temp[i]); // there might be a method that does all of this for me, but I don't know it
             }
             if (isSafe(nums) || isSafeByDampening(nums)) safes++;
         }

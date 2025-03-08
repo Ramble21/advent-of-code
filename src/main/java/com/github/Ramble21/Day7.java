@@ -7,10 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Day7 extends DaySolver{
-    private final List<String> input;
     private final ArrayList<Calibrator> calibrators = new ArrayList<>();
     public Day7() throws IOException {
-        input = getInputLines(7);
+        List<String> input = getInputLines(7);
         for (String s : input){
             calibrators.add(new Calibrator(s));
         }

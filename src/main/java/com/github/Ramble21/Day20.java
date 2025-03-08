@@ -27,12 +27,12 @@ public class Day20 extends DaySolver{
         inputToGrid();
     }
     public long solvePart1() throws IOException {
-        return cheatsThatSave(2, 100);
+        return cheatsThatSave(2);
     }
     public long solvePart2() throws IOException {
-        return cheatsThatSave(20, 100);
+        return cheatsThatSave(20);
     }
-    private long cheatsThatSave(int maxPS, int minSaved){
+    private long cheatsThatSave(int maxPS){
         long count = 0;
         BreadthFirstSearch control = new BreadthFirstSearch(start, end, grid);
         int controlValue = control.getResult();
@@ -43,7 +43,7 @@ public class Day20 extends DaySolver{
             for (Location cheat : possibleCheatJumps){
                 if (step.equals(cheat)) continue;
                 int newDistance = distances.get(step) + Location.getTaxicabDistance(step, cheat) + (controlValue - distances.get(cheat));
-                if (controlValue - newDistance >= minSaved){
+                if (controlValue - newDistance >= 100){
                     count++;
                 }
             }

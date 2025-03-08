@@ -3,7 +3,6 @@ package com.github.Ramble21;
 import com.github.Ramble21.classes.days.FileBlock;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 
 public class Day9 extends DaySolver{

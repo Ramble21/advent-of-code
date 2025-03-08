@@ -6,7 +6,6 @@ import java.io.IOException;
 import java.util.*;
 
 public class Day24 extends DaySolver {
-    private final List<String> input;
 
     private final ArrayList<Gate> gates = new ArrayList<>();
     private final HashMap<String, Integer> initialValues = new HashMap<>();
@@ -15,7 +14,7 @@ public class Day24 extends DaySolver {
     private String part2;
 
     public Day24() throws IOException {
-        input = getInputLines(24);
+        List<String> input = getInputLines(24);
         for (String s : input){
             if (s.contains(":")){
                 initialValues.put(s.substring(0, 3), Integer.parseInt(s.charAt(s.length()-1) + ""));

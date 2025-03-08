@@ -1,7 +1,6 @@
 package com.github.Ramble21;
 
 import com.github.Ramble21.classes.days.Guard;
-import com.github.Ramble21.classes.general.Direction;
 import com.github.Ramble21.classes.general.Location;
 
 import java.io.IOException;
@@ -26,6 +25,8 @@ public class Day6 extends DaySolver{
                 if (grid[r][c] == '^'){
                     startingLoc = new Location(c, r);
                     guard = new Guard(startingLoc, grid);
+                    locationsTraveled.add(startingLoc);
+                    break;
                 }
             }
         }

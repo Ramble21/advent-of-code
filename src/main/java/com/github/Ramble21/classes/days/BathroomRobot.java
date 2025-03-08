@@ -1,12 +1,7 @@
 package com.github.Ramble21.classes.days;
 
-import com.github.Ramble21.classes.general.Location;
-
 public class BathroomRobot {
 
-
-    private final int initialX;
-    private final int initialY;
     private int currentX;
     private int currentY;
     private final int xVelocity;
@@ -14,10 +9,9 @@ public class BathroomRobot {
     private static char[][] grid = null;
 
     public BathroomRobot(int x, int y, int xv, int yv){
-        this.initialX = x;
-        this.initialY = y;
-        this.currentX = initialX;
-        this.currentY = initialY;
+
+        this.currentX = x;
+        this.currentY = y;
         this.xVelocity = xv;
         this.yVelocity = yv;
         if (grid == null){
@@ -28,7 +22,7 @@ public class BathroomRobot {
                 }
             }
         }
-        updateGrid(initialX, initialY);
+        updateGrid(x, y);
     }
     public void updateGrid(int x, int y){
         if (grid[y][x] == '.'){
@@ -43,7 +37,7 @@ public class BathroomRobot {
         grid[y][x] = (char)(num + '0' - 1);
         if (grid[y][x] == '0') grid[y][x] = '.';
     }
-    public Location predictPosition(int seconds){
+    public void predictPosition(int seconds){
         int finalX = currentX;
         int finalY = currentY;
         unUpdateGrid(currentX, currentY);
@@ -58,7 +52,6 @@ public class BathroomRobot {
         currentX = finalX;
         currentY = finalY;
         updateGrid(finalX, finalY);
-        return new Location(finalX, finalY);
     }
     public static char[][] getGrid(){
         return grid;

@@ -16,7 +16,7 @@ public class Day4 extends DaySolver{
             for (int c = 0; c < wordSearch[0].length; c++){
                 int totalRows = wordSearch.length;
                 int totalColumns = wordSearch[0].length;
-                // this cant be the most efficient way to do this shit but i can't be bothered to think of another way so roast me all you want
+                // this cant be the most efficient way to do this shit, but I can't be bothered to think of another way so roast me all you want
                 if (wordSearch[r][c] != 'X' && wordSearch[r][c] != 'M' && wordSearch[r][c] != 'A' && wordSearch[r][c] != 'S') count++;
                 if (c <= totalColumns - 4){
                     if (wordSearch[r][c] == 'X' && wordSearch[r][c + 1] == 'M' && wordSearch[r][c + 2] == 'A' && wordSearch[r][c + 3] == 'S') count++;
@@ -43,8 +43,6 @@ public class Day4 extends DaySolver{
         int count = 0;
         for (int r = 0; r < wordSearch.length-2; r++){
             for (int c = 0; c < wordSearch[0].length-2; c++){
-                int totalRows = wordSearch.length;
-                int totalColumns = wordSearch[0].length;
                 if (wordSearch[r][c] == 'M' && wordSearch[r + 1][c + 1] == 'A' && wordSearch[r + 2][c + 2] == 'S' && wordSearch[r][c + 2] == 'S' && wordSearch[r + 2][c] == 'M') count++;
                 if (wordSearch[r][c] == 'S' && wordSearch[r + 1][c + 1] == 'A' && wordSearch[r + 2][c + 2] == 'M' && wordSearch[r][c + 2] == 'M' && wordSearch[r + 2][c] == 'S') count++;
                 if (wordSearch[r][c] == 'M' && wordSearch[r + 1][c + 1] == 'A' && wordSearch[r + 2][c + 2] == 'S' && wordSearch[r][c + 2] == 'M' && wordSearch[r + 2][c] == 'S') count++;

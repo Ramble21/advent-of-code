@@ -94,10 +94,7 @@ public class Day15 extends DaySolver{
             grid[targetY][targetX] = '@';
             grid[currentY][currentX] = '.';
         }
-        else if (grid[targetY][targetX] == '#'){
-            return;
-        }
-        else{
+        else if (!(grid[targetY][targetX] == '#')){
             WideBox box = WideBox.grabBox(grid, targetLoc);
             assert box != null;
             WideBox.resetBoxesPushed();
@@ -131,10 +128,7 @@ public class Day15 extends DaySolver{
             grid[targetY][targetX] = '@';
             grid[currentY][currentX] = '.';
         }
-        else if (grid[targetY][targetX] == '#'){
-            return;
-        }
-        else{
+        else if (!(grid[targetY][targetX] == '#')){
             boolean moved = tryToMoveBox(targetX, targetY, deltaX, deltaY, '.');
             if (moved){
                 grid[targetY][targetX] = '@';

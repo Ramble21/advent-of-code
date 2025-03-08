@@ -5,12 +5,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Day25 extends DaySolver{
-    private final List<String> input;
     private final ArrayList<int[]> locks = new ArrayList<>();
     private final ArrayList<int[]> keys = new ArrayList<>();
 
     public Day25() throws IOException {
-        input = getInputLines(25);
+        List<String> input = getInputLines(25);
         int j = 0;
         char[][] template = new char[7][5];
         for (int i = 0; i < input.size(); i++){

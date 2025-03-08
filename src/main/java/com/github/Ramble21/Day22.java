@@ -3,8 +3,6 @@ package com.github.Ramble21;
 import java.io.IOException;
 import java.util.*;
 
-import com.github.Ramble21.classes.general.*;
-
 public class Day22 extends DaySolver{
     private final List<String> input;
     private final int[][] changes;

@@ -11,7 +11,6 @@ public class InstructionReader {
     private final int[] instructions;
     private int[] target;
     private final boolean hasTarget;
-    private final boolean print;
 
     private final long initialA;
     private long A;
@@ -20,42 +19,24 @@ public class InstructionReader {
 
     private boolean isHalted;
     private boolean isJumped;
-    private boolean haltedEarly;
 
     private int instructionPointer;
 
     private final ArrayList<Integer> output = new ArrayList<>();
-    private final ArrayList<Long> previousAs = new ArrayList<>();
 
-    public InstructionReader(int[] instructions, long A, int B, int C, boolean print){
+    public InstructionReader(int[] instructions, long A, int B, int C){
         this.instructions = instructions;
         this.hasTarget = false;
-        this.print = print;
         this.A = A;
         this.initialA = A;
         this.B = B;
         this.C = C;
         this.isHalted = false;
-        this.haltedEarly = false;
         this.isJumped = false;
         this.instructionPointer = 0;
-    }
-    public InstructionReader(int[] target, int[] instructions, long A, int B, int C, boolean print){
-        this.instructions = instructions;
-        this.hasTarget = true;
-        this.print = print;
-        this.A = A;
-        this.initialA = A;
-        this.B = B;
-        this.C = C;
-        this.isHalted = false;
-        this.haltedEarly = false;
-        this.isJumped = false;
-        this.instructionPointer = 0;
-        this.target = target;
     }
 
-    public boolean read(){
+    public void read(){
         while (true){
 
             Instruction instruction = new Instruction(instructionPointer, this);
@@ -64,16 +45,17 @@ public class InstructionReader {
             if (!isJumped) instructionPointer += 2;
             isJumped = false;
         }
-        return (hasTarget && isMatch());
+        if (hasTarget) {
+            isMatch();
+        }
     }
-    public boolean isMatch(){
+    public void isMatch(){
         int[] target = reverseArray(this.target);
         ArrayList<Integer> reversed = new ArrayList<>(output);
         Collections.reverse(reversed);
         for (int i = 0; i < target.length; i++){
-            if (target[i] != reversed.get(i)) return false;
+            if (target[i] != reversed.get(i)) return;
         }
-        return true;
     }
 
     public static int[] reverseArray(int[] array) {
@@ -92,11 +74,6 @@ public class InstructionReader {
 
     public long getA() {
         return A;
-    }
-
-    public void setA(long a) {
-        addPreviousA(A);
-        A = a;
     }
 
     public long getB() {
@@ -131,18 +108,11 @@ public class InstructionReader {
         }
         if (hasTarget && Arrays.equals(outputAsArr, target)){
             halt();
-            haltedEarly = true;
         }
     }
 
     public ArrayList<Integer> getOutput(){
         return output;
-    }
-    public void addPreviousA(long previousA){
-        this.previousAs.add(previousA);
-    }
-    public ArrayList<Long> getPreviousAs() {
-        return previousAs;
     }
 
     public void setInstructionPointer(int instructionPointer) {
@@ -150,7 +120,7 @@ public class InstructionReader {
         isJumped = true;
     }
 
-    public boolean wasHaltedEarly() {
-        return haltedEarly;
+    public void setA(long A) {
+        this.A = A;
     }
 }

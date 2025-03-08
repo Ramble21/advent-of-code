@@ -9,13 +9,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Day13 extends DaySolver{
-    private List<String> input;
-    private ArrayList<String> inputWithoutEmpty;
+    private final ArrayList<String> inputWithoutEmpty;
     private ClawButton[] buttonsA;
     private ClawButton[] buttonsB;
     private Prize[] prizes;
     public Day13() throws IOException {
-        input = getInputLines(13);
+        List<String> input = getInputLines(13);
         inputWithoutEmpty = new ArrayList<>(); // input is immutable
         inputWithoutEmpty.addAll(input);
         inputWithoutEmpty.removeIf(s -> s.isEmpty() || s.isBlank());
@@ -59,8 +58,7 @@ public class Day13 extends DaySolver{
         return minTokens;
     }
     public long getMinTokensNoCap(int i){
-        ArrayList<Prize> workingPairs = new ArrayList<>();
-        long[] aAndB = solveForAandB(i);
+        long[] aAndB = solveForAAndB(i);
         return aAndB[0]*3 + aAndB[1];
     }
     public void initializeArrays(){
@@ -83,15 +81,7 @@ public class Day13 extends DaySolver{
         int[] nums = Regex.parseFirstTwoIntegers(s);
         return new Prize(nums[0], nums[1]);
     }
-    public long gcd(long a, long b) {
-        while (b != 0) {
-            long temp = b;
-            b = a % b;
-            a = temp;
-        }
-        return a;
-    }
-    public long[] solveForAandB(int i) {
+    public long[] solveForAAndB(int i) {
         int xCoeff1 = buttonsA[i].getDeltaX();
         int xCoeff2 = buttonsB[i].getDeltaX();
         int yCoeff1 = buttonsA[i].getDeltaY();

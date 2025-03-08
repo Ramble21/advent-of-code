@@ -21,7 +21,7 @@ public class Day17 extends DaySolver{
         parsedInput = parseInput();
     }
     public long solvePart1(){
-        InstructionReader reader = new InstructionReader(instructions, parsedInput[0], parsedInput[1], parsedInput[2], false);
+        InstructionReader reader = new InstructionReader(instructions, parsedInput[0], parsedInput[1], parsedInput[2]);
         reader.read();
         ArrayList<Integer> output = reader.getOutput();
         StringBuilder s = new StringBuilder();
@@ -78,7 +78,7 @@ public class Day17 extends DaySolver{
     }
 
     public void testNum(long A){
-        InstructionReader reader = new InstructionReader(instructions, A, parsedInput[1], parsedInput[2], false);
+        InstructionReader reader = new InstructionReader(instructions, A, parsedInput[1], parsedInput[2]);
         reader.read();
     }
     public static String decimalToOctal(long decimal) {

@@ -20,7 +20,7 @@ public class Day3 extends DaySolver{
                 int number2StartIndex = -1;
                 int number2EndIndex = -1;
                 int number2 = -1;
-                for (int j = 1; j <= 3; j++){ // 1 to 3 digit numbers
+                for (int j = 1; j <= 3; j++){ // 1 to 3-digit numbers
                     if (canParseInt(wallOfText.substring(i+4, i+4+j))) {
                         number1 = Integer.parseInt(wallOfText.substring(i+4, i+4+j));
                         number2StartIndex = i+4+j+1;
@@ -67,7 +67,7 @@ public class Day3 extends DaySolver{
                 int number2StartIndex = -1;
                 int number2EndIndex = -1;
                 int number2 = -1;
-                for (int j = 1; j <= 3; j++){ // 1 to 3 digit numbers
+                for (int j = 1; j <= 3; j++){ // 1 to 3-digit numbers
                     if (canParseInt(wallOfText.substring(i+4, i+4+j))) {
                         number1 = Integer.parseInt(wallOfText.substring(i+4, i+4+j));
                         number2StartIndex = i+4+j+1;

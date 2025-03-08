@@ -9,19 +9,10 @@ import java.util.HashSet;
 
 public class MazeNode implements Comparable<MazeNode> {
     private final Location loc;
-    private ArrayList<MazeNode> parentNodes = new ArrayList<>();
+    private final ArrayList<MazeNode> parentNodes = new ArrayList<>();
     private final Direction[] directions;
     private int distance;
     private final boolean isOrigin;
-
-
-    private boolean sussyCase;
-    public boolean isSussyCase() {
-        return sussyCase;
-    }
-    public void setSussyCase(boolean sussyCase) {
-        this.sussyCase = sussyCase;
-    }
 
     private final Direction directionUponArriving;
     private static final HashMap<Location, Integer> knownDistances = new HashMap<>();
@@ -74,13 +65,6 @@ public class MazeNode implements Comparable<MazeNode> {
     }
     public Direction getDirectionUponArriving() {
         return directionUponArriving;
-    }
-
-    public void addParentNode(MazeNode parentNode){
-        parentNodes.add(parentNode);
-    }
-    public void clearParentNodes(){
-        parentNodes.clear();
     }
 
     @Override
