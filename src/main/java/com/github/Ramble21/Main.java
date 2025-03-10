@@ -5,14 +5,14 @@ import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        testEveryDay();
+        testEveryDay(2024);
     }
-    public static void testEveryDay() throws IOException {
+    public static void testEveryDay(int year) throws IOException {
         long startTime = System.currentTimeMillis();
         DaySolver[] solvers = IntStream.rangeClosed(1, 25)
                 .mapToObj(i -> {
                     try {
-                        return (DaySolver) Class.forName("com.github.Ramble21.Day" + i)
+                        return (DaySolver) Class.forName("com.github.Ramble21.y" + year + ".days.Day" + i)
                                 .getDeclaredConstructor().newInstance();
                     } catch (Exception e) {
                         throw new RuntimeException(e);
@@ -22,16 +22,14 @@ public class Main {
         long totalMs = (System.currentTimeMillis() - startTime);
         System.out.println("DaySolver initializations: " + totalMs + " ms");
         for (DaySolver solver : solvers){
-            System.out.println(solver.solvePart1String());
-            System.out.println(solver.solvePart2String());
+            solver.solve();
             totalMs += solver.getPartOneMS() + solver.getPartTwoMS();
         }
-        System.out.println("Advent of Code 2024 Total: " + totalMs + " ms");
+        System.out.println("Advent of Code " + year + " Total: " + totalMs + " ms");
     }
-    public static void testSpecificDay(int dayNo) throws Exception {
-        String className = "com.github.Ramble21.Day" + dayNo;
+    public static void testSpecificDay(int year, int dayNo) throws Exception {
+        String className = "com.github.Ramble21.y" + year + ".days.Day" + dayNo;
         DaySolver solver = (DaySolver) Class.forName(className).getDeclaredConstructor().newInstance();
-        System.out.println(solver.solvePart1String());
-        System.out.println(solver.solvePart2String());
+        solver.solve();
     }
 }

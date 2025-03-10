@@ -18,13 +18,13 @@ public abstract class DaySolver {
         return partTwoMS;
     }
 
-    public static String getInputFilePath(int dayNumber) {
-        return "inputs/day" + dayNumber + ".txt";
+    public static String getInputFilePath(int year, int dayNumber) {
+        return "inputs/" + year + "/day" + dayNumber + ".txt";
     }
 
-    public static List<String> getInputLines(int dayNumber) throws IOException {
+    public static List<String> getInputLines(int year, int dayNumber) throws IOException {
         return new BufferedReader(new InputStreamReader(
-                Objects.requireNonNull(Main.class.getResourceAsStream(getInputFilePath(dayNumber)))
+                Objects.requireNonNull(Main.class.getResourceAsStream(getInputFilePath(year, dayNumber)))
         )).lines().toList();
     }
 
@@ -39,7 +39,10 @@ public abstract class DaySolver {
         }
     }
 
-
+    public void solve() throws IOException {
+        System.out.println(solvePart1String());
+        System.out.println(solvePart2String());
+    }
 
     public abstract long solvePart1() throws IOException;
     public abstract long solvePart2() throws IOException;
@@ -78,11 +81,10 @@ package com.github.Ramble21;
 
 import java.io.IOException;
 import java.util.List;
-import com.github.Ramble21.classes.general.*;
 
 public class DayX extends DaySolver{
     private final List<String> input;
-    public Day1() throws IOException {
+    public DayX() throws IOException {
         input = getInputLines(X);
     }
     public long solvePart1() throws IOException {
