@@ -77,15 +77,17 @@ public abstract class DaySolver {
 
 /* copy and paste for a new day class because im lazy - replace X with day number
 
-package com.github.Ramble21;
+package com.github.Ramble21.y2023.days;
+
+import com.github.Ramble21.DaySolver;
 
 import java.io.IOException;
 import java.util.List;
 
-public class DayX extends DaySolver{
+public class DayX extends DaySolver {
     private final List<String> input;
     public DayX() throws IOException {
-        input = getInputLines(X);
+        input = getInputLines(2023, X);
     }
     public long solvePart1() throws IOException {
         return 0;
