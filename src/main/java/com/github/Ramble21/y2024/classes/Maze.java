@@ -169,7 +169,7 @@ public class Maze {
         return !canMoveForward(currentLoc, currentDir) && !canTurn(currentLoc);
     }
     public boolean canTurn(Location loc){
-        for (Direction d : Direction.getDirectionSet()){
+        for (Direction d : Direction.getCardinalDirections()){
             Location left = loc.getDirectionalLoc(d);
             Location up = loc.getDirectionalLoc(d.getClockwise());
             if ((grid[up.getY()][up.getX()] == '.' || grid[up.getY()][up.getX()] == '@')
@@ -280,7 +280,7 @@ public class Maze {
         return true;
     }
     public boolean canTurnNew(Location loc){
-        for (Direction d : Direction.getDirectionSet()){
+        for (Direction d : Direction.getCardinalDirections()){
             Location left = loc.getDirectionalLoc(d);
             Location up = loc.getDirectionalLoc(d.getClockwise());
             if (((grid[up.getY()][up.getX()] == '.' || grid[up.getY()][up.getX()] == 'x' || grid[up.getY()][up.getX()] == 'O'))

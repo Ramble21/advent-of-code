@@ -112,10 +112,10 @@ public class WideBox {
         char left = grid[loc.getY()][loc.getX()-1];
         char right = grid[loc.getY()][loc.getX()+1];
         if (middle == '[' && right == ']'){
-            return new WideBox(grid, loc, loc.getRightLoc());
+            return new WideBox(grid, loc, loc.getDirectionalLoc(Direction.RIGHT));
         }
         else if (middle == ']' && left == '['){
-            return new WideBox(grid, loc, loc.getLeftLoc());
+            return new WideBox(grid, loc, loc.getDirectionalLoc(Direction.LEFT));
         }
         else return null;
     }

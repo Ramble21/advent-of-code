@@ -1,15 +1,16 @@
 package com.github.Ramble21.y2023.days;
 
 import com.github.Ramble21.DaySolver;
+import com.github.Ramble21.helper_classes.*;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Day3 extends DaySolver {
-    private final List<String> input;
     private final char[][] grid;
     public Day3() throws IOException {
-        input = getInputLines(2023, 3);
+        List<String> input = getInputLines(2023, 3);
         grid = new char[input.size()][input.get(0).length()];
         for (int r = 0; r < grid.length; r++){
             for (int c = 0; c < grid[0].length; c++){
@@ -44,15 +45,61 @@ public class Day3 extends DaySolver {
         }
         return sum;
     }
-    private long getPartNumber(int rowNum, int start, int end){
+    public long solvePart2() throws IOException {
+        long sum = 0;
+        for (int r = 0; r < grid.length; r++){
+            for (int c = 0; c < grid[0].length; c++){
+                if (grid[r][c] == '*') {
+                    ArrayList<Location> adjacentPartNumbers = getAdjacentPartNumbers(new Location(c, r));
+                    if (adjacentPartNumbers.size() == 2){
+                        sum += getFullNum(adjacentPartNumbers.get(0)) * getFullNum(adjacentPartNumbers.get(1));
+                    }
+                }
+            }
+        }
+        return sum;
+    }
+    public long getFullNum(Location l) {
+        int start = l.getX();
+        while (new Location(start, l.getY()).isOnGrid(grid) && Character.isDigit(grid[l.getY()][start])){
+            start--;
+        }
+        start++;
+        int end = l.getX();
+        while (new Location(end, l.getY()).isOnGrid(grid) && Character.isDigit(grid[l.getY()][end])){
+            end++;
+        }
+        end--;
+        return parseCharArr(l.getY(), start, end);
+    }
+    public ArrayList<Location> getAdjacentPartNumbers(Location gear) {
+        ArrayList<Location> locs = new ArrayList<>();
+        for (Direction d : Direction.getAllDirections()){
+            Location loc = gear.getDirectionalLoc(d);
+            if (!loc.isOnGrid(grid)) continue;
+            if (Character.isDigit(grid[loc.getY()][loc.getX()])){
+                locs.add(loc);
+            }
+        }
+        for (int i = 0; i < locs.size(); i++){
+            for (int j = 0; j < locs.size(); j++){
+                if (locs.get(i).equals(locs.get(j))) continue;
+                if (locs.get(i).getY() == locs.get(j).getY() && Math.abs(locs.get(i).getX() - locs.get(j).getX()) == 1){
+                    locs.remove(j);
+                    if (i >= j) i--;
+                    j--;
+                }
+            }
+        }
+        return locs;
+    }
+    private long getPartNumber(int rowNum, int start, int end) {
         if (start == -1 || end == -1) return 0;
-        int[][] directions = {
-                {-1,  0}, {1,  0}, {0, -1}, {0,  1}, {-1, -1}, {-1,  1}, {1, -1}, {1,  1}
-        };
+
         for (int i = start; i <= end; i++) {
-            for (int[] dir : directions) {
-                int newRow = rowNum + dir[0];
-                int newCol = i + dir[1];
+            for (Direction dir : Direction.getAllDirections()) {
+                int newRow = rowNum + dir.getDeltaX();
+                int newCol = i + dir.getDeltaY();
                 if (isValid(newRow, newCol) && isSpecialCharacter(grid[newRow][newCol])) {
                     return parseCharArr(rowNum, start, end);
                 }
@@ -73,9 +120,5 @@ public class Day3 extends DaySolver {
             result.append(grid[rowNum][c]);
         }
         return Integer.parseInt(result.toString());
-    }
-
-    public long solvePart2() throws IOException {
-        return 0;
     }
 }

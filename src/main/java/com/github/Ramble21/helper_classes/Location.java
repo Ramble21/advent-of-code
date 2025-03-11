@@ -26,26 +26,9 @@ public class Location {
     public boolean isOnGrid(char[][] grid) {
         return x < grid[0].length && y < grid.length && x >= 0 && y >= 0;
     }
-    public boolean isOnIntGrid(int[][] grid){
-        return x < grid[0].length && y < grid.length && x >= 0 && y >= 0;
-    }
-    public Location getLowerLoc(){
-        return new Location(x, y+1);
-    }
-    public Location getUpperLoc(){
-        return new Location(x, y-1);
-    }
-    public Location getLeftLoc(){
-        return new Location(x-1, y);
-    }
-    public Location getRightLoc(){
-        return new Location(x+1, y);
-    }
-    public Location getDirectionalLoc(Direction dir){
-        if (dir == Direction.UP) return getUpperLoc();
-        else if (dir == Direction.DOWN) return getLowerLoc();
-        else if (dir == Direction.LEFT) return getLeftLoc();
-        else return getRightLoc();
+
+    public Location getDirectionalLoc(Direction dir) {
+        return new Location(x + dir.getDeltaX(), y + dir.getDeltaY());
     }
     public static ArrayList<Location> getNeighbors(Location l, char[][] grid){
         ArrayList<Location> output = new ArrayList<>();
@@ -68,7 +51,6 @@ public class Location {
         }
         return output;
     }
-
     @Override
     public boolean equals(Object obj){
         if (this == obj) return true;

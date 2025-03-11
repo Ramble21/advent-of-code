@@ -4,20 +4,30 @@ public enum Direction {
     LEFT(-1, 0, '<'),
     RIGHT(1, 0, '>'),
     UP(0, -1, '^'),
-    DOWN(0, 1, 'v');
+    DOWN(0, 1, 'v'),
+
+    DOWNLEFT(-1, 1, '↙'),
+    UPLEFT(-1, -1, '↖'),
+    UPRIGHT(1, -1, '↗'),
+    DOWNRIGHT(1, 1, '↘');
 
     private final int deltaX;
     private final int deltaY;
     private final char charRep;
-    private static final Direction[] directionSet = {Direction.LEFT, Direction.UP, Direction.RIGHT, Direction.DOWN};
+    private static final Direction[] cardinalDirections = {Direction.LEFT, Direction.UP, Direction.RIGHT, Direction.DOWN};
+    private static final Direction[] allDirections = {Direction.LEFT, Direction.UP, Direction.RIGHT, Direction.DOWN, Direction.UPLEFT, Direction.UPRIGHT, Direction.DOWNLEFT, Direction.DOWNRIGHT};
+
 
     Direction(int deltaX, int deltaY, char charRep){
         this.deltaX = deltaX;
         this.deltaY = deltaY;
         this.charRep = charRep;
     }
-    public static Direction[] getDirectionSet() {
-        return directionSet;
+    public static Direction[] getCardinalDirections() {
+        return cardinalDirections;
+    }
+    public static Direction[] getAllDirections() {
+        return allDirections;
     }
     public int getDeltaX() {
         return deltaX;
@@ -43,6 +53,7 @@ public enum Direction {
             case LEFT -> Direction.DOWN;
             case DOWN -> Direction.RIGHT;
             case RIGHT -> Direction.UP;
+            default -> throw new IllegalArgumentException("Method doesn't support non cardinal directions");
         };
     }
     public Direction getClockwise(){
@@ -51,6 +62,7 @@ public enum Direction {
             case RIGHT -> Direction.DOWN;
             case DOWN -> Direction.LEFT;
             case LEFT -> Direction.UP;
+            default -> throw new IllegalArgumentException("Method doesn't support non cardinal directions");
         };
     }
     public Direction getFlipped(){
@@ -59,15 +71,7 @@ public enum Direction {
             case RIGHT -> Direction.LEFT;
             case DOWN -> Direction.UP;
             case LEFT -> Direction.RIGHT;
+            default -> throw new IllegalArgumentException("Method doesn't support non cardinal directions");
         };
-    }
-    public static Direction getDirectionToGo(Location from, Location to){
-        int dx = to.getX() - from.getX();
-        int dy = to.getY() - from.getY();
-        if (dx > 0) return Direction.RIGHT;
-        if (dx < 0) return Direction.LEFT;
-        if (dy > 0) return Direction.DOWN;
-        if (dy < 0) return Direction.UP;
-        throw new RuntimeException("Locs " + from + " and " + to + " cannot be compared!");
     }
 }
