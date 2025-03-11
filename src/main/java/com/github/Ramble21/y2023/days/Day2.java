@@ -25,6 +25,11 @@ public class Day2 extends DaySolver {
     }
 
     public long solvePart2() throws IOException {
-        return 0;
+        long total = 0;
+        for (String s : input){
+            HashMap<String, Integer> maxDiceShown = new CubeGame(s).getMaxDiceShown();
+            total += (long) maxDiceShown.get("red") * maxDiceShown.get("green") * maxDiceShown.get("blue");
+        }
+        return total;
     }
 }
