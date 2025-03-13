@@ -39,13 +39,10 @@ public enum Direction {
         return charRep;
     }
     public static Direction charToDir(char direction){
-        return switch (direction) {
-            case '^' -> Direction.UP;
-            case 'v' -> Direction.DOWN;
-            case '<' -> Direction.LEFT;
-            case '>' -> Direction.RIGHT;
-            default -> null;
-        };
+        for (Direction d : getAllDirections()){
+            if (d.charRep == direction) return d;
+        }
+        throw new IllegalArgumentException("Invalid input '" + direction + "'!");
     }
     public Direction getCounterClockwise(){
         return switch (this) {
