@@ -30,6 +30,14 @@ public class CategoryMap {
         }
         return x;
     }
+    public long backtrackMap(long x){
+        for (CategoryMapSection section : sections){
+            if (section.canBacktrackMap(x)){
+                return section.backtrackMap(x);
+            }
+        }
+        return x;
+    }
 }
 class CategoryMapSection {
     private final long range;
@@ -42,10 +50,16 @@ class CategoryMapSection {
         this.sourceStart = arr[1];
     }
     public boolean canMap(long x){
-        return (x >= sourceStart) && (x <= sourceStart + range);
+        return (x >= sourceStart) && (x < sourceStart + range);
+    }
+    public boolean canBacktrackMap(long x){
+        return (x >= destinationStart) && (x < destinationStart + range);
     }
     public long map(long x){
-        return (destinationStart - sourceStart) + x;
+        return x + (destinationStart - sourceStart);
+    }
+    public long backtrackMap(long x){
+        return x - (destinationStart - sourceStart);
     }
     public String toString(){
         return "{" + destinationStart + " " + sourceStart + " " + range + "}";

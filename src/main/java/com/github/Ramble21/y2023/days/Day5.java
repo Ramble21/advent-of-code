@@ -36,6 +36,18 @@ public class Day5 extends DaySolver {
     }
 
     public long solvePart2() throws IOException {
-        return 0;
+        long minLocNumber = 0;
+        while (true){
+            long temp = minLocNumber;
+            for (int i = maps.size() - 1; i >= 0; i--) {
+                temp = maps.get(i).backtrackMap(temp);
+            }
+            for (int i = 1; i < seeds.length; i += 2){
+                if (temp >= seeds[i - 1] && temp < (seeds[i - 1] + seeds[i])){
+                    return minLocNumber;
+                }
+            }
+            minLocNumber++;
+        }
     }
 }
