@@ -8,18 +8,19 @@ import java.util.Arrays;
 import java.util.List;
 
 public class Day6 extends DaySolver {
-    private final BoatRace[] races;
+    private final int[] times;
+    private final int[] recordDistances;
     public Day6() throws IOException {
         List<String> input = getInputLines(2023, 6);
-        int[] times = Arrays.stream(input.get(0).substring(input.get(0).indexOf(":") + 1).trim().split("\\s+")).mapToInt(Integer::parseInt).toArray();
-        int[] recordDistances = Arrays.stream(input.get(1).substring(input.get(1).indexOf(":") + 1).trim().split("\\s+")).mapToInt(Integer::parseInt).toArray();
-        races = new BoatRace[times.length];
+        times = Arrays.stream(input.get(0).substring(input.get(0).indexOf(":") + 1).trim().split("\\s+")).mapToInt(Integer::parseInt).toArray();
+        recordDistances = Arrays.stream(input.get(1).substring(input.get(1).indexOf(":") + 1).trim().split("\\s+")).mapToInt(Integer::parseInt).toArray();
+    }
+    public long solvePart1() throws IOException {
+        BoatRace[] races = new BoatRace[times.length];
         for (int i = 0; i < races.length; i++){
             races[i] = new BoatRace(times[i], recordDistances[i]);
         }
-    }
-    public long solvePart1() throws IOException {
-        int product = 1;
+        long product = 1;
         for (BoatRace race : races){
             product *= race.getNumRecordBeats();
         }
@@ -27,6 +28,14 @@ public class Day6 extends DaySolver {
     }
 
     public long solvePart2() throws IOException {
-        return 0;
+        BoatRace longRace = new BoatRace(removeKerning(times), removeKerning(recordDistances));
+        return longRace.getNumRecordBeats();
+    }
+    private static long removeKerning(int[] arr){
+        StringBuilder result = new StringBuilder();
+        for (int x : arr){
+            result.append(x);
+        }
+        return Long.parseLong(result.toString());
     }
 }

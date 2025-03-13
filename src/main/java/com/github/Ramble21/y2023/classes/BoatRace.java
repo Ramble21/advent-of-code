@@ -1,20 +1,20 @@
 package com.github.Ramble21.y2023.classes;
 
 public class BoatRace {
-    private final int time;
-    private final int recordDistance;
-    public BoatRace(int time, int recordDistance){
+    private final long time;
+    private final long recordDistance;
+    public BoatRace(long time, long recordDistance){
         this.time = time;
         this.recordDistance = recordDistance;
     }
-    public int getNumRecordBeats(){
-        int count = 0;
-        for (int i = 1; i < time; i++){
+    public long getNumRecordBeats(){
+        long count = 0;
+        for (long i = 1; i < time; i++){
             if (simulateRace(i) > recordDistance) count++;
         }
         return count;
     }
-    private int simulateRace(int buttonHoldTime){
+    private long simulateRace(long buttonHoldTime){
         return (time - buttonHoldTime) * buttonHoldTime;
     }
 }
