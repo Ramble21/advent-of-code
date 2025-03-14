@@ -20,8 +20,8 @@ public class Day7 extends DaySolver {
     public long solvePart1() throws IOException {
         int sum = 0;
         Arrays.sort(hands, Comparator
-                .comparingInt(CamelCardsHand::getType)
-                .thenComparing(CamelCardsHand::getComparator, Arrays::compare)
+                .comparingInt((CamelCardsHand hand) -> hand.getType(false))
+                .thenComparing(hand -> hand.getComparator(false), Arrays::compare)
         );
         for (int i = 0; i < hands.length; i++){
             sum += hands[i].getBid() * (i + 1);
@@ -30,6 +30,14 @@ public class Day7 extends DaySolver {
     }
 
     public long solvePart2() throws IOException {
-        return 0;
+        int sum = 0;
+        Arrays.sort(hands, Comparator
+                .comparingInt((CamelCardsHand hand) -> hand.getType(true))
+                .thenComparing(hand -> hand.getComparator(true), Arrays::compare)
+        );
+        for (int i = 0; i < hands.length; i++){
+            sum += hands[i].getBid() * (i + 1);
+        }
+        return sum;
     }
 }
