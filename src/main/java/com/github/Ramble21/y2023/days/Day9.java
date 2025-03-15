@@ -23,23 +23,34 @@ public class Day9 extends DaySolver {
         return sum;
     }
     public long solvePart2() throws IOException {
-        return 0;
+        long sum = 0;
+        for (int[] num : nums) {
+            sum += getPreviousNum(num);
+        }
+        return sum;
     }
-    private int getNextNum(int[] pattern){
+    private int getNextNum(int[] pattern) {
         int[] rateOfChange = getRateOfChange(pattern);
         if (isConstant(rateOfChange)) {
             return pattern[pattern.length - 1] + rateOfChange[0];
         }
         return pattern[pattern.length - 1] + getNextNum(rateOfChange);
     }
-    private int[] getRateOfChange(int[] pattern){
+    private int getPreviousNum(int[] pattern) {
+        int[] rateOfChange = getRateOfChange(pattern);
+        if (isConstant(rateOfChange)){
+            return pattern[0] - rateOfChange[0];
+        }
+        return pattern[0] - getPreviousNum(rateOfChange);
+    }
+    private int[] getRateOfChange(int[] pattern) {
         int[] rateOfChange = new int[pattern.length - 1];
         for (int i = 1; i < pattern.length; i++){
             rateOfChange[i - 1] = pattern[i] - pattern[i - 1];
         }
         return rateOfChange;
     }
-    private boolean isConstant(int[] rateOfChange){
+    private boolean isConstant(int[] rateOfChange) {
         for (int i = 1; i < rateOfChange.length; i++){
             if (rateOfChange[i] != rateOfChange[i - 1]) return false;
         }
