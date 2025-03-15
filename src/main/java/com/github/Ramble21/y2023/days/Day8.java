@@ -19,7 +19,7 @@ public class Day8 extends DaySolver {
         rightNodes = new HashMap<>();
         for (int i = 2; i < input.size(); i++){
             if (input.get(i).isBlank()) continue;
-            String[] parsed = input.get(i).split("[^a-zA-Z0-9]+");
+            String[] parsed = input.get(i).split("[^A-Z0-9]+");
             leftNodes.put(parsed[0], parsed[1]);
             rightNodes.put(parsed[0], parsed[2]);
         }
