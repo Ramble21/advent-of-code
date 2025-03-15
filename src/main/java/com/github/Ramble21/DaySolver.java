@@ -27,25 +27,25 @@ public abstract class DaySolver {
                 Objects.requireNonNull(Main.class.getResourceAsStream(getInputFilePath(year, dayNumber)))
         )).lines().toList();
     }
+    public static char[][] getInputAsGrid(int year, int dayNumber) throws IOException {
+        List<String> input = getInputLines(year, dayNumber);
+        char[][] output = new char[input.size()][input.get(0).length()];
+        for (int i = 0; i < output.length; i++){
+            output[i] = input.get(i).toCharArray();
+        }
+        return output;
+    }
 
     public static void print2DArr(char[][] array) {
         for (char[] row : array) {
             System.out.println(row);
         }
     }
-    public static void print2DIntArr(int[][] array) {
-        for (int[] row : array) {
-            System.out.println(Arrays.toString(row));
-        }
-    }
 
     public void solve() throws IOException {
-        System.out.println(solvePart1String());
-        System.out.println(solvePart2String());
+        System.out.println("Part 1: " + solvePart1String() + " | " + partOneMS + " ms");
+        System.out.println("Part 2: " + solvePart2String() + " | " + partTwoMS + " ms");
     }
-
-    public abstract long solvePart1() throws IOException;
-    public abstract long solvePart2() throws IOException;
 
     public String solvePart1String() throws IOException {
         return timePart1();
@@ -53,25 +53,23 @@ public abstract class DaySolver {
     public String solvePart2String() throws IOException {
         return timePart2();
     }
+
+    public abstract long solvePart1() throws IOException;
+    public abstract long solvePart2() throws IOException;
+
     public String timePart1() throws IOException {
         long start = System.currentTimeMillis();
         long result = solvePart1();
         long end = System.currentTimeMillis();
-        System.out.println("Day " + parseDayNumber() + " part 1: " + (end - start) + " ms");
         partOneMS = end - start;
-        return String.valueOf(result);
+        return Long.toString(result);
     }
     public String timePart2() throws IOException {
         long start = System.currentTimeMillis();
         long result = solvePart2();
         long end = System.currentTimeMillis();
         partTwoMS = end - start;
-        System.out.println("Day " + parseDayNumber() + " part 2: " + (end - start) + " ms");
-        return String.valueOf(result);
-    }
-    private int parseDayNumber() {
-        String className = this.getClass().getSimpleName();
-        return Integer.parseInt(className.replaceAll("[^0-9]", ""));
+        return Long.toString(result);
     }
 }
 

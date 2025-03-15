@@ -1,35 +1,35 @@
 package com.github.Ramble21;
 
-import java.io.IOException;
-import java.util.stream.IntStream;
-
 public class Main {
     public static void main(String[] args) throws Exception {
-        testSpecificDay(2023, 9);
+        testEveryDay(2023);
     }
-    public static void testEveryDay(int year) throws IOException {
-        long startTime = System.currentTimeMillis();
-        DaySolver[] solvers = IntStream.rangeClosed(1, 25)
-                .mapToObj(i -> {
-                    try {
-                        return (DaySolver) Class.forName("com.github.Ramble21.y" + year + ".days.Day" + i)
-                                .getDeclaredConstructor().newInstance();
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .toArray(DaySolver[]::new);
-        long totalMs = (System.currentTimeMillis() - startTime);
-        System.out.println("DaySolver initializations: " + totalMs + " ms");
-        for (DaySolver solver : solvers){
-            solver.solve();
-            totalMs += solver.getPartOneMS() + solver.getPartTwoMS();
+    public static void testEveryDay(int year) throws Exception {
+        long totalMs = 0;
+        for (int i = 1; i <= 25; i++){
+            String className = "com.github.Ramble21.y" + year + ".days.Day" + i;
+            try {
+                long start = System.currentTimeMillis();
+                DaySolver solver = (DaySolver) Class.forName(className).getDeclaredConstructor().newInstance();
+                long end = System.currentTimeMillis();
+                System.out.println("Day " + i + " class creation: " + (end - start) + " ms");
+                solver.solve();
+                totalMs += (solver.getPartOneMS() + solver.getPartTwoMS() + (start - end));
+                System.out.println();
+            }
+            catch (ClassNotFoundException e){
+                System.out.println("Advent of Code " + year + " Partial Total: " + totalMs + " ms");
+                return;
+            }
         }
         System.out.println("Advent of Code " + year + " Total: " + totalMs + " ms");
     }
     public static void testSpecificDay(int year, int dayNo) throws Exception {
         String className = "com.github.Ramble21.y" + year + ".days.Day" + dayNo;
+        long start = System.currentTimeMillis();
         DaySolver solver = (DaySolver) Class.forName(className).getDeclaredConstructor().newInstance();
+        long end = System.currentTimeMillis();
+        System.out.println("Day " + dayNo + " class creation: " + (end - start) + " ms");
         solver.solve();
     }
 }
