@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 public class Location {
-    private final int x;
-    private final int y;
+    public final int x;
+    public final int y;
     public Location(int x, int y){
         this.x = x;
         this.y = y;
@@ -20,7 +20,7 @@ public class Location {
         return "(" + y + "," + x + ")";
     }
     public static int getTaxicabDistance(Location first, Location second){
-        return Math.abs(first.x-second.x) + Math.abs(first.y-second.y);
+        return Math.abs(first.x -second.x) + Math.abs(first.y -second.y);
     }
 
     public boolean isOnGrid(char[][] grid) {

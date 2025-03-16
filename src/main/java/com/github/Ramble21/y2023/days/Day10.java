@@ -1,6 +1,7 @@
 package com.github.Ramble21.y2023.days;
 
 import com.github.Ramble21.DaySolver;
+import com.github.Ramble21.helper_classes.Direction;
 import com.github.Ramble21.helper_classes.Location;
 
 import java.io.IOException;
@@ -18,6 +19,7 @@ public class Day10 extends DaySolver {
                 if (grid[r][c] == 'S') start = new Location(c, r);
             }
         }
+        determineStartTile();
     }
     public long solvePart1() throws IOException {
         customBFS();
@@ -28,9 +30,51 @@ public class Day10 extends DaySolver {
         return max;
     }
     public long solvePart2() throws IOException {
-        return 0;
+        return getAllLocsInsidePolygon(new ArrayList<>(distances.keySet())).size();
     }
-
+    private HashSet<Location> getAllLocsInsidePolygon(ArrayList<Location> polygon){
+        HashSet<Location> result = new HashSet<>();
+        int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE;
+        int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE;
+        for (Location loc : polygon) {
+            minX = Math.min(minX, loc.getX());
+            minY = Math.min(minY, loc.getY());
+            maxX = Math.max(maxX, loc.getX());
+            maxY = Math.max(maxY, loc.getY());
+        }
+        for (int y = minY; y <= maxY; y++) {
+            for (int x = minX; x <= maxX; x++) {
+                Location point = new Location(x, y);
+                if (isPointInside(point, polygon)) {
+                    result.add(point);
+                }
+            }
+        }
+        return result;
+    }
+    private boolean isPointInside(Location p, ArrayList<Location> polygon) {
+        for (Direction d : Direction.getCardinalDirections()){
+            if (!p.getDirectionalLoc(d).isOnGrid(grid)) return false;
+        }
+        if (polygon.contains(p)) return false;
+        Location current = new Location(-1, p.y);
+        int numSideHits = 0;
+        while (current.x <= p.x) {
+            if (polygon.contains(current) && facesNorth(current)){
+                numSideHits++;
+            }
+            current = new Location(current.x + 1, current.y);
+        }
+        return numSideHits % 2 == 1;
+    }
+    private boolean facesNorth(Location l){
+        if (!l.isOnGrid(grid)) return false;
+        return switch (grid[l.y][l.x]){
+            case 'L', '|', 'J' -> true;
+            case '-', 'F', '7', '.' -> false;
+            default -> throw new RuntimeException();
+        };
+    }
     private void customBFS(){
         HashSet<Location> visited = new HashSet<>();
         Queue<Location> queue = new LinkedList<>();
@@ -48,28 +92,23 @@ public class Day10 extends DaySolver {
             }
         }
     }
+    private void determineStartTile() {
+        int x = start.getX();
+        int y = start.getY();
+        boolean north = y > 0 && "|7F".indexOf(grid[y - 1][x]) != -1;
+        boolean south = y < grid.length - 1 && "|LJ".indexOf(grid[y + 1][x]) != -1;
+        boolean west = x > 0 && "-LF".indexOf(grid[y][x - 1]) != -1;
+        boolean east = x < grid[0].length - 1 && "-J7".indexOf(grid[y][x + 1]) != -1;
+        if (north && south) grid[y][x] = '|';
+        else if (east && west) grid[y][x] = '-';
+        else if (north && east) grid[y][x] = 'L';
+        else if (north && west) grid[y][x] = 'J';
+        else if (south && west) grid[y][x] = '7';
+        else if (south && east) grid[y][x] = 'F';
+    }
     private List<Location> getNeighbors(Location current) {
         int x = current.getX();
         int y = current.getY();
-        if (grid[y][x] == 'S'){
-            List<Location> result = new ArrayList<>();
-            for (Location neighbor : Location.getNeighbors(current, grid)){
-                int nx = neighbor.getX();
-                int ny = neighbor.getY();
-                if (switch (grid[ny][nx]) {
-                    case '|' -> nx == x;
-                    case '-' -> ny == y;
-                    case 'L' -> (ny == y + 1 && nx == x) || (ny == y && nx == x - 1);
-                    case 'J' -> (ny == y + 1 && nx == x) || (ny == y && nx == x + 1);
-                    case '7' -> (ny == y - 1 && nx == x) || (ny == y && nx == x + 1);
-                    case 'F' -> (ny == y - 1 && nx == x) || (ny == y && nx == x - 1);
-                    default -> false;
-                }) {
-                    result.add(neighbor);
-                }
-            }
-            return result;
-        }
         return switch (grid[y][x]) {
             case '|' -> List.of(new Location(x, y - 1), new Location(x, y + 1));
             case '-' -> List.of(new Location(x - 1, y), new Location(x + 1, y));
