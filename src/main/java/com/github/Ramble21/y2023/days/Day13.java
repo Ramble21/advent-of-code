@@ -26,24 +26,56 @@ public class Day13 extends DaySolver {
     public long solvePart1() throws IOException {
         long sum = 0;
         for (char[][] grid : grids) {
-            sum += getReflectionValue(grid);
+            sum += getReflectionValue(grid, -1);
         }
         return sum;
     }
 
     public long solvePart2() throws IOException {
-        return 0;
+        long sum = 0;
+        for (char[][] grid : grids) {
+            sum += getAltReflectionValue(grid);
+        }
+        return sum;
     }
-
-    private int getReflectionValue(char[][] grid) {
+    private int getAltReflectionValue(char[][] grid) {
+        int reflectionValue = getReflectionValue(grid, -1);
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                int temp = getReflectionValue(swapLocation(grid, c, r), reflectionValue);
+                if (temp != 0) {
+                    return temp;
+                }
+            }
+        }
+        return reflectionValue;
+    }
+    private char[][] swapLocation(char[][] grid, int x, int y) {
+        char[][] result = new char[grid.length][grid[0].length];
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                if (y == r && x == c) {
+                    if (grid[r][c] == '#') result[r][c] = '.';
+                    else result[r][c] = '#';
+                }
+                else {
+                    result[r][c] = grid[r][c];
+                }
+            }
+        }
+        return result;
+    }
+    private int getReflectionValue(char[][] grid, int ignoredValue) {
         for (int r = 0; r < grid.length - 1; r++) {
             if (reflectsHorizontally(grid, r)) {
-                return (1 + r) * 100;
+                int result = (1 + r) * 100;
+                if (ignoredValue != result) return result;
             }
         }
         for (int c = 0; c < grid[0].length - 1; c++) {
             if (reflectsVertically(grid, c)) {
-                return 1 + c;
+                int result = 1 + c;
+                if (ignoredValue != result) return result;
             }
         }
         return 0;
@@ -69,5 +101,4 @@ public class Day13 extends DaySolver {
         }
         return column;
     }
-
 }
