@@ -16,14 +16,18 @@ public class Day12 extends DaySolver {
         }
     }
     public long solvePart1() throws IOException {
-        int sum = 0;
+        long sum = 0;
         for (SpringConditionRecord record : records) {
             sum += record.getNumPossibilities();
         }
         return sum;
     }
-
     public long solvePart2() throws IOException {
-        return 0;
+        long sum = 0;
+        for (SpringConditionRecord record : records) {
+            record.unfold();
+            sum += record.getNumPossibilities();
+        }
+        return sum;
     }
 }
