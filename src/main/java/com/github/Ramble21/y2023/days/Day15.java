@@ -6,11 +6,10 @@ import java.io.IOException;
 import java.util.*;
 
 public class Day15 extends DaySolver {
-    private final List<String> input;
     private final String[] references;
     private final int[] values;
     public Day15() throws IOException {
-        input = getInputLines(2023, 15);
+        List<String> input = getInputLines(2023, 15);
         references = input.get(0).split(",");
         values = new int[references.length];
     }
@@ -37,7 +36,6 @@ public class Day15 extends DaySolver {
             }
             else {
                 focalLengths.put(lensHeader, Integer.parseInt(lens.substring(lens.indexOf("=") + 1)));
-
                 LinkedList<String> box = boxes.getOrDefault(boxNo, new LinkedList<>());
                 boolean skibidiToilet = box.contains(lensHeader);
                 if (!skibidiToilet) box.addLast(lensHeader);
