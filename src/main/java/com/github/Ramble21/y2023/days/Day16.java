@@ -15,13 +15,27 @@ public class Day16 extends DaySolver {
         grid = getInputAsGrid(2023, 16);
     }
     public long solvePart1() throws IOException {
-
+        return getTilesEnergized(new Location(0, 0), Direction.RIGHT);
+    }
+    public long solvePart2() throws IOException {
+        int max = 0;
+        for (int r = 0; r < grid.length; r++) {
+            max = Math.max(max, getTilesEnergized(new Location(0, r), Direction.RIGHT));
+            max = Math.max(max, getTilesEnergized(new Location(grid[0].length - 1, r), Direction.LEFT));
+        }
+        for (int c = 0; c < grid[0].length; c++) {
+            max = Math.max(max, getTilesEnergized(new Location(c, 0), Direction.DOWN));
+            max = Math.max(max, getTilesEnergized(new Location(c, grid.length - 1), Direction.UP));
+        }
+        return max;
+    }
+    private int getTilesEnergized(Location l, Direction d) {
         HashSet<Location> energized = new HashSet<>();
         ArrayList<Beam> beams = new ArrayList<>();
         HashSet<String> previousStates = new HashSet<>();
-        Direction initialDir = Direction.RIGHT;
-        if (grid[0][0] == '|' || grid[0][0] == '\\') initialDir = Direction.DOWN;
-        beams.add(new Beam(new Location(0, 0), initialDir));
+
+        Direction initialDir = getInitialDir(l, d);
+        beams.add(new Beam(new Location(l.x, l.y), initialDir));
 
         while (!beams.isEmpty()) {
             ArrayList<Beam> newBeams = new ArrayList<>();
@@ -54,7 +68,12 @@ public class Day16 extends DaySolver {
         return energized.size();
     }
 
-    public long solvePart2() throws IOException {
-        return 0;
+    private Direction getInitialDir(Location l, Direction d) {
+        Direction initialDir = d;
+        if (initialDir == Direction.RIGHT && (grid[l.y][l.x] == '|' || grid[l.y][l.x] == '\\')) initialDir = Direction.DOWN;
+        else if (initialDir == Direction.DOWN && (grid[l.y][l.x] == '|' || grid[l.y][l.x] == '\\')) initialDir = Direction.RIGHT;
+        else if (initialDir == Direction.LEFT && (grid[l.y][l.x] == '-' || grid[l.y][l.x] == '/')) initialDir = Direction.UP;
+        else if (initialDir == Direction.UP && (grid[l.y][l.x] == '-' || grid[l.y][l.x] == '/')) initialDir = Direction.LEFT;
+        return initialDir;
     }
 }
