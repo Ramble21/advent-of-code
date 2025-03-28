@@ -6,6 +6,7 @@ import com.github.Ramble21.y2023.classes.HeatBlock;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.function.Function;
 
 public class Day17 extends DaySolver {
     private final char[][] grid;
@@ -14,15 +15,16 @@ public class Day17 extends DaySolver {
     }
     public long solvePart1() throws IOException {
         HashMap<HeatBlock, Integer> distances = new HashMap<>();
-
         HeatBlock origin = new HeatBlock();
         distances.put(origin, 0);
         Comparator<HeatBlock> comparator = Comparator.comparingInt(distances::get);
         PriorityQueue<HeatBlock> queue = new PriorityQueue<>(comparator);
         queue.add(origin);
         HashSet<HeatBlock> visited = new HashSet<>();
+
         while (!queue.isEmpty()) {
             HeatBlock current = queue.poll();
+
             for (Location neighbor : current.nextLocations()) {
                 HeatBlock block = current.move(neighbor);
                 if (!neighbor.isOnGrid(grid) || visited.contains(block)) continue;
@@ -47,15 +49,16 @@ public class Day17 extends DaySolver {
 
     public long solvePart2() throws IOException {
         HashMap<HeatBlock, Integer> distances = new HashMap<>();
-
         HeatBlock origin = new HeatBlock();
         distances.put(origin, 0);
         Comparator<HeatBlock> comparator = Comparator.comparingInt(distances::get);
         PriorityQueue<HeatBlock> queue = new PriorityQueue<>(comparator);
         queue.add(origin);
         HashSet<HeatBlock> visited = new HashSet<>();
+
         while (!queue.isEmpty()) {
             HeatBlock current = queue.poll();
+            if (visited.contains(current)) continue;
             for (Location neighbor : current.nextUltraLocations()) {
                 HeatBlock block = current.move(neighbor);
                 if (!neighbor.isOnGrid(grid) || visited.contains(block)) continue;

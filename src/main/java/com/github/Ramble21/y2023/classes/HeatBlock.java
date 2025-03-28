@@ -52,9 +52,6 @@ public class HeatBlock {
     public Direction getDirection() {
         return dir;
     }
-    public HeatBlock getPreviousBlock() {
-        return previousBlock;
-    }
     public HeatBlock move(Location l) {
         Direction dir = loc.getDirectionToGo(l);
         int numForwards = (this.numForwards == 0 || dir == this.dir) ? (this.numForwards + 1) : 1;
@@ -67,12 +64,11 @@ public class HeatBlock {
         HeatBlock other = (HeatBlock) obj;
         if (other.previousBlock == null) return this.previousBlock == null;
         if (this.previousBlock == null) return false;
-        return loc.equals(other.loc) && nextLocations().equals(other.nextLocations()) && numForwards == other.numForwards && other.previousBlock.getLocation().equals(previousBlock.getLocation());
+        return loc.equals(other.loc) && numForwards == other.numForwards && dir == other.dir;
     }
     @Override
     public int hashCode() {
-        if (previousBlock == null) return Objects.hash(loc, nextLocations(), numForwards);
-        return Objects.hash(loc, nextLocations(), numForwards, previousBlock.getLocation());
+        return Objects.hash(loc, numForwards, dir);
     }
     @Override
     public String toString() {
