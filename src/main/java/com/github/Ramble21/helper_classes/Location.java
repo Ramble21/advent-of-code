@@ -51,6 +51,15 @@ public class Location {
         }
         return output;
     }
+    public Direction getDirectionToGo(Location other) {
+        int dx = other.x - x;
+        int dy = other.y - y;
+        if ((dx != 0) == (dy != 0)) return null;
+        if (dx > 0) return Direction.RIGHT;
+        if (dx < 0) return Direction.LEFT;
+        if (dy > 0) return Direction.DOWN;
+        return Direction.UP;
+    }
     @Override
     public boolean equals(Object obj){
         if (this == obj) return true;
