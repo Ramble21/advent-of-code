@@ -17,7 +17,7 @@ public class Day17 extends DaySolver {
 
         HeatBlock origin = new HeatBlock();
         distances.put(origin, 0);
-        Comparator<HeatBlock> comparator = Comparator.comparingInt(block -> distances.getOrDefault(block, Integer.MAX_VALUE));
+        Comparator<HeatBlock> comparator = Comparator.comparingInt(distances::get);
         PriorityQueue<HeatBlock> queue = new PriorityQueue<>(comparator);
         queue.add(origin);
         HashSet<HeatBlock> visited = new HashSet<>();
@@ -46,7 +46,36 @@ public class Day17 extends DaySolver {
     }
 
     public long solvePart2() throws IOException {
-        return 0;
+        HashMap<HeatBlock, Integer> distances = new HashMap<>();
+
+        HeatBlock origin = new HeatBlock();
+        distances.put(origin, 0);
+        Comparator<HeatBlock> comparator = Comparator.comparingInt(distances::get);
+        PriorityQueue<HeatBlock> queue = new PriorityQueue<>(comparator);
+        queue.add(origin);
+        HashSet<HeatBlock> visited = new HashSet<>();
+        while (!queue.isEmpty()) {
+            HeatBlock current = queue.poll();
+            for (Location neighbor : current.nextUltraLocations()) {
+                HeatBlock block = current.move(neighbor);
+                if (!neighbor.isOnGrid(grid) || visited.contains(block)) continue;
+
+                int d = grid[neighbor.y][neighbor.x] - '0' + distances.get(current);
+                if (!distances.containsKey(block) || d < distances.get(block)) {
+                    distances.put(block, d);
+                    queue.add(block);
+                }
+            }
+            visited.add(current);
+        }
+        int min = Integer.MAX_VALUE;
+        Location target = new Location(grid[0].length - 1, grid.length - 1);
+        for (HeatBlock l : visited) {
+            if (l.getLocation().equals(target)) {
+                min = Math.min(distances.get(l), min);
+            }
+        }
+        return min;
     }
 
 

@@ -32,6 +32,20 @@ public class HeatBlock {
         }
         return locs;
     }
+    public HashSet<Location> nextUltraLocations() {
+        HashSet<Location> locs = new HashSet<>();
+        if (numForwards < 4 && numForwards != 0) {
+            assert dir != null;
+            locs.add(loc.getDirectionalLoc(dir));
+            return locs;
+        }
+        for (Direction d : Direction.getCardinalDirections()) {
+            if (dir != null && d == dir.getFlipped()) continue;
+            if (d == dir && numForwards >= 10) continue;
+            locs.add(loc.getDirectionalLoc(d));
+        }
+        return locs;
+    }
     public Location getLocation() {
         return loc;
     }
