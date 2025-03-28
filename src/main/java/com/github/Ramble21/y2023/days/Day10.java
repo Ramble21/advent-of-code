@@ -30,9 +30,9 @@ public class Day10 extends DaySolver {
         return max;
     }
     public long solvePart2() throws IOException {
-        return getAllLocsInsidePolygon(new ArrayList<>(distances.keySet())).size();
+        return getAllLocsInsidePolygon(distances.keySet()).size();
     }
-    private HashSet<Location> getAllLocsInsidePolygon(ArrayList<Location> polygon){
+    private HashSet<Location> getAllLocsInsidePolygon(Set<Location> polygon){
         HashSet<Location> result = new HashSet<>();
         int minX = Integer.MAX_VALUE, minY = Integer.MAX_VALUE;
         int maxX = Integer.MIN_VALUE, maxY = Integer.MIN_VALUE;
@@ -52,20 +52,20 @@ public class Day10 extends DaySolver {
         }
         return result;
     }
-    private boolean isPointInside(Location p, ArrayList<Location> polygon) {
+    private boolean isPointInside(Location p, Set<Location> polygon) {
         for (Direction d : Direction.getCardinalDirections()){
             if (!p.getDirectionalLoc(d).isOnGrid(grid)) return false;
         }
         if (polygon.contains(p)) return false;
         Location current = new Location(-1, p.y);
-        int numSideHits = 0;
+        boolean returnValue = false;
         while (current.x <= p.x) {
             if (polygon.contains(current) && facesNorth(current)){
-                numSideHits++;
+                returnValue = !returnValue;
             }
             current = new Location(current.x + 1, current.y);
         }
-        return numSideHits % 2 == 1;
+        return returnValue;
     }
     private boolean facesNorth(Location l){
         if (!l.isOnGrid(grid)) return false;
