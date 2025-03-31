@@ -6,7 +6,6 @@ import com.github.Ramble21.y2023.classes.HeatBlock;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.function.Function;
 
 public class Day17 extends DaySolver {
     private final char[][] grid;

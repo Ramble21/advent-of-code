@@ -5,8 +5,6 @@ import com.github.Ramble21.helper_classes.Direction;
 import com.github.Ramble21.helper_classes.Location;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
 
 public class Day14 extends DaySolver {
     private final char[][] grid;
@@ -65,14 +63,7 @@ public class Day14 extends DaySolver {
         }
         return tortoise;
     }
-    private boolean equalToGrid(char[][] other) {
-        for (int r = 0; r < grid.length; r++) {
-            for (int c = 0; c < grid[0].length; c++) {
-                if (grid[r][c] != other[r][c]) return false;
-            }
-        }
-        return true;
-    }
+
     private int oneCycle() {
         for (Direction d : new Direction[]{Direction.UP, Direction.LEFT}) {
             for (int r = 0; r < grid.length; r++) {

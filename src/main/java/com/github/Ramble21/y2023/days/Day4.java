@@ -4,7 +4,6 @@ import com.github.Ramble21.DaySolver;
 import com.github.Ramble21.y2023.classes.ScratchCard;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
