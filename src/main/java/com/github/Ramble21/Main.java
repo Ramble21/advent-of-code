@@ -2,9 +2,10 @@ package com.github.Ramble21;
 
 public class Main {
     public static void main(String[] args) throws Exception {
-        testEveryDay(2023);
+        testSpecificDay(2023, 19);
     }
     public static void testEveryDay(int year) throws Exception {
+
         long totalMs = 0;
         for (int i = 1; i <= 25; i++){
             String className = "com.github.Ramble21.y" + year + ".days.Day" + i;
