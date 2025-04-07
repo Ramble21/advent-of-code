@@ -50,13 +50,25 @@ public class Day19 extends DaySolver {
         return totalRatingNumbers;
     }
     public long solvePart2() throws IOException {
-        HashSet<ArrayList<Inequality>> trees = getInequalityTrees();
-        System.out.println(trees);
-        RatingCombo total = new RatingCombo();
-        for (ArrayList<Inequality> tree : trees) {
-
+        return getAllValuesFromWorkflow(getWorkflowByName("in"), new RatingCombo());
+    }
+    private long getAllValuesFromWorkflow(Workflow w, RatingCombo restraints) {
+        long total = 0;
+        for (Inequality i : w.getInequalities()) {
+            String destination = i.getDestination();
+            RatingCombo newRestraints = restraints.getAppended(i);
+            if (destination.equals("A")) {
+                long x = newRestraints.getTotalCombos();
+                total += x;
+            }
+            else if (!destination.equals("R")){
+                total += getAllValuesFromWorkflow(getWorkflowByName(destination), newRestraints);
+            }
+            if (!i.isDefault()) {
+                restraints.appendInequality(i.reversed());
+            }
         }
-        return 0;
+        return total;
     }
     private HashSet<ArrayList<Inequality>> getInequalityTrees() {
         ArrayList<Inequality> temp = new ArrayList<>();
@@ -80,7 +92,6 @@ public class Day19 extends DaySolver {
             }
         }
     }
-
     private Workflow getWorkflowByName(String name) {
         for (Workflow w : workflows) {
             if (w.getName().equals(name)) return w;

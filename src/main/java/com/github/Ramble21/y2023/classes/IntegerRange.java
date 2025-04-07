@@ -4,12 +4,11 @@ public class IntegerRange {
     private int min;
     private int max;
     private final char c;
-    private boolean isDead;
+    private boolean isEmpty = false;
     public IntegerRange(char c, int min, int max) {
         this.min = min;
         this.max = max;
         this.c = c;
-        isDead = false;
     }
     public int getMin() {
         return min;
@@ -18,7 +17,6 @@ public class IntegerRange {
         return max;
     }
     public boolean isInRange(int n) {
-        if (isDead) return false;
         return n >= min && n <= max;
     }
     public char getPartLabel() {
@@ -28,28 +26,35 @@ public class IntegerRange {
         this.max = max;
     }
     public int getNumValues() {
-        return (isDead) ? 0 : (max - min) + 1;
+        return (isEmpty) ? 0 : max - min + 1;
     }
-    public void trim(IntegerRange other) {
-        if (other.c != c || other.min > max || min > other.max) {
-            return;
+    public IntegerRange trim(IntegerRange other) {
+        if (other.min > max || min > other.max) {
+            isEmpty = true;
+            return this;
         }
-        if (other.min >= min && other.max <= max) {
-            other.isDead = true;
-            return;
+        if (other.min == min && other.max == max) {
+            return other;
         }
-        if (min >= other.min && max <= other.max) {
-            isDead = true;
-            return;
+        if (other.min > min && other.max < max) {
+            return other;
         }
-        if (other.min < min) {
-            other.max = min - 1;
+        if (min > other.min && max < other.max) {
+            return this;
+        }
+        if (min < other.min) {
+            min = other.min;
+            return this;
         }
         else {
-            max = other.min - 1;
+            other.min = min;
+            return other;
         }
     }
     public String toString() {
-        return c + ": " + (isDead ? "DEAD" : "[" + min + "," + max + "]");
+        return (isEmpty) ? "EMPTY" : c + ": " +  "[" + min + "," + max + "]";
+    }
+    public IntegerRange copy() {
+        return new IntegerRange(c, min, max);
     }
 }

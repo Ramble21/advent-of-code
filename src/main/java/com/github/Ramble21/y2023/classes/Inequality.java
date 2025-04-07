@@ -17,6 +17,22 @@ public class Inequality {
         this.destination = inputLine;
         this.isDefault = true;
     }
+    private Inequality(Inequality reversed) {
+        destination = reversed.destination;
+        isDefault = reversed.isDefault;
+        partLabel = reversed.partLabel;
+        if (reversed.inequalitySymbol == '<') {
+            inequalitySymbol = '>';
+            comparisonNumber = reversed.comparisonNumber - 1;
+        }
+        else {
+            inequalitySymbol = '<';
+            comparisonNumber = reversed.comparisonNumber + 1;
+        }
+    }
+    public Inequality reversed() {
+        return new Inequality(this);
+    }
     public boolean inputPasses(int input) {
         if (isDefault) return true;
         if (inequalitySymbol == '<') return input < comparisonNumber;
