@@ -15,7 +15,7 @@ public class Inequality {
     }
     public Inequality(String inputLine, boolean isDefault) {
         this.destination = inputLine;
-        this.isDefault = true;
+        this.isDefault = isDefault;
     }
     private Inequality(Inequality reversed) {
         destination = reversed.destination;

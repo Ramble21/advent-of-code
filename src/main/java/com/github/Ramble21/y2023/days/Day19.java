@@ -6,7 +6,6 @@ import com.github.Ramble21.y2023.classes.RatingCombo;
 import com.github.Ramble21.y2023.classes.Workflow;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -69,28 +68,6 @@ public class Day19 extends DaySolver {
             }
         }
         return total;
-    }
-    private HashSet<ArrayList<Inequality>> getInequalityTrees() {
-        ArrayList<Inequality> temp = new ArrayList<>();
-        HashSet<ArrayList<Inequality>> trees = new HashSet<>();
-        Workflow current = getWorkflowByName("in");
-        getAllTreesFromWorkflow(trees, temp, current);
-        return trees;
-    }
-    private void getAllTreesFromWorkflow(HashSet<ArrayList<Inequality>> trees, ArrayList<Inequality> current, Workflow goal) {
-        for (Inequality i : goal.getInequalities()) {
-            if (i.getDestination().equals("A")) {
-                current.add(i);
-                trees.add(new ArrayList<>(current));
-                current.remove(current.size() - 1);
-            }
-            else if (!i.getDestination().equals("R")) {
-                current.add(i);
-                Workflow destination = getWorkflowByName(i.getDestination());
-                getAllTreesFromWorkflow(trees, current, destination);
-                current.remove(current.size() - 1);
-            }
-        }
     }
     private Workflow getWorkflowByName(String name) {
         for (Workflow w : workflows) {

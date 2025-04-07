@@ -2,7 +2,7 @@ package com.github.Ramble21.y2023.classes;
 
 public class IntegerRange {
     private int min;
-    private int max;
+    private final int max;
     private final char c;
     private boolean isEmpty = false;
     public IntegerRange(char c, int min, int max) {
@@ -10,20 +10,8 @@ public class IntegerRange {
         this.max = max;
         this.c = c;
     }
-    public int getMin() {
-        return min;
-    }
-    public int getMax() {
-        return max;
-    }
-    public boolean isInRange(int n) {
-        return n >= min && n <= max;
-    }
     public char getPartLabel() {
         return c;
-    }
-    public void setMax(int max) {
-        this.max = max;
     }
     public int getNumValues() {
         return (isEmpty) ? 0 : max - min + 1;

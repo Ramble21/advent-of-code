@@ -1,11 +1,5 @@
 package com.github.Ramble21.y2023.classes;
 
-import com.sun.jdi.IntegerType;
-
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.HashSet;
-
 public class RatingCombo {
     private IntegerRange allowedX;
     private IntegerRange allowedM;
