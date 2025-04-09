@@ -1,8 +1,9 @@
 package com.github.Ramble21;
 
 public class Main {
+
     public static void main(String[] args) throws Exception {
-        testSpecificDay(2023, 19);
+        testSpecificDay(2023, 20);
     }
     public static void testEveryDay(int year) throws Exception {
 
