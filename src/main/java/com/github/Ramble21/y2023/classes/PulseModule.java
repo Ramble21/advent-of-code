@@ -1,5 +1,7 @@
 package com.github.Ramble21.y2023.classes;
 
+import com.github.Ramble21.y2023.days.Day20;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -10,7 +12,7 @@ public class PulseModule {
     private final char prefix;
 
     private boolean flipFlopState;
-    private HashMap<String, Boolean> mostRecentPulses = new HashMap<>();
+    private HashMap<String, Boolean> mostRecentPulses;
 
     public PulseModule(String inputLine) {
         String[] parsed = inputLine.split("[\\s,->]+");
@@ -19,11 +21,41 @@ public class PulseModule {
         this.destinations = Arrays.copyOfRange(parsed, 1, parsed.length);
         if (prefix == '%') flipFlopState = false;
     }
+
+    public void reset() {
+        mostRecentPulses.clear();
+        flipFlopState = false;
+    }
     public String getIdentifier() {
         return identifier;
     }
     public String[] getDestinations() {
         return destinations;
+    }
+    public char getPrefix() {
+        return prefix;
+    }
+    public HashMap<String, Boolean> getMostRecentPulses() {
+        return mostRecentPulses;
+    }
+    public boolean onlyRemembersHighPulses() {
+        if (prefix == '%') return false;
+        return mostRecentPulses.containsValue(false);
+    }
+    public void initializeRequirements(PulseModule[] modules) {
+        ArrayList<PulseModule> result = new ArrayList<>();
+        for (PulseModule p : modules) {
+            for (String destination : p.getDestinations()) {
+                if (destination.equals(identifier)) {
+                    result.add(p);
+                    break;
+                }
+            }
+        }
+        mostRecentPulses = new HashMap<>();
+        for (PulseModule requirement : result) {
+            mostRecentPulses.put(requirement.identifier, false);
+        }
     }
     private Boolean getOutputPulse(boolean input, String inputFrom, PulseModule[] modules) {
         if (prefix == 'b') {
@@ -61,5 +93,8 @@ public class PulseModule {
             if (p.identifier.equals(goal)) return p;
         }
         return null;
+    }
+    public String toString() {
+        return "" + (prefix == '&' ? (onlyRemembersHighPulses() ? 1 : 0) : (flipFlopState ? 1 : 0)) + prefix + identifier + "->" + Arrays.toString(getDestinations());
     }
 }
