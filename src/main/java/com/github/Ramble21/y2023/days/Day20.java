@@ -65,7 +65,6 @@ public class Day20 extends DaySolver {
             binaryCount.append(binaryResult);
         }
         binaryCount.reverse();
-        System.out.println(binaryCount);
         return Integer.parseInt(binaryCount.toString(), 2);
     }
     public ArrayList<PulseModule> getCounterChain(String conjunctionModName) {
@@ -81,15 +80,7 @@ public class Day20 extends DaySolver {
         }
         result.sort(Comparator.comparingInt(conj -> numberStepsFromBroadcaster(conj.getIdentifier())));
         result.remove(0);
-        System.out.println(result);
         return result;
-    }
-    public String generateSequence(ArrayList<PulseModule> modules) {
-        StringBuilder result = new StringBuilder();
-        for (PulseModule m : modules) {
-            result.append(m.toString().charAt(0));
-        }
-        return result.reverse().toString();
     }
     public ArrayList<PulseModule> getRequirementsOf(String moduleName) {
         ArrayList<PulseModule> result = new ArrayList<>();
@@ -130,10 +121,5 @@ public class Day20 extends DaySolver {
             pulses.addAll(result);
         }
         return new long[]{low, high};
-    }
-    public void resetModules() {
-        for (PulseModule m : modules) {
-            m.reset();
-        }
     }
 }
