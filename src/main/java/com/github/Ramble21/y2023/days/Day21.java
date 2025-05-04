@@ -4,12 +4,16 @@ import com.github.Ramble21.DaySolver;
 import com.github.Ramble21.helper_classes.Location;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 public class Day21 extends DaySolver {
     private final char[][] grid;
     private final Location startingPoint;
+
+    private final HashMap<Location, Integer> distances = new HashMap<>();
+    private final HashSet<Location> evenLocs = new HashSet<>();
+    private final HashSet<Location> oddLocs = new HashSet<>();
+
     public Day21() throws IOException {
         grid = getInputAsGrid(2023, 21);
         Location startingPoint = null;
@@ -24,24 +28,42 @@ public class Day21 extends DaySolver {
         this.startingPoint = startingPoint;
     }
     public long solvePart1() throws IOException {
-        HashSet<Location> locs = new HashSet<>(Set.of(startingPoint));
-        for (int i = 0; i < 64; i++) {
-            locs = getNextLocs(locs);
+        HashSet<Location> bfs = bfs(startingPoint);
+        for (Location l : bfs) {
+            if (distances.get(l) % 2 == 0) {
+                evenLocs.add(l);
+            } else {
+                oddLocs.add(l);
+            }
         }
-        return locs.size();
+        return evenLocs.stream().filter(loc -> distances.get(loc) <= 64).count();
     }
-    private HashSet<Location> getNextLocs(HashSet<Location> currentLocs) {
-        HashSet<Location> nextLocs = new HashSet<>();
-        for (Location l : currentLocs) {
-            for (Location possibility : Location.getNeighbors(l, grid)) {
-                if (grid[possibility.y][possibility.x] != '#') {
-                    nextLocs.add(possibility);
+    private HashSet<Location> bfs(Location start) {
+        HashSet<Location> visited = new HashSet<>();
+        Queue<Location> queue = new LinkedList<>();
+        queue.add(start);
+        visited.add(start);
+        distances.put(start, 0);
+        while (!queue.isEmpty()){
+            Location current = queue.poll();
+            for (Location neighbor : Location.getNeighbors(current, grid)){
+                if (!visited.contains(neighbor)){
+                    visited.add(neighbor);
+                    distances.put(neighbor, distances.get(current) + 1);
+                    queue.add(neighbor);
                 }
             }
         }
-        return nextLocs;
+        return visited;
     }
     public long solvePart2() throws IOException {
-        return 0;
+        int numTiles = 26501365 / grid.length;
+        long numOdds = (long) Math.pow(numTiles + 1, 2);
+        long numEvens = (long) Math.pow(numTiles, 2);
+        long evenFulls = evenLocs.size();
+        long oddFulls = oddLocs.size();
+        long evenCorners = evenLocs.stream().filter(loc -> distances.get(loc) > 65).count();
+        long oddCorners = oddLocs.stream().filter(loc -> distances.get(loc) > 65).count();
+        return (numOdds * oddFulls) + (numEvens * evenFulls) - ((numTiles + 1) * oddCorners) + (numTiles * evenCorners);
     }
 }
