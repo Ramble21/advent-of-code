@@ -64,7 +64,7 @@ public class Location {
     public boolean equals(Object obj){
         if (this == obj) return true;
         if (obj == null || getClass() != obj.getClass()) return false;
-        Location other = (Location)obj;
+        Location other = (Location) obj;
         return x == other.x && y == other.y;
     }
     @Override
