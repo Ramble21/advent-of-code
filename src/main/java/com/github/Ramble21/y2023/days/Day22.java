@@ -23,10 +23,10 @@ public class Day22 extends DaySolver {
         for (Brick b : bricks) {
             b.fall(bricks);
         }
-        return Arrays.stream(bricks).filter(b -> b.canBeDisintegrated(bricks)).count();
+        return Arrays.stream(bricks).filter(b -> b.canBeDisintegrated(bricks)).toArray().length;
     }
 
     public long solvePart2() throws IOException {
-        return 0;
+        return Arrays.stream(bricks).mapToInt(b -> b.disintegrationChainReactionLength(bricks)).sum();
     }
 }
