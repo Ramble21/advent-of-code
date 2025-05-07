@@ -61,7 +61,13 @@ public class Brick {
         }
         return true;
     }
+    private final HashMap<Brick, HashSet<Brick>> bricksAbove = new HashMap<>();
+    private final HashMap<Brick, HashSet<Brick>> bricksBelow = new HashMap<>();
+
     public HashSet<Brick> getBricksAbove(Brick[] bricks) {
+        if (bricksAbove.containsKey(this)) {
+            return bricksAbove.get(this);
+        }
         HashSet<Brick> res = new HashSet<>();
         for (Brick b : bricks) {
             if (b.getMinZ() == getMaxZ() + 1) {
@@ -74,9 +80,13 @@ public class Brick {
                 }
             }
         }
+        bricksAbove.put(this, res);
         return res;
     }
     public HashSet<Brick> getBricksBelow(Brick[] bricks) {
+        if (bricksBelow.containsKey(this)) {
+            return bricksBelow.get(this);
+        }
         HashSet<Brick> res = new HashSet<>();
         for (Brick b : bricks) {
             if (b.getMaxZ() == getMinZ() - 1) {
@@ -89,6 +99,7 @@ public class Brick {
                 }
             }
         }
+        bricksBelow.put(this, res);
         return res;
     }
     public boolean hasCollision(Brick[] bricks) {
