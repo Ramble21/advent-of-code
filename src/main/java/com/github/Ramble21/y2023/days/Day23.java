@@ -4,6 +4,7 @@ import com.github.Ramble21.DaySolver;
 import com.github.Ramble21.helper_classes.Direction;
 import com.github.Ramble21.helper_classes.Location;
 
+import javax.swing.plaf.IconUIResource;
 import java.io.IOException;
 import java.util.*;
 
@@ -23,40 +24,37 @@ public class Day23 extends DaySolver {
         }
     }
     public long solvePart1() throws IOException {
-        HashMap<Location, Integer> distances = new HashMap<>();
-        HashMap<Location, HashSet<Location>> previousLocs = new HashMap<>();
-        Queue<Location> queue = new LinkedList<>();
-        queue.add(start);
-        distances.put(start, 0);
-        previousLocs.put(start, new HashSet<>());
-
-        while (!queue.isEmpty()){
-            Location current = queue.poll();
-            for (Location neighbor : getNeighbors(current)) {
-                if (!previousLocs.get(current).contains(neighbor)) {
-                    HashSet<Location> neighborPrev = new HashSet<>(previousLocs.get(current))   ;
-                    neighborPrev.add(current);
-                    distances.put(neighbor, distances.get(current) + 1);
-                    previousLocs.put(neighbor, neighborPrev);
-                    queue.add(neighbor);
-                }
+        return dfsLongestPathPart1(start, new HashSet<>());
+    }
+    public long solvePart2() throws IOException {
+        return dfsLongestPathPart2(start, new HashSet<>());
+    }
+    private int dfsLongestPathPart2(Location current, HashSet<Location> visited) {
+        return 0;
+    }
+    private int dfsLongestPathPart1(Location current, HashSet<Location> visited) {
+        if (current.equals(end)) {
+            return 0;
+        }
+        ArrayList<Location> neighbors = getNeighbors(current);
+        visited.add(current);
+        int max = 0;
+        for (Location neighbor : neighbors) {
+            if (!visited.contains(neighbor)) {
+                max = Math.max(max, dfsLongestPathPart1(neighbor, visited) + 1);
             }
         }
-        return distances.get(end);
+        visited.remove(current);
+        return max;
     }
-    public ArrayList<Location> getNeighbors(Location current) {
-        ArrayList<Location> result;
+    private ArrayList<Location> getNeighbors(Location current) {
+        ArrayList<Location> result = Location.getNeighbors(current, grid);
         if (grid[current.y][current.x] != '.') {
             result = new ArrayList<>(List.of(current.getDirectionalLoc(Direction.charToDir(grid[current.y][current.x]))));
-        }
-        else {
-            result = Location.getNeighbors(current, grid);
         }
         result.removeIf(l -> grid[l.y][l.x] == '#');
         return result;
     }
 
-    public long solvePart2() throws IOException {
-        return 0;
-    }
 }
+
