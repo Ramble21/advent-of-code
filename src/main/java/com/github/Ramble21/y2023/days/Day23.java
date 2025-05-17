@@ -3,8 +3,8 @@ package com.github.Ramble21.y2023.days;
 import com.github.Ramble21.DaySolver;
 import com.github.Ramble21.helper_classes.Direction;
 import com.github.Ramble21.helper_classes.Location;
+import com.github.Ramble21.y2023.classes.GraphNode;
 
-import javax.swing.plaf.IconUIResource;
 import java.io.IOException;
 import java.util.*;
 
@@ -24,24 +24,59 @@ public class Day23 extends DaySolver {
         }
     }
     public long solvePart1() throws IOException {
-        return dfsLongestPathPart1(start, new HashSet<>());
+        return dfsLongestPath(start, new HashSet<>());
     }
     public long solvePart2() throws IOException {
-        return dfsLongestPathPart2(start, new HashSet<>());
+        HashMap<Location, GraphNode> graph = new HashMap<>();
+        GraphNode startingNode = null;
+        for (int r = 0; r < grid.length; r++) {
+            for (int c = 0; c < grid[0].length; c++) {
+                Location loc = new Location(c, r);
+                if (isVertex(loc)) {
+                    GraphNode node = new GraphNode(loc, grid);
+                    graph.put(loc, node);
+                    if (loc.equals(start)) {
+                        startingNode = node;
+                    }
+                }
+            }
+        }
+        HashMap<Location, GraphNode> condensedGraph = new HashMap<>();
+        for (GraphNode l : graph.values()) {
+            if (l.getVertices().size() != 2) {
+                l.condenseGraph(graph);
+                condensedGraph.put(l.getLoc(), l);
+            }
+        }
+        assert startingNode != null;
+        return dfsGraph(startingNode, new HashSet<>(), condensedGraph);
     }
-    private int dfsLongestPathPart2(Location current, HashSet<Location> visited) {
-        return 0;
+    private int dfsGraph(GraphNode current, HashSet<GraphNode> visited, HashMap<Location, GraphNode> graph) {
+        if (current.getLoc().equals(end)) {
+            return 0;
+        }
+        visited.add(current);
+        int max = Integer.MIN_VALUE;
+        HashMap<Location, Integer> neighbors = current.getVertices();
+        for (Map.Entry<Location, Integer> entry : neighbors.entrySet()) {
+            GraphNode neighbor = graph.get(entry.getKey());
+            int distance = entry.getValue();
+            if (!visited.contains(neighbor)) {
+                max = Math.max(dfsGraph(neighbor, visited, graph) + distance, max);
+            }
+        }
+        visited.remove(current);
+        return max;
     }
-    private int dfsLongestPathPart1(Location current, HashSet<Location> visited) {
+    private int dfsLongestPath(Location current, HashSet<Location> visited) {
         if (current.equals(end)) {
             return 0;
         }
-        ArrayList<Location> neighbors = getNeighbors(current);
         visited.add(current);
-        int max = 0;
-        for (Location neighbor : neighbors) {
+        int max = Integer.MIN_VALUE;
+        for (Location neighbor : getNeighbors(current)) {
             if (!visited.contains(neighbor)) {
-                max = Math.max(max, dfsLongestPathPart1(neighbor, visited) + 1);
+                max = Math.max(dfsLongestPath(neighbor, visited) + Location.getTaxicabDistance(current, neighbor), max);
             }
         }
         visited.remove(current);
@@ -55,6 +90,19 @@ public class Day23 extends DaySolver {
         result.removeIf(l -> grid[l.y][l.x] == '#');
         return result;
     }
-
+    private boolean isVertex(Location l) {
+        if (l.equals(start) || l.equals(end)) {
+            return true;
+        }
+        if (grid[l.y][l.x] == '#') {
+            return false;
+        }
+        ArrayList<Location> neighbors = Location.getNeighbors(l, grid);
+        neighbors.removeIf(a -> grid[a.y][a.x] == '#');
+        if (neighbors.size() != 2) {
+            return neighbors.size() > 2;
+        }
+        return neighbors.get(0).x != neighbors.get(1).x && neighbors.get(0).y != neighbors.get(1).y;
+    }
 }
 
