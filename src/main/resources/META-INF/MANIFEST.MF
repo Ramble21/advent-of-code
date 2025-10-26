@@ -1,2 +1,2 @@
 Manifest-Version: 1.0
-Main-Class: com.github.Ramble21.Main
+Main-Class: com.github.ramble21.Main

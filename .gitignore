@@ -38,4 +38,4 @@ build/
 .DS_Store
 
 ### aoc inputs ###
-src/main/resources/com/github/Ramble21/inputs
+src/main/resources/com/github/ramble21/inputs
