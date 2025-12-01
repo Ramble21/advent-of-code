@@ -1,7 +1,4 @@
-from python.helper_classes.file_loader import load_lines
-
-def solve_part1():
-    instructions = load_lines(2025, 1)
+def solve_part1(instructions):
     num = 50
     password = 0
     for instruction in instructions:
@@ -16,8 +13,7 @@ def solve_part1():
             password += 1
     return password
 
-def solve_part2():
-    instructions = load_lines(2025, 1)
+def solve_part2(instructions):
     num = 50
     password = 0
     for instruction in instructions:

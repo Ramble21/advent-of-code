@@ -7,7 +7,7 @@ Every solution should work universally with all inputs*, so feel free to use thi
 
 | Year | Total Stars |   Total Runtime    | Language |
 |:----:|:-----------:|:------------------:|:--------:|
-| 2025 |     25      | Not completed yet  |   Java   |
+| 2025 |     24      | Not completed yet  |  Python  |
 | 2024 |     50      |      ~9500 ms      |   Java   |
 | 2023 |     50      |    ~13000 ms**     |   Java   |
 

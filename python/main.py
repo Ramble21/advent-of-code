@@ -1,5 +1,3 @@
-from python.y2025.day1 import *
+from python.helper_classes.common_methods import run_single_day, run_all_days
 
-print(solve_part1())
-print(solve_part2())
-
+run_all_days(2025)
