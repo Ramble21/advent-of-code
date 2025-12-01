@@ -5,11 +5,11 @@ https://adventofcode.com/
 Every solution should work universally with all inputs*, so feel free to use this repo to help you with your own AoC solutions (keeping in mind that I might not be the best role model for good and efficient code)
 
 
-| Year | Total Stars |   Total Runtime    |  Language  |
-|:----:|:-----------:|:------------------:|:----------:|
-| 2025 |     25      | Not completed yet  |   Python   |
-| 2024 |     50      |      ~9500 ms      |    Java    |
-| 2023 |     50      |    ~13000 ms**     |    Java    |
+| Year | Total Stars |   Total Runtime    | Language |
+|:----:|:-----------:|:------------------:|:--------:|
+| 2025 |     25      | Not completed yet  |   Java   |
+| 2024 |     50      |      ~9500 ms      |   Java   |
+| 2023 |     50      |    ~13000 ms**     |   Java   |
 
 *2024 day 17 is specifically hardcoded to my input
 
