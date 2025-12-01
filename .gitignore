@@ -38,3 +38,4 @@ build/
 
 ### aoc inputs ###
 ../src/main/resources/com/github/ramble21/inputs
+/python/inputs/
