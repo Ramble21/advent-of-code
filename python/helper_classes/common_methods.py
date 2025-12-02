@@ -1,10 +1,11 @@
 from pathlib import Path
 import time
+import re
 import importlib
 
 def run_single_day(year, day):
     mod = importlib.import_module(get_mod_name(year, day))
-    return solve(year, day, mod.solve_part1, mod.solve_part2)
+    return solve(day, mod.parse_data, mod.solve_part1, mod.solve_part2)
 
 def module_exists(name):
     try:
@@ -27,16 +28,20 @@ def run_all_days(year):
         mod_name = get_mod_name(year, day)
     print(f"Advent of Code {year} total: {total_time:.0f} ms")
 
-def load_lines(year, day):
+def load_lines(year, day, split="\n"):
     base = Path(__file__).resolve().parent.parent
     path = base / "inputs" / str(year) / f"day{day}.txt"
 
     with open(path, "r", encoding="utf-8") as f:
-        return [line.rstrip("\n") for line in f]
+        data = f.read()
 
-def solve(year, day, part1, part2):
+    if split == "\n":
+        return data.splitlines()
+    return re.split(split, data)
+
+def solve(day, parse_data, part1, part2):
     start = time.perf_counter()
-    parsed_data = load_lines(year, day)
+    parsed_data = parse_data()
     pd_ts = time.perf_counter()
     print(f"Day {day} data parsing: {((pd_ts - start) * 1000):.0f} ms")
     part1_answer = part1(parsed_data)

@@ -1,3 +1,8 @@
+from python.helper_classes.common_methods import load_lines
+
+def parse_data():
+    return load_lines(2025, 1)
+
 def solve_part1(instructions):
     num = 50
     password = 0
