@@ -4,24 +4,26 @@ def parse_data():
     return load_lines(2025, 3)
 
 def solve_part1(p_input):
-    summ = 0
-    for bank in p_input:
-        first_num, second_num = '0', '0'
-        first_num_idx = 0
-        for i, num in enumerate(bank):
-            if num > first_num:
-                first_num_idx = i
-                first_num = num
-            if num == '9' or i+2 == len(bank):
-                    break
-        for j in range(first_num_idx+1, len(bank)):
-            num = bank[j]
-            if num > second_num:
-                second_num = num
-                if num == '9':
-                    break
-        summ += (10 * int(first_num) + int(second_num))
-    return summ
+    return sum(get_joltage(bank, 0, 2) for bank in p_input)
 
 def solve_part2(p_input):
-    pass
+    return sum(get_joltage(bank, 0, 12) for bank in p_input)
+
+def get_joltage(bank, min_idx, digits_remaining):
+    best_num = '0'
+    best_num_idx = 0
+    for i in range(min_idx, len(bank)):
+        num = bank[i]
+        if num > best_num:
+            best_num = num
+            best_num_idx = i
+            if num == '9':
+                break
+        if i + digits_remaining == len(bank):
+            break
+    if digits_remaining == 1:
+        return int(best_num)
+    partial_joltage = int(best_num) * pow(10, digits_remaining - 1)
+    remaining_joltage = get_joltage(bank, best_num_idx + 1, digits_remaining - 1)
+    return partial_joltage + remaining_joltage
+
