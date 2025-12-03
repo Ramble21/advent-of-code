@@ -10,8 +10,7 @@ def solve_part2(p_input):
     return sum(get_joltage(bank, 0, 12) for bank in p_input)
 
 def get_joltage(bank, min_idx, digits_remaining):
-    best_num = '0'
-    best_num_idx = 0
+    best_num, best_num_idx = '0', 0
     for i in range(min_idx, len(bank)):
         num = bank[i]
         if num > best_num:
@@ -23,7 +22,5 @@ def get_joltage(bank, min_idx, digits_remaining):
             break
     if digits_remaining == 1:
         return int(best_num)
-    partial_joltage = int(best_num) * pow(10, digits_remaining - 1)
-    remaining_joltage = get_joltage(bank, best_num_idx + 1, digits_remaining - 1)
-    return partial_joltage + remaining_joltage
+    return int(best_num) * pow(10, digits_remaining - 1) + get_joltage(bank, best_num_idx + 1, digits_remaining - 1)
 
