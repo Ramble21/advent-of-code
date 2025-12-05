@@ -24,10 +24,4 @@ def solve_part2(p_input):
     return summ
 
 def less_than_4(p_input, x, y):
-    summ = 0
-    for dx, dy in directions:
-        if 0 <= x + dx < len(p_input[0]) and 0 <= y + dy < len(p_input):
-            char = p_input[y + dy][x + dx]
-            if char == '@':
-                summ += 1
-    return summ < 4
+    return sum(1 for dx, dy in directions if 0 <= x + dx < len(p_input[0]) and 0 <= y + dy < len(p_input) and p_input[y + dy][x + dx] == '@') < 4
