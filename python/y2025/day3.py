@@ -23,4 +23,3 @@ def get_joltage(bank, min_idx, digits_remaining):
     if digits_remaining == 1:
         return int(best_num)
     return int(best_num) * pow(10, digits_remaining - 1) + get_joltage(bank, best_num_idx + 1, digits_remaining - 1)
-
