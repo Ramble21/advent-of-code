@@ -39,6 +39,16 @@ def load_lines(year, day, split="\n"):
         return data.splitlines()
     return re.split(split, data)
 
+def load_grid(year, day):
+    lines = load_lines(year, day)
+    rows = []
+    for line in lines:
+        line_chars = []
+        for c in line:
+            line_chars.append(c)
+        rows.append(line_chars)
+    return rows
+
 def solve(day, parse_data, part1, part2):
     start = time.perf_counter()
     parsed_data = parse_data()
