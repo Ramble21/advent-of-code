@@ -6,7 +6,7 @@ def parse_data():
     i = 0
     while lines_raw[i]:
         s = lines_raw[i]
-        ranges.append((int(s[:s.find("-")]), int(s[s.find("-") + 1:])))
+        ranges.append([int(s[:s.find("-")]), int(s[s.find("-") + 1:])])
         i += 1
     for j in range(i + 1, len(lines_raw)):
         avail_ids.append(int(lines_raw[j]))
@@ -23,4 +23,24 @@ def solve_part1(p_input):
     return num_fresh
 
 def solve_part2(p_input):
-    pass
+    ranges, _ = p_input
+    filtered_ranges = []
+    for ran_uf in ranges:
+        add_range = True
+        for i in range(len(filtered_ranges) - 1, -1, -1):
+            ran_f = filtered_ranges[i]
+            if ran_f[0] <= ran_uf[0] and ran_f[1] >= ran_uf[1]:
+                add_range = False
+                break
+            if ran_uf[0] <= ran_f[0] and ran_uf[1] >= ran_f[1]:
+                filtered_ranges.remove(ran_f)
+                continue
+            if ran_f[0] <= ran_uf[0] <= ran_f[1]:
+                ran_uf[0] = ran_f[1] + 1
+            if ran_f[1] >= ran_uf[1] >= ran_f[0]:
+                ran_uf[1] = ran_f[0] - 1
+        if add_range:
+            filtered_ranges.append(ran_uf)
+    return sum(ran[1] - ran[0] + 1 for ran in filtered_ranges)
+
+
