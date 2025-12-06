@@ -42,5 +42,3 @@ def solve_part2(p_input):
         if add_range:
             filtered_ranges.append(ran_uf)
     return sum(ran[1] - ran[0] + 1 for ran in filtered_ranges)
-
-
