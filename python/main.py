@@ -1,6 +1,6 @@
 from python.helper_classes.common_methods import run_single_day, run_all_days
 
-run_single_day(2025, 6)
+run_single_day(2025, 7)
 
 # New day file template
 """ 
