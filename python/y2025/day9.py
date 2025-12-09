@@ -8,12 +8,7 @@ def parse_data():
     return coord_tuples
 
 def solve_part1(p_input):
-    maxx = 0
-    for i in range(len(p_input)):
-        for j in range(i + 1, len(p_input)):
-            dx, dy = p_input[i][0] - p_input[j][0] + 1, p_input[i][1] - p_input[j][1] + 1
-            maxx = max(maxx, abs(dx * dy))
-    return maxx
+    return max(abs((p_input[i][0] - p_input[j][0] + 1) * (p_input[i][1] - p_input[j][1] + 1)) for i in range(len(p_input)) for j in range(i + 1, len(p_input)))
 
 def solve_part2(p_input):
     pass
