@@ -8,7 +8,7 @@ def run_single_day(year, day):
     start = time.perf_counter()
     parsed_data = mod.parse_data()
     pd_ts = time.perf_counter()
-    print(f"Day {day} data parsing: {((pd_ts - start) * 1000):.0f} ms")
+    print(f"Day {day} parsing/shared logic: {((pd_ts - start) * 1000):.0f} ms")
     part1_answer = mod.solve_part1(parsed_data)
     mid = time.perf_counter()
     print(f"Part 1: {part1_answer} | {((mid - pd_ts) * 1000):.0f} ms")
